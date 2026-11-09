@@ -1,0 +1,776 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Welcome to Neobolt</title><meta name="robots" content="noindex"><style>html,body{margin:0;background:#0b120e}</style></head><body>
+<!--
+NEOBOLT CLIENT ONBOARDING PORTAL (STANDARD, every client, both plans)
+Paste this whole file into ONE GHL "Custom HTML / Code" element on the page neoboltsystems.com/welcome.
+Each client gets their own link, nothing to edit per client:
+  https://neoboltsystems.com/welcome?name=Scott&biz=Hatcher%20Power%20Washing&plan=500   (or plan=15)
+One-time settings live in the CONFIG block at the top of the <script> (kickoff link, email, Meta ID).
+Slots: GHL_FORM_EMBED (Step 1) and GHL_CALENDAR_EMBED (Step 4). No dependencies except Google Fonts.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* GHL wraps pasted code in section/row/column boxes; let this block run full width */
+.c-section:has(.nbo),.c-section:has(.nbo)>.inner,.c-row:has(.nbo),.c-row:has(.nbo)>.inner,.c-column:has(.nbo),.c-column:has(.nbo)>.inner,.c-custom-code:has(.nbo),.custom-code-container:has(.nbo){display:contents!important}
+html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!important}
+.nbo.nbo{--g0:#0f1d12;--g1:#1b3020;--lime:#c8f24c;--cream:#efede6;--ink:#0d140e;--mut:#a9b8a6;--line:rgba(239,237,230,.12);--card:rgba(239,237,230,.055);--field:#0c170e;--warn:#ffb86b;--mono:"JetBrains Mono",ui-monospace,monospace;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--cream);-webkit-font-smoothing:antialiased;background:radial-gradient(120% 60% at 15% 0%,#24412a 0%,var(--g1) 40%,var(--g0) 100%);min-height:100vh;padding:20px 16px 56px;box-sizing:border-box;width:100%;font-size:16px;line-height:1.5;text-align:left;overflow-x:hidden}
+.nbo.nbo *,.nbo.nbo *::before,.nbo.nbo *::after{box-sizing:border-box}
+.nbo [hidden]{display:none!important}
+.nbo .wrap{max-width:760px;margin:0 auto}
+.nbo svg{flex:none}
+.nbo a{color:var(--lime);text-underline-offset:3px}
+.nbo .brand{display:flex;align-items:center;gap:10px;font:500 13px/1 var(--mono);letter-spacing:.14em;color:#d9ddd3;text-transform:uppercase}
+.nbo .brand svg{width:18px;height:18px;color:var(--lime)}
+.nbo .chip{display:inline-flex;align-items:center;gap:8px;margin:22px 0 14px;padding:7px 12px 7px 10px;border:1.5px solid var(--lime);border-radius:999px;font:700 12px/1 var(--mono);letter-spacing:.1em;color:var(--lime);text-transform:uppercase}
+.nbo .chip svg{width:15px;height:15px}
+.nbo.nbo h1{margin:0 0 16px;font-weight:900;color:#fff;letter-spacing:-.035em;line-height:.98;font-size:clamp(40px,11vw,70px);overflow-wrap:anywhere}
+.nbo.nbo h1 .pre{display:block;font:700 clamp(15px,4.2vw,20px)/1.25 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:var(--mut);margin-bottom:10px}
+.nbo.nbo h1 .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400;color:var(--lime);letter-spacing:-.01em;font-size:1.08em}
+.nbo .lede{margin:0;max-width:560px;font-size:18px;line-height:1.5;color:#d6dbd2}
+.nbo .lede b{color:#fff}
+/* progress tracker */
+.nbo .track{position:sticky;top:0;z-index:5;margin:26px -16px 0;padding:12px 16px;background:rgba(15,29,18,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nbo .track-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
+.nbo .track-top b{font-size:15px;color:#fff}
+.nbo .track-top span{font:700 13px/1 var(--mono);color:var(--lime);white-space:nowrap}
+.nbo .bar{height:8px;border-radius:999px;background:rgba(239,237,230,.1);overflow:hidden}
+.nbo .bar i{display:block;height:100%;width:0;background:var(--lime);border-radius:999px;transition:width .35s ease}
+.nbo .pills{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nbo .pills::-webkit-scrollbar{display:none}
+.nbo .pill{display:inline-flex;align-items:center;gap:6px;flex:none;padding:7px 10px;border-radius:999px;border:1px solid var(--line);color:#d6dbd2;text-decoration:none;font:700 12px/1 Inter,system-ui,sans-serif;white-space:nowrap}
+.nbo .pill .d{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid #5d6f5a;font:700 10px/1 var(--mono);color:var(--mut)}
+.nbo .pill .d svg{width:11px;height:11px;display:none}
+.nbo .pill.done{border-color:rgba(200,242,76,.5);color:#fff}
+.nbo .pill.done .d{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.nbo .pill.done .d em{display:none}
+.nbo .pill.done .d svg{display:block}
+.nbo .alldone{display:none;margin:10px 0 0;font-size:14px;color:var(--lime);font-weight:700}
+.nbo .track.complete .alldone{display:block}
+/* steps */
+.nbo .step{margin-top:34px;scroll-margin-top:120px}
+.nbo .step-h{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;margin-bottom:16px}
+.nbo .num{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--lime);color:var(--ink);font:700 15px/1 var(--mono);box-shadow:3px 4px 0 #0a120b}
+.nbo .step.done .num{background:#fff}
+.nbo.nbo h2{margin:2px 0 4px;font-size:clamp(24px,6.4vw,32px);line-height:1.08;font-weight:900;letter-spacing:-.025em;color:#fff}
+.nbo .step-h p{margin:0;color:var(--mut);font-size:15px}
+.nbo .time{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font:700 12px/1 var(--mono);color:var(--lime);letter-spacing:.04em}
+.nbo .time svg{width:14px;height:14px}
+.nbo .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 16px}
+.nbo .note{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(200,242,76,.08);border:1px solid rgba(200,242,76,.28);font-size:14.5px;color:#e6eadf;margin:0 0 14px}
+.nbo .note svg{width:18px;height:18px;color:var(--lime);margin-top:2px}
+.nbo .note.warn{background:rgba(255,184,107,.08);border-color:rgba(255,184,107,.35)}
+.nbo .note.warn svg{color:var(--warn)}
+.nbo .note b{color:#fff}
+/* intake groups */
+.nbo details.grp{border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.nbo details.grp+details.grp{margin-top:10px}
+.nbo details.grp.p15{border-color:rgba(200,242,76,.45)}
+.nbo details.grp>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:15px 14px;-webkit-tap-highlight-color:transparent}
+.nbo details.grp>summary::-webkit-details-marker{display:none}
+.nbo .gi{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:rgba(200,242,76,.1);color:var(--lime)}
+.nbo .gi svg{width:19px;height:19px}
+.nbo .gt b{display:block;color:#fff;font-size:16px;line-height:1.2}
+.nbo .gt small{display:block;color:var(--mut);font-size:13px;line-height:1.35;margin-top:2px}
+.nbo .gc{font:700 12px/1 var(--mono);color:var(--mut);white-space:nowrap}
+.nbo .gc.full{color:var(--lime)}
+.nbo .gc.warn{color:var(--warn)}
+.nbo .chev{width:18px;height:18px;color:var(--mut);transition:transform .2s ease}
+.nbo details[open]>summary .chev{transform:rotate(180deg)}
+.nbo .gbody{padding:4px 14px 18px;border-top:1px solid var(--line)}
+.nbo .f{margin-top:16px}
+.nbo .f>label,.nbo .f legend{display:block;padding:0;margin:0 0 6px;font-weight:700;font-size:15px;color:#fff;line-height:1.35}
+.nbo .req{color:var(--lime);margin-left:3px}
+.nbo .help{display:block;margin:-2px 0 8px;font-size:13.5px;color:var(--mut);line-height:1.4}
+.nbo fieldset{border:0;margin:0;padding:0;min-width:0}
+.nbo.nbo input[type=text],.nbo.nbo input[type=email],.nbo.nbo input[type=tel],.nbo.nbo input[type=url],.nbo.nbo input[type=number],.nbo.nbo select,.nbo.nbo textarea{display:block;width:100%;margin:0;padding:13px 14px;border-radius:11px;border:1.5px solid #34503a;background:var(--field);color:#fff;font:500 16px/1.4 Inter,system-ui,sans-serif;outline:none;-webkit-appearance:none;appearance:none;box-shadow:none;height:auto}
+.nbo.nbo textarea{min-height:92px;resize:vertical}
+.nbo.nbo select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c8f24c' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:40px}
+.nbo.nbo input::placeholder,.nbo.nbo textarea::placeholder{color:#6f826c}
+.nbo.nbo input:focus,.nbo.nbo select:focus,.nbo.nbo textarea:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,242,76,.18)}
+.nbo .f.miss input,.nbo .f.miss select,.nbo .f.miss textarea,.nbo .f.miss .opts{border-color:var(--warn)!important}
+.nbo .opts{display:grid;gap:8px;border-radius:12px;border:1.5px solid transparent}
+.nbo .opt{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:11px 12px;border-radius:11px;border:1.5px solid #34503a;background:var(--field);cursor:pointer;font-size:15px;line-height:1.35;color:#e6eadf}
+.nbo .opt input,.nbo .done-row input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.nbo .box{display:grid;place-items:center;width:20px;height:20px;border:2px solid #6f826c;border-radius:6px;color:var(--ink)}
+.nbo .opt.radio .box{border-radius:50%}
+.nbo .box svg{width:13px;height:13px;opacity:0}
+.nbo .opt:has(input:checked){border-color:var(--lime);background:rgba(200,242,76,.08);color:#fff}
+.nbo input:checked+.box{background:var(--lime);border-color:var(--lime)}
+.nbo input:checked+.box svg{opacity:1}
+.nbo input:focus-visible+.box{box-shadow:0 0 0 3px rgba(200,242,76,.35)}
+.nbo .saved{margin:12px 2px 0;font-size:13px;color:var(--mut);min-height:20px}
+/* buttons */
+.nbo .btns{display:grid;gap:10px;margin-top:18px}
+.nbo.nbo .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 18px;border-radius:999px;border:0;background:var(--lime);color:var(--ink);font:800 16.5px/1.1 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer;box-shadow:4px 5px 0 #0a120b;transition:transform .15s ease;-webkit-tap-highlight-color:transparent}
+.nbo.nbo .btn:hover,.nbo.nbo .btn:focus-visible{transform:translateY(-2px)}
+.nbo.nbo .btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(239,237,230,.35);box-shadow:none}
+.nbo .btn svg{width:19px;height:19px}
+.nbo.nbo .mini{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1.5px solid rgba(200,242,76,.5);background:transparent;color:var(--lime);font:700 12.5px/1 Inter,system-ui,sans-serif;cursor:pointer;vertical-align:middle;white-space:nowrap}
+.nbo .mini svg{width:13px;height:13px}
+.nbo .status{margin:12px 2px 0;font-size:14.5px;color:var(--lime)}
+.nbo .status.warn{color:var(--warn)}
+.nbo .status a{color:inherit}
+/* GHL form slot */
+.nbo .ghl-slot{display:none;border-radius:14px;overflow:hidden;background:#fff;margin-bottom:14px}
+.nbo .ghl-slot iframe{display:block;width:100%;min-height:900px;border:0}
+.nbo.has-ghl .ghl-slot,.nbo.has-ghl .alt-sum{display:block}
+.nbo .alt-sum{display:none}
+.nbo details.alt>summary{list-style:none;cursor:pointer;padding:10px 2px;color:var(--mut);font-size:14.5px;text-decoration:underline;text-underline-offset:3px}
+.nbo details.alt>summary::-webkit-details-marker{display:none}
+/* access + checklist items */
+.nbo .acc{display:grid;gap:12px}
+.nbo .item{border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+.nbo .item.done{border-color:rgba(200,242,76,.45)}
+.nbo .item-h{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:16px 16px 4px}
+.nbo .item-h .gi{width:40px;height:40px}
+.nbo .item-h b{display:block;color:#fff;font-size:17px;line-height:1.25;letter-spacing:-.01em}
+.nbo .item-h small{display:block;margin-top:3px;color:var(--mut);font-size:13.5px;line-height:1.4}
+.nbo .tag{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:999px;background:rgba(239,237,230,.1);color:#d6dbd2;font:700 10.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
+.nbo .item-b{padding:4px 16px 6px}
+.nbo ol.path{margin:8px 0 0;padding:0;list-style:none;counter-reset:p}
+.nbo ol.path>li{position:relative;padding:0 0 10px 34px;counter-increment:p;font-size:15px;line-height:1.45;color:#e6eadf}
+.nbo ol.path>li::before{content:counter(p);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(239,237,230,.1);color:#fff;font:700 11px/22px var(--mono);text-align:center}
+.nbo kbd{font-family:inherit;font-size:inherit;display:inline;padding:1px 6px;border-radius:6px;background:rgba(239,237,230,.1);color:#fff;font-weight:700;white-space:normal;overflow-wrap:anywhere}
+.nbo .mono{font-family:var(--mono);font-weight:700;color:var(--lime);word-break:break-all}
+.nbo .sub{margin:10px 0 4px;font:700 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.nbo .quote{margin:8px 0 10px;padding:12px 14px;border-left:3px solid var(--lime);background:rgba(239,237,230,.05);border-radius:0 10px 10px 0;font-size:15px;color:#fff}
+.nbo .done-row{display:flex;align-items:center;gap:12px;margin:8px 0 0;padding:14px 16px;border-top:1px solid var(--line);cursor:pointer;font-weight:800;font-size:15.5px;color:#fff;-webkit-tap-highlight-color:transparent}
+.nbo .done-row .box{width:26px;height:26px;border-radius:8px}
+.nbo .done-row .box svg{width:16px;height:16px}
+.nbo .item.done .done-row{color:var(--lime)}
+.nbo .stores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 6px}
+.nbo.nbo .stores .btn{padding:13px 10px;font-size:15px;box-shadow:none}
+/* timeline */
+.nbo .tl{list-style:none;margin:0;padding:0}
+.nbo .tl li{position:relative;padding:0 0 22px 30px}
+.nbo .tl li::before{content:"";position:absolute;left:6px;top:8px;bottom:-6px;width:2px;background:rgba(200,242,76,.25)}
+.nbo .tl li:last-child::before{display:none}
+.nbo .tl li::after{content:"";position:absolute;left:0;top:4px;width:14px;height:14px;border-radius:50%;background:var(--g0);border:3px solid var(--lime)}
+.nbo .tl .when{display:block;font:700 12px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.nbo .tl b{display:block;margin:4px 0 3px;color:#fff;font-size:17px}
+.nbo .tl p{margin:0;color:#d6dbd2;font-size:15px}
+.nbo ul.plain{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.nbo ul.plain li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:15px;color:#e6eadf}
+.nbo ul.plain svg{width:18px;height:18px;color:var(--lime);margin-top:2px}
+.nbo .see{margin:40px 0 0;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:clamp(30px,8vw,42px);line-height:1.05;color:var(--lime)}
+.nbo .sig{margin:6px 0 0;font-weight:700;color:#fff}
+.nbo .foot{margin:34px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:13px;line-height:1.55;color:#8f9e8c}
+@media (min-width:720px){.nbo.nbo{padding:44px 24px 80px}.nbo .track{margin:30px 0 0;border:1px solid var(--line);border-radius:16px;top:10px}.nbo .btns{grid-template-columns:1fr 1fr}.nbo .card{padding:22px}.nbo .gbody{display:flex;flex-wrap:wrap;column-gap:14px}.nbo .gbody>.f{width:100%}.nbo .gbody>.f.half{width:calc(50% - 7px)}.nbo .opts.cols{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.nbo *{transition:none!important}}
+</style>
+<div class="nbo" id="nbo-root">
+<div class="wrap">
+<div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2L4 13.5h6.5L9.5 22 20 9.5h-6.6z"/></svg>Neobolt Systems</div>
+<div class="chip"><i data-ic="okc"></i>You're in</div>
+<h1><span class="pre" id="nbo-pre" hidden></span><span id="nbo-hi">Welcome to <span class="em">Neobolt</span>.</span></h1>
+<p class="lede">Four steps, about <b>20 minutes</b> in total. Do them in order, at your own pace. Your answers save on this phone as you go. After that, <b>we do the work</b>.</p>
+<div class="track" id="nbo-track" aria-label="Your setup progress">
+<div class="track-top"><b>Your setup</b><span id="nbo-count">0 of 8 done</span></div>
+<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="nbo-bar"><i></i></div>
+<nav class="pills">
+<a class="pill" href="#nbo-s1" data-step="1"><span class="d"><em>1</em></span>About you</a>
+<a class="pill" href="#nbo-s2" data-step="2"><span class="d"><em>2</em></span>Access</a>
+<a class="pill" href="#nbo-s3" data-step="3"><span class="d"><em>3</em></span>App</a>
+<a class="pill" href="#nbo-s4" data-step="4"><span class="d"><em>4</em></span>Kickoff</a>
+<a class="pill" href="#nbo-s5" data-step="5"><span class="d"><em>5</em></span>What's next</a>
+</nav>
+<p class="alldone">All done. We take it from here.</p>
+</div>
+<section class="step" id="nbo-s1">
+<div class="step-h"><span class="num">01</span><div>
+<h2>Tell us about the business</h2>
+<p>Short answers are fine. Skip what you don't know, we'll cover it on the kickoff call.</p>
+<span class="time"><i data-ic="clock"></i>About 10 min</span>
+</div></div>
+<!-- When the GHL form exists, paste its embed code (iframe + script) inside this div.
+     The page then shows the GHL form first, adds onb_client_slug + onb_plan to its link,
+     and moves the email version under "Prefer to send your answers by email instead?". -->
+<div class="ghl-slot" id="nbo-ghl-slot"><!-- GHL_FORM_EMBED --></div>
+<details class="alt" id="nbo-alt" open>
+<summary class="alt-sum">Prefer to send your answers by email instead?</summary>
+<div class="note" data-p15 hidden><i data-ic="info"></i><span><b>One extra part for you: How we track new jobs.</b> It's the last group below. It's how we make sure we only count the new jobs we bring you.</span></div>
+<form id="nbo-form" novalidate autocomplete="on" onsubmit="return false">
+<input type="hidden" name="plan" id="nbo-plan" value="">
+<input type="hidden" name="client_slug" id="nbo-slug" value="">
+<div id="nbo-groups"></div>
+</form>
+<p class="saved" id="nbo-saved" aria-live="polite"></p>
+<div class="btns">
+<button class="btn" type="button" data-act="submit" id="nbo-submit"><i data-ic="ok"></i>Send my answers to Hagen</button>
+<button class="btn ghost" type="button" data-act="email"><i data-ic="mail"></i>Email them instead</button>
+</div>
+<p class="help" style="margin-top:10px">You can send again later if you add more. <a href="#" data-act="copy">Copy my answers</a></p>
+<p class="status" id="nbo-status" role="status" aria-live="polite"></p>
+</details>
+<div class="item" data-item="intake" style="margin-top:14px">
+<label class="done-row"><input type="checkbox" data-check="intake"><span class="box"></span>I've sent my answers</label>
+</div>
+</section>
+<section class="step" id="nbo-s2">
+<div class="step-h"><span class="num">02</span><div>
+<h2>Give us access</h2>
+<p>About 2 minutes each. You stay the owner of everything. We only get the access we need to do the work, and you can remove it any time.</p>
+<span class="time"><i data-ic="clock"></i>About 10 min, easiest on a computer</span>
+</div></div>
+<div class="acc">
+<div class="item" data-item="gbp">
+<div class="item-h"><span class="gi"><i data-ic="pin"></i></span><div><b>Google Business Profile</b><small>So we can fix your profile, post 2 to 3 times a week and answer every review.</small></div></div>
+<div class="item-b">
+<ol class="path">
+<li>On a computer, sign in to the Google account that owns your profile, then search <kbd data-nbo="business">your business</kbd> on google.com.</li>
+<li>In the box that says <kbd>Your business on Google</kbd>, click the three-dot menu, then <kbd>Business Profile settings</kbd>.</li>
+<li>Click <kbd>People and access</kbd> (older screens say <kbd>Managers</kbd>), then <kbd>Add</kbd>.</li>
+<li>Enter <span class="mono" data-nbo="email">hagen@neoboltsystems.com</span> <button class="mini" type="button" data-copy="email"><i data-ic="copy"></i>Copy</button></li>
+<li>Set access to <kbd>Manager</kbd> (not Owner), then <kbd>Invite</kbd>.</li>
+</ol>
+<p class="help">On your phone instead: Google Maps app, tap your profile photo, <kbd>Your Business Profiles</kbd>, your business, three-dot menu, <kbd>Business Profile settings</kbd>, <kbd>People and access</kbd>.</p>
+</div>
+<label class="done-row"><input type="checkbox" data-check="gbp"><span class="box"></span>Done</label>
+</div>
+<div class="item" data-item="meta">
+<div class="item-h"><span class="gi"><i data-ic="share"></i></span><div><b>Facebook and Instagram</b><small>Partner access, so we can post for you and catch every message. We never see your password.</small></div></div>
+<div class="item-b">
+<ol class="path">
+<li>On a computer, go to <kbd>business.facebook.com</kbd> and pick your business (top left).</li>
+<li>Click <kbd>Settings</kbd> (the gear, bottom left), then <kbd>Accounts</kbd>, then <kbd>Pages</kbd>, then your Page.</li>
+<li>Click <kbd>Assign partner</kbd>, then choose <kbd>Business ID</kbd>.</li>
+<li>Paste our Business ID <span class="mono" data-nbo="metaId">1003510354042185</span> <button class="mini" type="button" data-copy="metaId"><i data-ic="copy"></i>Copy</button></li>
+<li>Turn on <kbd>Content</kbd>, <kbd>Messages</kbd>, <kbd>Community activity</kbd> and <kbd>Insights</kbd>. Leave the rest off. Click <kbd>Assign</kbd>.</li>
+<li>Same again for Instagram: <kbd>Accounts</kbd>, <kbd>Instagram accounts</kbd>, your account, <kbd>Assign partner</kbd>, same ID.</li>
+</ol>
+<p class="help">Don't see a business there, or the menus look different? Tick Done anyway and tell us on the kickoff call. It takes 2 minutes together.</p>
+</div>
+<label class="done-row"><input type="checkbox" data-check="meta"><span class="box"></span>Done</label>
+</div>
+<div class="item" data-item="site">
+<div class="item-h"><span class="gi"><i data-ic="globe"></i></span><div><b>Your website</b><small>Admin access, so we can make sure every quote form lands in your app, add online booking and build your town pages.</small></div></div>
+<div class="item-b">
+<p class="sub">If you have the login</p>
+<ol class="path">
+<li><b>WordPress:</b> <kbd>Users</kbd>, <kbd>Add New User</kbd>, our email, role <kbd>Administrator</kbd>.</li>
+<li><b>Wix:</b> <kbd>Settings</kbd>, <kbd>Roles &amp; Permissions</kbd>, <kbd>Invite People</kbd>, role <kbd>Admin</kbd>.</li>
+<li><b>Squarespace:</b> <kbd>Settings</kbd>, <kbd>Permissions</kbd>, <kbd>Invite contributor</kbd>, <kbd>Administrator</kbd>.</li>
+<li><b>GoDaddy:</b> use <kbd>Delegate Access</kbd> (see the domain step below).</li>
+</ol>
+<p class="sub">If someone else built it and holds the login</p>
+<p class="help" style="margin:4px 0 0">Send them this. Your site is yours, so this is a normal request.</p>
+<div class="quote" id="nbo-builder-msg"></div>
+<button class="mini" type="button" data-copy="builderMsg"><i data-ic="copy"></i>Copy message</button>
+</div>
+<label class="done-row"><input type="checkbox" data-check="site"><span class="box"></span>Done, or I've asked my web person</label>
+</div>
+<div class="item" data-item="google">
+<div class="item-h"><span class="gi"><i data-ic="chart"></i></span><div><b>Google tools <span class="tag">If you have them</span></b><small>Search Console and Analytics show us who finds you on Google. Most owners don't have these. That's fine.</small></div></div>
+<div class="item-b">
+<ol class="path">
+<li><b>Search Console:</b> <kbd>search.google.com/search-console</kbd>, your site, <kbd>Settings</kbd>, <kbd>Users and permissions</kbd>, <kbd>Add user</kbd>, our email, permission <kbd>Full</kbd>.</li>
+<li><b>Analytics:</b> <kbd>analytics.google.com</kbd>, <kbd>Admin</kbd> (gear), <kbd>Property access management</kbd>, the <kbd>+</kbd> button, <kbd>Add users</kbd>, our email, role <kbd>Editor</kbd>.</li>
+<li><b>YouTube</b> (if you have a channel): <kbd>studio.youtube.com</kbd>, <kbd>Settings</kbd>, <kbd>Permissions</kbd>, <kbd>Invite</kbd>, our email, <kbd>Manager</kbd>.</li>
+</ol>
+<p class="help">Don't have them, or not sure? Tick Done. We set them up for you, in your name.</p>
+</div>
+<label class="done-row"><input type="checkbox" data-check="google"><span class="box"></span>Done, or I don't have these</label>
+</div>
+<div class="item" data-item="dns">
+<div class="item-h"><span class="gi"><i data-ic="server"></i></span><div><b>Your domain <span class="tag">Only if needed</span></b><small>Only if your domain is in your own account. If your web person handles it, tick and skip.</small></div></div>
+<div class="item-b">
+<ol class="path">
+<li><b>GoDaddy:</b> sign in, your name (top right), <kbd>Account Settings</kbd>, <kbd>Delegate Access</kbd>, <kbd>Invite to Access</kbd>, our email, access <kbd>Products &amp; Domains</kbd>.</li>
+<li><b>Namecheap:</b> <kbd>Domain List</kbd>, <kbd>Sharing &amp; Transfer</kbd> next to your domain, <kbd>Share Access</kbd>, our email, allow DNS.</li>
+<li><b>Squarespace Domains:</b> <kbd>Domains</kbd>, your domain, <kbd>Permissions</kbd>, <kbd>Invite</kbd>, <kbd>Administrator</kbd>.</li>
+<li><b>Cloudflare:</b> <kbd>Manage Account</kbd>, <kbd>Members</kbd>, <kbd>Invite</kbd>, <kbd>Administrator</kbd>.</li>
+</ol>
+<p class="help">Somewhere else, or no idea? Tick it and tell us in Step 1. We'll send exact steps.</p>
+</div>
+<label class="done-row"><input type="checkbox" data-check="dns"><span class="box"></span>Done, or not needed</label>
+</div>
+</div>
+</section>
+<section class="step" id="nbo-s3">
+<div class="step-h"><span class="num">03</span><div>
+<h2>Get the LeadConnector app</h2>
+<p>Every call, text, form and message from customers in one inbox. Reply from the truck.</p>
+<span class="time"><i data-ic="clock"></i>About 3 min</span>
+</div></div>
+<div class="item" data-item="app">
+<div class="item-b" style="padding-top:16px">
+<ol class="path">
+<li>Install <kbd>LeadConnector</kbd> now so it's ready.
+<div class="stores">
+<a class="btn ghost" href="https://apps.apple.com/us/app/lead-connector/id1564302502" target="_blank" rel="noopener">iPhone</a>
+<a class="btn ghost" href="https://play.google.com/store/apps/details?id=com.LeadConnector" target="_blank" rel="noopener">Android</a>
+</div></li>
+<li>Watch your email for the invite from <kbd>LeadConnector</kbd> or <kbd>HighLevel</kbd>. Hagen sends it once your account is built, usually within a day. Tap the link and set a password.</li>
+<li>Open the app and log in with that email. If it asks for a location, pick <kbd data-nbo="business">your business</kbd>.</li>
+<li>When your phone asks, <b>allow notifications and the microphone</b>. Without them you won't hear new leads, and calls from the app fail silently.</li>
+</ol>
+</div>
+<label class="done-row"><input type="checkbox" data-check="app"><span class="box"></span>I'm logged in, notifications on</label>
+</div>
+</section>
+<section class="step" id="nbo-s4">
+<div class="step-h"><span class="num">04</span><div>
+<h2>Book your kickoff call</h2>
+<p>30 minutes on Google Meet. We lock in your phone setup, your offers and your first month's plan.</p>
+<span class="time"><i data-ic="clock"></i>30 min, Google Meet</span>
+</div></div>
+<div class="item" data-item="kickoff">
+<div class="item-b" style="padding-top:16px">
+<div id="nbo-cal-slot"><!-- GHL_CALENDAR_EMBED --></div>
+<a class="btn" id="nbo-kickoff" href="https://neoboltsystems.com/calendar" target="_blank" rel="noopener"><i data-ic="cal"></i>Pick a time</a>
+<p class="sub" style="margin-top:18px">Have these handy on the call</p>
+<ul class="plain">
+<li><i data-ic="ok"></i><span>Your phone login: your carrier account, or the app you take business calls in. We set up call forwarding together.</span></li>
+<li><i data-ic="ok"></i><span>Your website login, if you have it.</span></li>
+<li><i data-ic="ok"></i><span>Your Stripe login, only if you want to send estimates and take card payments from the app.</span></li>
+<li data-p15 hidden><i data-ic="ok"></i><span>Where you log your jobs (your app, a spreadsheet or a notebook). We set up lead-source tracking together, so every new job is easy to count.</span></li>
+<li><i data-ic="ok"></i><span>Your 10 best before-and-after photos.</span></li>
+</ul>
+</div>
+<label class="done-row"><input type="checkbox" data-check="kickoff"><span class="box"></span>Booked</label>
+</div>
+</section>
+<section class="step" id="nbo-s5">
+<div class="step-h"><span class="num">05</span><div>
+<h2>What happens next</h2>
+<p>Here's the first 30 days. You'll hear from Hagen on day 7 and day 14, and get your first report on day 30.</p>
+</div></div>
+<div class="card">
+<ol class="tl">
+<li><span class="when">Day 0</span><b>You finish steps 1 to 4</b><p>We write down your starting numbers: calls, reviews, jobs a month and where they come from today. Every result gets measured against this.</p></li>
+<li><span class="when">Days 1 to 3</span><b>Your system gets built</b><p>Your CRM and app, your tracked local number, and your texting registration filed with the phone carriers. Google profile cleaned up.</p></li>
+<li><span class="when">Days 2 to 7</span><b>Fixes go live</b><p>Quote form tested and fixed, online booking added, call forwarding set up and tested with you. First posts drafted for your OK.</p></li>
+<li><span class="when">Week 2</span><b>Automations switch on</b><p>Review requests after every job, instant replies to forms and messages, quote follow-ups. Text messages start once the carriers approve.</p></li>
+<li><span class="when">Week 3</span><b>Local SEO</b><p>Pages for your top towns, and your listings matched everywhere so Google trusts them.</p></li>
+<li><span class="when">Day 30</span><b>Your first report</b><p>Everything tested end to end, and a plain-English report against your day-0 numbers.</p></li>
+<li data-p15 hidden><span class="when">Every month</span><b>New-jobs review</b><p>A short call on the day you picked. We go through the month's jobs together, each with where it came from, and agree which ones are new jobs we brought you. Your regulars and referrals stay yours.</p></li>
+<li><span class="when">Day 90</span><b>Your 90-day review</b><p>We count the new jobs that came through what we run, against your day-0 numbers, and plan the next 90 days.</p></li>
+</ol>
+</div>
+<div class="note warn" style="margin-top:14px"><i data-ic="alert"></i><span><b>About texting.</b> Missed-call text-back and review texts start when the phone carriers approve your business. That usually takes a few business days after we file, sometimes longer. Until then you get an app alert for every missed call, so nothing slips.</span></div>
+<div class="card" style="margin-top:14px">
+<p class="sub" style="margin-top:0">What we need from you after today</p>
+<ul class="plain">
+<li><i data-ic="ok"></i><span>Job photos as you take them. Phone pictures are perfect. Before and after is gold.</span></li>
+<li><i data-ic="ok"></i><span>A quick OK on your first posts and on how we reply to reviews.</span></li>
+<li><i data-ic="ok"></i><span>Move a job to <b>Job Completed</b> in the app when it's done. That's what sends the review request.</span></li>
+<li data-p15 hidden><i data-ic="ok"></i><span>Mark where each job came from when you log it. One word is enough.</span></li>
+</ul>
+<p class="sub">What we never do</p>
+<ul class="plain">
+<li><i data-ic="lock"></i><span>Message your customers, or post as you, without your OK first.</span></li>
+<li><i data-ic="lock"></i><span>Take ownership of anything. Your Google profile, website, social accounts and customer list stay yours.</span></li>
+<li><i data-ic="lock"></i><span>Share or sell your logins or customer data. They're used only to run your marketing.</span></li>
+</ul>
+</div>
+</section>
+<p class="see">Let's get you more jobs.</p>
+<p class="sig">Hagen, Neobolt Systems</p>
+<div class="foot">Stuck on any step? Reply to Hagen's text, or email <a href="mailto:hagen@neoboltsystems.com" data-nbo-href="email" data-nbo="email">hagen@neoboltsystems.com</a>. Your progress on this page is saved on this device only.<br>&copy; Neobolt Systems LLC</div>
+</div>
+</div>
+<script>
+(function() {
+/* ================= CONFIG: one-time settings, same for every client ================= */
+var CONFIG = {
+    KICKOFF_URL: "https://neoboltsystems.com/calendar", /* swap for a dedicated "Client Kickoff" calendar link */
+    EMAIL: "hagen@neoboltsystems.com",                  /* where answers go + the invite email for GBP/site/Google */
+    META_ID: "1003510354042185",                        /* Neobolt's Meta Business ID */
+    SUPABASE_URL: "https://gzlmxyqgbulnwsoxqppx.supabase.co/rest/v1/onboarding_responses", /* insert-only for anon */
+    SUPABASE_KEY: "sb_publishable_sPc5lGDw-r-j46Teqp0kbw_acCw19_R", /* PUBLISHABLE key only. Never put any other key here. */
+    NAME_MAX: 40,                                       /* longest first name shown */
+    BIZ_MAX: 70                                         /* longest business name shown */
+  };
+  /* Per client, all from the link: ?name=Scott&biz=Hatcher%20Power%20Washing&plan=500 (or plan=15) */
+  /* ==================================================================================== */
+function param(k, max) {
+var v = "";
+try { v = new URLSearchParams(window.location.search).get(k) || ""; } catch (e) { v = ""; }
+v = String(v).replace(/[\u0000-\u001f\u007f<>{}\\`]/g, "").replace(/\s+/g, " ").trim();
+return v.slice(0, max).trim();
+}
+var first = param("name", CONFIG.NAME_MAX), biz = param("biz", CONFIG.BIZ_MAX), planRaw = param("plan", 8).replace(/\D/g, "");
+var PLAN15 = planRaw === "15";
+var slug = biz.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40).replace(/-+$/, "") || "client";
+var CLIENT = {
+slug: slug, first: first, hasBiz: !!biz, business: biz || "your business",
+plan: PLAN15 ? "15" : (planRaw === "500" ? "500" : ""),
+email: CONFIG.EMAIL, metaId: CONFIG.META_ID, kickoffUrl: CONFIG.KICKOFF_URL
+};
+var ICON = {
+building: '<path d="M4 21V5.5A1.5 1.5 0 0 1 5.5 4h7A1.5 1.5 0 0 1 14 5.5V21M14 10h4.5A1.5 1.5 0 0 1 20 11.5V21M2.5 21h19M7.5 8h3M7.5 12h3M7.5 16h3"/>',
+phone: '<path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.7 2.5C9.6 19 5 14.4 4.5 8.2A2.5 2.5 0 0 1 5 3.5z"/>',
+pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/>',
+tag: '<path d="M3 12.2V4.5A1.5 1.5 0 0 1 4.5 3h7.7l8.3 8.3a1.5 1.5 0 0 1 0 2.1l-7.1 7.1a1.5 1.5 0 0 1-2.1 0z"/><circle cx="8" cy="8" r="1.6"/>',
+star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/>',
+globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/>',
+users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.8a3.5 3.5 0 0 1 0 6.4M18 20h3.5a6 6 0 0 0-3.4-5.4"/>',
+image: '<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
+chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+track: '<rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 8.5h8M8 12.5h8M8 16.5h4"/>',
+info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/>',
+share: '<circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M8.4 10.8l7.2-3.6M8.4 13.2l7.2 3.6"/>',
+server: '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
+clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+mail: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+copy: '<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>',
+cal: '<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+ok: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+okc: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.5 9.5"/>',
+lock: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
+alert: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/>'
+};
+var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true">'+ICON.ok+"</svg>";
+var CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+function svg(name) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">'+ICON[name]+"</svg>"; }
+/* ===== The intake. Field keys match "GHL FORM FIELDS.md" (custom field key = onb_ + key). =====
+n15: field moves out of its group on the 15 plan (it is asked in "How we track new jobs" instead). */
+var GROUPS = [
+{id:"biz",icon:"building",title:"Your business",sub:"For the carrier texting registration. Must match your IRS or state records.",fields:[
+{k:"legal_name",l:"Legal business name",t:"text",r:1,h:"Exactly as on your EIN letter or state filing, including LLC if you have one."},
+{k:"dba",l:"Name customers see (if different)",t:"text"},
+{k:"entity",l:"Business type",t:"select",r:1,o:["LLC","Corporation","Sole proprietor (no EIN)","Partnership","Not sure"]},
+{k:"ein",l:"EIN (9 digits)",t:"text",h:"Leave blank if you're a sole proprietor. Used once, only for the carrier registration."},
+{k:"address",l:"Business address on your IRS records",t:"textarea",r:1,h:"Street, city, state, ZIP. Carriers reject the registration if it doesn't match."},
+{k:"address_public",l:"Do customers come to this address?",t:"radio",o:["No, keep it hidden on Google (we go to them)","Yes, show it"]},
+{k:"owner_name",l:"Your full name",t:"text",r:1,half:1},
+{k:"owner_title",l:"Your title",t:"text",p:"Owner",half:1},
+{k:"owner_email",l:"Best email",t:"email",r:1,half:1,h:"Your app invite goes here."},
+{k:"owner_mobile",l:"Your mobile",t:"tel",r:1,half:1,h:"Gets the carrier verification text."}
+]},
+{id:"phone",icon:"phone",title:"Phones",sub:"So no call gets lost while we switch things on.",fields:[
+{k:"public_phone",l:"Which number should customers see everywhere?",t:"radio",r:1,o:["My cell","My main business line (the one on Google)","A new local number from Neobolt","Not sure, let's decide on the call"]},
+{k:"numbers",l:"Every number you use for the business, and what each one is for",t:"textarea",r:1,p:"e.g. 555-xxx-xxxx: my cell, Facebook\n555-xxx-xxxx: Google and website"},
+{k:"provider",l:"Who provides those numbers?",t:"check",cols:1,o:["Verizon","AT&T","T-Mobile","Google Voice","Grasshopper","Quo (OpenPhone)","RingCentral","Other or not sure"]},
+{k:"phone_app",l:"Do you take business calls or texts in an app today?",t:"radio",o:["No, just my cell","Yes, and I want to keep using it","Yes, but happy to switch to LeadConnector"]},
+{k:"number_plan",l:"How should calls reach your new system?",t:"radio",r:1,h:"Forwarding is quick and nothing changes for your customers. Moving the number takes 2 to 4 weeks.",o:["Forward calls I miss (my number stays exactly as is)","Move my number into the new system","Not sure, explain it on the call"]},
+{k:"who_answers",l:"Who answers the phone, and should calls ring your cell first?",t:"text"}
+]},
+{id:"area",icon:"pin",title:"Hours and area",sub:"Goes on Google, your site and every page we build.",fields:[
+{k:"hours",l:"Business hours",t:"textarea",r:1,p:"e.g. Mon to Fri 7am to 5pm, Sat 8am to 2pm"},
+{k:"same_day",l:"Do you take weekend or same-day jobs?",t:"radio",o:["Yes","Sometimes","No"]},
+{k:"towns",l:"Towns you serve, most important first",t:"textarea",r:1,p:"e.g. your home town first, then the next 4"},
+{k:"towns_no",l:"Anywhere you don't want work from, or your max drive",t:"text"}
+]},
+{id:"services",icon:"tag",title:"Services and prices",sub:"Prices are never shown publicly without your OK.",fields:[
+{k:"services",l:"Services you offer, main ones first",t:"textarea",r:1,p:"One per line"},
+{k:"prices",l:"Typical price range for each service",t:"textarea",r:1,p:"e.g. Service A: low to high\nService B: low to high",h:"Rough is fine."},
+{k:"minimum",l:"Minimum job or trip charge",t:"text"},
+{k:"quote_how",l:"How you usually price a job",t:"check",o:["On-site visit","From photos or a text","Over the phone","Instant price online"]},
+{k:"best_jobs",l:"Which jobs do you want more of?",t:"textarea",r:1,h:"Best money for your time. We push these first."},
+{k:"avoid_jobs",l:"Jobs you don't want",t:"text"}
+]},
+{id:"offers",icon:"star",title:"Offers and reviews",sub:"So campaigns and follow-ups have something real to say.",fields:[
+{k:"offer_now",l:"Any offer or special running now?",t:"textarea",p:"e.g. a free add-on with any full job"},
+{k:"offers_ok",l:"Which offers would you run?",t:"check",cols:1,o:["Seasonal special","Bundle (two services together)","Yearly reminder for past customers","Referral reward","First-time customer discount","Free add-on","Commercial or HOA contract rate","None for now"]},
+{k:"referral_reward",l:"What would you give for a referral?",t:"text",p:"e.g. money off their next job",h:"Rewards are fine for referrals. Never for reviews: Google bans that."},
+{k:"review_link",l:"Your Google review link, if you know it",t:"url",h:"Search your business on Google, tap Reviews, then Get more reviews, and copy the link. Not sure? Skip it, we'll find it."},
+{k:"review_replies",l:"How should we handle review replies?",t:"radio",o:["Reply in my voice, show me the bad ones first","Draft every reply, I approve first"]},
+{k:"unhappy",l:"When a customer is unhappy, who calls them?",t:"text"},
+{k:"past_customers",l:"Do you have a list of past customers?",t:"radio",h:"Past customers are the fastest jobs. We send them a reminder with your OK.",o:["Yes, in a spreadsheet","Yes, in my CRM or invoicing app","Only in my phone contacts","No"]}
+]},
+{id:"web",icon:"globe",title:"Website and tools",sub:"So we fix what's broken and plug into what you already use.",fields:[
+{k:"website",l:"Your website address",t:"url"},
+{k:"site_builder",l:"Who built your website?",t:"text"},
+{k:"site_login",l:"Who has the website login?",t:"radio",r:1,o:["I do","The person or company who built it","Not sure"]},
+{k:"builder_contact",l:"Their name and email, if they have it",t:"text"},
+{k:"domain_at",l:"Where is your domain registered?",t:"select",o:["GoDaddy","Namecheap","Squarespace / Google Domains","Cloudflare","Wix","My web person handles it","Don't know","Other"]},
+{k:"quote_today",l:"How does a customer get a quote from you today, step by step?",t:"textarea",r:1,p:"e.g. They call or text me, I go look, I text a price, they reply yes"},
+{k:"tools",l:"Tools you use now",t:"check",cols:1,o:["Jobber","Housecall Pro","QuoteIQ","ResponsiBid","Markate","QuickBooks","Square","Stripe","Google Sheets / Excel","Paper or notes app","None","Other"]},
+{k:"payments",l:"Want to send estimates and take card payments from the new app?",t:"radio",h:"If yes, bring your Stripe login to the kickoff call (or we set one up in your name).",o:["Yes","No, I'll keep my current way","Maybe later"]},
+{k:"google_owner",l:"Which Google account (email) owns your Google profile?",t:"email"}
+]},
+{id:"leads",icon:"users",title:"Leads and team",sub:"So every new lead reaches the right person, fast.",fields:[
+{k:"lead_alerts",l:"How do you want new leads delivered?",t:"check",r:1,o:["App notification (LeadConnector)","Text to my cell","Email","Ring my phone"]},
+{k:"lead_alerts_to",l:"Cell and email for lead alerts",t:"text",h:"If it's not the ones above."},
+{k:"response_time",l:"How fast can you usually call a new lead back?",t:"select",o:["Within 5 minutes","Within an hour","Same day","Next day"]},
+{k:"team",l:"Anyone else who needs a login?",t:"textarea",p:"Name, role, email, mobile"}
+]},
+{id:"brand",icon:"image",title:"Brand and content",sub:"Real photos beat stock every time.",fields:[
+{k:"photos_link",l:"Link to your job photos and videos",t:"url",h:"A shared Google Drive, Dropbox or iCloud album. Or text them to Hagen."},
+{k:"logo",l:"Logo",t:"text",p:"Link, or \"I'll text it\""},
+{k:"colors",l:"Brand colors",t:"text",p:"e.g. navy and orange, or \"match my logo\""},
+{k:"social",l:"Your social pages",t:"textarea",p:"Facebook, Instagram, TikTok, YouTube, Nextdoor, Yelp"},
+{k:"voice",l:"How you talk to customers",t:"textarea",h:"Words you use, words you hate. A voice memo link is perfect."},
+{k:"different",l:"What makes you different?",t:"textarea",p:"e.g. owner on every job, insured, years in business"},
+{k:"competitors",l:"Your main competitors",t:"textarea",p:"Names or websites"}
+]},
+{id:"goals",icon:"chart",title:"Numbers and goals",sub:"Your starting point. This is how we measure every extra job.",fields:[
+{k:"avg_job",l:"Average job value (in dollars)",t:"number",r:1,half:1,n15:1},
+{k:"jobs_month",l:"Jobs per month right now",t:"number",r:1,half:1,n15:1},
+{k:"close_rate",l:"Out of 10 quotes, how many book?",t:"select",r:1,half:1,o:["1","2","3","4","5","6","7","8","9","10","Not sure"]},
+{k:"capacity",l:"Most jobs per month you could handle",t:"number",r:1,half:1},
+{k:"sources_now",l:"Where do your jobs come from today?",t:"textarea",r:1,n15:1,p:"e.g. mostly word of mouth, some repeat customers, a few from Google"},
+{k:"seasons",l:"Busiest and slowest months",t:"text"},
+{k:"goal_90",l:"In 90 days, what would make this a win?",t:"textarea",r:1},
+{k:"anything_else",l:"Anything else we should know?",t:"textarea"}
+]}
+];
+var TRACK = {id:"track",icon:"track",title:"How we track new jobs",sub:"So we only count the new jobs we bring you.",fields:[
+{k:"jobs_channels",l:"How do you get jobs today?",t:"check",r:1,cols:1,o:["Word of mouth","Repeat customers","Google","Facebook or Instagram","Nextdoor","Yelp","Angi, Thumbtack or similar","Truck, yard signs or flyers","Other"]},
+{k:"jobs_month",l:"Roughly how many jobs a month, before we start?",t:"number",r:1,half:1,h:"Your starting line. A rough number is fine."},
+{k:"avg_job",l:"Average job value (in dollars)",t:"number",r:1,half:1,h:"Rough is fine."},
+{k:"job_log",l:"Where do you log your jobs?",t:"check",r:1,o:["QuoteIQ","Jobber","Housecall Pro","Paper","Other"]},
+{k:"mark_source",l:"Will you mark where each job came from when you log it?",t:"radio",r:1,h:"One word per job, like \"Google\" or \"referral\". It keeps the count fair both ways.",o:["Yes, on every job","Yes, if it's quick","Not sure, show me on the kickoff"]},
+{k:"invoicing",l:"What do you send invoices with?",t:"select",o:["QuickBooks","Jobber","Housecall Pro","QuoteIQ","Square","Stripe","Paper or by hand","Other"]},
+{k:"review_when",l:"Best day and person for the monthly new-jobs review",t:"text",r:1,p:"e.g. first Monday of the month, me"}
+]};
+if (PLAN15) {
+GROUPS.forEach(function(g) { g.fields = g.fields.filter(function(f) { return !f.n15; }); });
+GROUPS.push(TRACK);
+}
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function(c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+var KEY = "nbo:"+CLIENT.slug+":v1";
+function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+function save(st) { try { localStorage.setItem(KEY, JSON.stringify(st)); return true; } catch (e) { return false; } }
+function fieldHTML(f) {
+var id = "nbo-f-"+f.k, req = f.r ? '<span class="req" aria-hidden="true">*</span>' : "";
+var help = f.h ? '<span class="help" id="'+id+'-h">'+esc(f.h)+"</span>" : "";
+var desc = f.h ? ' aria-describedby="'+id+'-h"' : "";
+var cls = "f"+(f.half ? " half" : "");
+if (f.t === "radio" || f.t === "check") {
+var type = f.t === "radio" ? "radio" : "checkbox";
+var items = (f.o || []).map(function(o, i) {
+return '<label class="opt '+type+'"><input type="'+type+'" name="'+f.k+'" value="'+esc(o)+'" id="'+id+"-"+i+'"><span class="box">'+CHECK+"</span><span>"+esc(o)+"</span></label>";
+}).join("");
+return '<fieldset class="'+cls+'" data-k="'+f.k+'"'+desc+"><legend>"+esc(f.l)+req+"</legend>"+help+'<div class="opts'+(f.cols ? " cols" : "")+'">'+items+"</div></fieldset>";
+}
+var ph = f.p ? ' placeholder="'+esc(f.p)+'"' : "", input;
+if (f.t === "textarea") input = '<textarea id="'+id+'" name="'+f.k+'"'+ph + desc+"></textarea>";
+else if (f.t === "select") input = '<select id="'+id+'" name="'+f.k+'"'+desc+'><option value="">Choose one</option>'+f.o.map(function(o) { return '<option value="'+esc(o)+'">'+esc(o)+"</option>"; }).join("")+"</select>";
+else {
+var extra = f.t === "number" ? ' inputmode="decimal" min="0"' : f.t === "tel" ? ' inputmode="tel" autocomplete="tel"' : f.t === "email" ? ' inputmode="email" autocomplete="email"' : f.t === "url" ? ' inputmode="url"' : "";
+input = '<input type="'+f.t+'" id="'+id+'" name="'+f.k+'"'+ph + desc + extra+">";
+}
+return '<div class="'+cls+'" data-k="'+f.k+'"><label for="'+id+'">'+esc(f.l)+req+"</label>"+help + input+"</div>";
+}
+function render(root) {
+$("#nbo-groups", root).innerHTML = GROUPS.map(function(g, gi) {
+return '<details class="grp'+(g.id === "track" ? " p15" : "")+'" data-g="'+g.id+'"'+(gi === 0 ? " open" : "")+'><summary><span class="gi">'+svg(g.icon)+'</span><span class="gt"><b>'+esc(g.title) +
+"</b><small>"+esc(g.sub)+'</small></span><span class="gc" data-gc="'+g.id+'"></span>'+CHEV+'</summary><div class="gbody">'+g.fields.map(fieldHTML).join("")+"</div></details>";
+}).join("");
+}
+function getVal(form, f) {
+if (f.t === "check") return $$('input[name="'+f.k+'"]:checked', form).map(function(i) { return i.value; }).join(", ");
+if (f.t === "radio") { var c = $('input[name="'+f.k+'"]:checked', form); return c ? c.value : ""; }
+var el = form.elements[f.k]; return el ? String(el.value || "").trim() : "";
+}
+function setVal(form, f, v) {
+if (v == null || v === "") return;
+if (f.t === "check") { var parts = String(v).split(", "); $$('input[name="'+f.k+'"]', form).forEach(function(i) { i.checked = parts.indexOf(i.value) > -1; }); return; }
+if (f.t === "radio") { $$('input[name="'+f.k+'"]', form).forEach(function(i) { i.checked = i.value === v; }); return; }
+var el = form.elements[f.k]; if (el) el.value = v;
+}
+function allFields() { var a = []; GROUPS.forEach(function(g) { g.fields.forEach(function(f) { a.push(f); }); }); return a; }
+function collect(form) { var out = {}; allFields().forEach(function(f) { out[f.k] = getVal(form, f); }); return out; }
+function answersText(ans) {
+var lines = ["Onboarding answers: "+(CLIENT.hasBiz ? CLIENT.business : "(business name below)"), "Client ref: "+CLIENT.slug, "Plan ref: "+(CLIENT.plan || "not set"), ""];
+GROUPS.forEach(function(g) {
+lines.push("== "+g.title.toUpperCase()+" ==");
+g.fields.forEach(function(f) { lines.push(f.l+": "+(ans[f.k] ? ans[f.k] : "-")); });
+lines.push("");
+});
+return lines.join("\n");
+}
+function copyText(text, done) {
+function fallback() {
+try {
+var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+document.body.appendChild(ta); ta.select(); var ok = document.execCommand("copy"); document.body.removeChild(ta); done(ok);
+} catch (e) { done(false); }
+}
+try {
+if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function() { done(true); }, fallback);
+else fallback();
+} catch (e) { fallback(); }
+}
+function init(root) {
+if (!root || root.getAttribute("data-ready") === "1") return; /* GHL can run pasted scripts twice */
+root.setAttribute("data-ready", "1");
+/* icons (kept out of the markup to keep the file small) */
+$$("i[data-ic]", root).forEach(function(el) { var t = document.createElement("span"); t.innerHTML = svg(el.getAttribute("data-ic")); el.parentNode.replaceChild(t.firstChild, el); });
+$$(".box:empty", root).forEach(function(el) { el.innerHTML = CHECK; });
+$$(".pill .d", root).forEach(function(el) { el.insertAdjacentHTML("beforeend", CHECK); });
+/* personalise from the link: textContent only */
+$$("[data-nbo]", root).forEach(function(el) { var v = CLIENT[el.getAttribute("data-nbo")]; if (v) el.textContent = v; });
+$$("[data-nbo-href]", root).forEach(function(el) { el.href = "mailto:"+CLIENT.email; });
+if (CLIENT.hasBiz) { var pre = $("#nbo-pre", root); pre.textContent = CLIENT.business; pre.hidden = false; }
+if (CLIENT.first) {
+var hi = $("#nbo-hi", root), em = document.createElement("span");
+em.className = "em"; em.textContent = CLIENT.first;
+hi.textContent = "Welcome, "; hi.appendChild(em); hi.appendChild(document.createTextNode("."));
+}
+$$("[data-p15]", root).forEach(function(el) { if (PLAN15) el.hidden = false; else el.parentNode.removeChild(el); });
+$("#nbo-plan", root).value = CLIENT.plan;
+$("#nbo-slug", root).value = CLIENT.slug;
+var kick = $("#nbo-kickoff", root); if (kick && CLIENT.kickoffUrl) kick.href = CLIENT.kickoffUrl;
+var who = CLIENT.first ? CLIENT.first+(CLIENT.hasBiz ? " from "+CLIENT.business : "") : (CLIENT.hasBiz ? "the owner of "+CLIENT.business : "");
+var builderMsg = "Hi"+(who ? ", it's "+who : "")+". I'm bringing on Neobolt Systems to run my marketing. Can you add "+CLIENT.email +
+" as an admin on my website, or send me my admin login? And can you tell me where my domain is registered? Thanks.";
+$("#nbo-builder-msg", root).textContent = builderMsg;
+/* GHL form present? then it leads, gets the client ref + plan, and the email version folds away */
+var slot = $("#nbo-ghl-slot", root), alt = $("#nbo-alt", root);
+if (slot && slot.querySelector("iframe")) {
+root.classList.add("has-ghl"); if (alt) alt.removeAttribute("open");
+$$("iframe", slot).forEach(function(fr) {
+try { var u = new URL(fr.getAttribute("src"), window.location.href); u.searchParams.set("onb_client_slug", CLIENT.slug); if (CLIENT.plan) u.searchParams.set("onb_plan", CLIENT.plan); fr.setAttribute("src", u.toString()); } catch (e) {}
+});
+}
+var cal = $("#nbo-cal-slot", root); if (cal && cal.querySelector("iframe")) { var kb = $("#nbo-kickoff", root); if (kb) kb.style.display = "none"; }
+render(root);
+var form = $("#nbo-form", root), st = load();
+st.answers = st.answers || {}; st.checks = st.checks || {};
+var PREFILL = { dba: CLIENT.hasBiz ? CLIENT.business : "" };
+/* prefill, then the client's saved draft on top */
+allFields().forEach(function(f) {
+var saved = st.answers[f.k];
+setVal(form, f, saved != null && saved !== "" ? saved : PREFILL[f.k]);
+});
+var CHECKS = ["intake", "gbp", "meta", "site", "google", "dns", "app", "kickoff"];
+var STEP_OF = { 1: ["intake"], 2: ["gbp", "meta", "site", "google", "dns"], 3: ["app"], 4: ["kickoff"] };
+function counts() {
+var ans = collect(form);
+GROUPS.forEach(function(g) {
+var n = 0; g.fields.forEach(function(f) { if (ans[f.k]) n++; });
+var el = $('[data-gc="'+g.id+'"]', root); if (el) { el.textContent = n+"/"+g.fields.length; el.classList.toggle("full", n === g.fields.length); }
+});
+}
+function paint() {
+var done = 0;
+CHECKS.forEach(function(c) {
+var on = !!st.checks[c]; if (on) done++;
+var cb = $('input[data-check="'+c+'"]', root); if (cb) cb.checked = on;
+var it = $('[data-item="'+c+'"]', root); if (it) it.classList.toggle("done", on);
+});
+Object.keys(STEP_OF).forEach(function(s) {
+var ok = STEP_OF[s].every(function(c) { return st.checks[c]; });
+var p = $('.pill[data-step="'+s+'"]', root); if (p) p.classList.toggle("done", ok);
+var sec = $("#nbo-s"+s, root); if (sec) sec.classList.toggle("done", ok);
+});
+var p5 = $('.pill[data-step="5"]', root); if (p5) p5.classList.toggle("done", done === CHECKS.length);
+$("#nbo-count", root).textContent = done+" of "+CHECKS.length+" done";
+var pct = Math.round(done / CHECKS.length * 100), bar = $("#nbo-bar", root);
+bar.setAttribute("aria-valuenow", pct); bar.firstElementChild.style.width = pct+"%";
+$("#nbo-track", root).classList.toggle("complete", done === CHECKS.length);
+}
+var t, savedEl = $("#nbo-saved", root);
+function persist() {
+clearTimeout(t);
+t = setTimeout(function() {
+st.answers = collect(form);
+savedEl.textContent = save(st) ? "Saved on this device." : "Couldn't save on this device. Send your answers before you close the page.";
+}, 400);
+counts();
+}
+form.addEventListener("input", persist);
+form.addEventListener("change", persist);
+root.addEventListener("change", function(e) {
+var c = e.target && e.target.getAttribute && e.target.getAttribute("data-check");
+if (!c) return;
+st.checks[c] = !!e.target.checked; save(st); paint();
+});
+var status = $("#nbo-status", root);
+function say(msg, warn) { status.innerHTML = msg; status.classList.toggle("warn", !!warn); }
+function missing() {
+var ans = collect(form), miss = [];
+$$(".f.miss", root).forEach(function(el) { el.classList.remove("miss"); });
+allFields().forEach(function(f) {
+if (f.r && !ans[f.k]) { miss.push(f); var el = $('[data-k="'+f.k+'"]', root); if (el) el.classList.add("miss"); }
+});
+GROUPS.forEach(function(g) {
+var gc = $('[data-gc="'+g.id+'"]', root);
+if (gc) gc.classList.toggle("warn", g.fields.some(function(f) { return f.r && !ans[f.k]; }));
+});
+return miss;
+}
+function jumpTo(f) {
+var el = $('[data-k="'+f.k+'"]', root); if (!el) return;
+var d = el.closest("details.grp"); if (d) d.open = true;
+el.scrollIntoView({ behavior: "smooth", block: "center" });
+var inp = el.querySelector("input, select, textarea"); if (inp) setTimeout(function() { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 350);
+}
+var forceSend = false, forceSubmit = false;
+root.addEventListener("click", function(e) {
+var b = e.target.closest ? e.target.closest("[data-act], [data-copy], [data-jump]") : null;
+if (!b || !root.contains(b)) return;
+if (b.hasAttribute("data-copy")) {
+var what = b.getAttribute("data-copy"), val = what === "builderMsg" ? builderMsg : CLIENT[what];
+var label = b.innerHTML;
+copyText(val, function(ok) { b.lastChild.textContent = ok ? "Copied" : "Press and hold to copy"; setTimeout(function() { b.innerHTML = label; }, 1800); });
+return;
+}
+if (b.hasAttribute("data-jump")) { e.preventDefault(); var miss0 = missing(); if (miss0[0]) jumpTo(miss0[0]); return; }
+var act = b.getAttribute("data-act");
+st.answers = collect(form); save(st);
+var text = answersText(st.answers);
+if (act === "copy") {
+e.preventDefault();
+copyText(text, function(ok) {
+say(ok ? "Copied. Paste it into a text or email to Hagen." : "Your browser blocked copying. Use the email button instead.", !ok);
+});
+return;
+}
+if (act === "submit") {
+e.preventDefault();
+var missS = missing();
+if (missS.length && !forceSubmit) {
+forceSubmit = true;
+say(missS.length+" required answer"+(missS.length > 1 ? "s are" : " is")+" still blank (marked in orange). " +
+'<a href="#" data-jump="1">Show me</a>, or tap Send again to send what you have. We can fill the rest on the call.', true);
+return;
+}
+forceSubmit = false;
+if (b.disabled) return;
+b.disabled = true; say("Sending...");
+var steps = {}; CHECKS.forEach(function(c) { steps[c] = !!st.checks[c]; });
+var payload = { client_slug: CLIENT.slug, first_name: CLIENT.first || null, business: CLIENT.hasBiz ? CLIENT.business : null,
+plan: CLIENT.plan || null, answers: st.answers, steps_done: steps, user_agent: String(navigator.userAgent || "").slice(0, 200) };
+var fail = function() {
+b.disabled = false;
+say("That didn't go through. Your answers are still saved here. <a href=\"#\" data-act=\"email\">Email them to Hagen instead</a>, or try Send again in a minute.", true);
+};
+try {
+var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function() { if (ctl) ctl.abort(); }, 15000);
+fetch(CONFIG.SUPABASE_URL, { method: "POST", signal: ctl ? ctl.signal : undefined,
+headers: { apikey: CONFIG.SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+body: JSON.stringify(payload) }).then(function(r) {
+clearTimeout(to);
+if (!r.ok) return fail();
+b.disabled = false;
+st.checks.intake = true; save(st); paint();
+say("Got it, Hagen has your answers. Next: Step 2, give us access.");
+}, function() { clearTimeout(to); fail(); });
+} catch (err) { fail(); }
+return;
+}
+if (act === "email") {
+e.preventDefault();
+var miss = missing();
+if (miss.length && !forceSend) {
+forceSend = true;
+say(miss.length+" required answer"+(miss.length > 1 ? "s are" : " is")+" still blank (marked in orange). " +
+'<a href="#" data-jump="1">Show me</a>, or tap the email button again to send what you have. We can fill the rest on the call.', true);
+return;
+}
+forceSend = false;
+var subject = "Onboarding answers: "+(CLIENT.hasBiz ? CLIENT.business : CLIENT.first || "new client");
+var body = text;
+if (encodeURIComponent(body).length > 7000) {
+copyText(text, function() {});
+body = "My answers are copied to my clipboard. Pasting them below:\n\n";
+}
+say("Opening your email app. Hit send, then tick \"I've sent my answers\" below.");
+window.location.href = "mailto:"+CLIENT.email+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+}
+});
+counts(); paint();
+}
+function boot() { init(document.getElementById("nbo-root")); }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+</script>
+
+</body></html>
