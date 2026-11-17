@@ -947,7 +947,7 @@ function init(root) {
             if (!r.ok) return fail();
             b.disabled = false;
             st.checks.biz = true; save(st); paint();
-            say("Got it, Hagen has it. Keep going down the page, and send again at the end.");
+            say(b.closest("#nbo-s11") ? "Got it, Hagen has everything. Last thing: send him the text below." : "Got it, Hagen has it. Keep going down the page, and send again at the end.");
           }, function() { clearTimeout(to); fail(); });
       } catch (err) { fail(); }
       return;
