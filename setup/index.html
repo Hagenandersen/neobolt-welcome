@@ -227,6 +227,23 @@ html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!importan
 .nbo .final h3{margin:0 0 6px;font-size:22px;color:#fff;letter-spacing:-.02em}
 .nbo .final p{margin:0 0 10px;color:#d6dbd2}
 .nbo .textmsg{margin:10px 0;padding:12px 14px;border-radius:14px 14px 14px 4px;background:#1f8a4c;color:#fff;font-size:15px;max-width:440px}
+/* ===== prefilled mode (?client=) ===== */
+.nbo .needs{margin-top:26px;border:1.5px solid rgba(255,184,107,.55);border-radius:18px;background:rgba(255,184,107,.06);padding:18px 16px}
+.nbo .needs h2{margin:0 0 4px}
+.nbo .needs>p{margin:0 0 12px;color:#d6dbd2;font-size:15px}
+.nbo .need{border-top:1px solid var(--line);padding:12px 0 10px}
+.nbo .need:first-of-type{border-top:0}
+.nbo .need b{display:block;color:#fff;font-size:16px;line-height:1.3}
+.nbo .need span.d{display:block;color:var(--mut);font-size:14px;margin-top:2px}
+.nbo .need a.jump{display:inline-block;margin-top:6px;font-weight:700;font-size:14px}
+.nbo .need .f{margin-top:8px}
+.nbo .need.ok b::before{content:"\2713  ";color:var(--lime)}
+.nbo .known{margin:10px 0 0;padding:12px 14px;border-radius:12px;background:rgba(200,242,76,.07);border:1px solid rgba(200,242,76,.3);font-size:14.5px;color:#e6eadf}
+.nbo .known b{color:#fff}
+.nbo .step.collapsed>*:not(.step-h):not(.reveal){display:none!important}
+.nbo .reveal{display:none;margin:-4px 0 0 58px;padding:8px 12px;border-radius:999px;border:1.5px solid rgba(200,242,76,.5);background:transparent;color:var(--lime);font:700 13.5px/1 Inter,system-ui,sans-serif;cursor:pointer}
+.nbo .step.prefilled .reveal{display:inline-flex}
+.nbo .step.prefilled .step-h h2::after{content:" \2713";color:var(--lime)}
 </style>
 </head><body>
 <div class="nbo" id="nbo-root">
@@ -245,6 +262,8 @@ html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!importan
 <nav class="pills" id="nbo-pills"></nav>
 <p class="alldone">All done. Text Hagen and we take it from here.</p>
 </div>
+
+<div class="needs" id="nbo-needs" hidden></div>
 
 <!-- 1 -->
 <section class="step" id="nbo-s1" data-s="1">
@@ -565,6 +584,7 @@ var first = param("name", CONFIG.NAME_MAX), biz = param("biz", CONFIG.BIZ_MAX);
 var planRaw = param("plan", 8).replace(/\D/g, "");
 var loc = param("loc", 40).replace(/[^A-Za-z0-9]/g, "");
 var site = param("site", 80).replace(/^https?:\/\//i, "").replace(/[^A-Za-z0-9.\-]/g, "");
+var clientRef = param("client", 60).toLowerCase().replace(/[^a-z0-9-]/g, "");
 var PLAN15 = planRaw === "15";
 var slug = biz.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40).replace(/-+$/, "") || "client";
 var CLIENT = { slug: slug, first: first, hasBiz: !!biz, business: biz || "your business", plan: planRaw, email: CONFIG.EMAIL };
@@ -700,6 +720,7 @@ var UPLOADS = [
 {k:"web_person",l:"Your web person's name and email (if you have one)",t:"text"}
 ];
 var EXTRA = [{k:"post_style",t:"radio"}];
+var NEED_FIELDS = []; /* filled from the client JSON in prefilled mode */
 
 function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function(c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 function $(sel, ctx) { return (ctx || document).querySelector(sel); }
@@ -748,7 +769,7 @@ function setVal(form, f, v) {
   var el = form.elements[f.k]; if (el) el.value = v;
 }
 function groupFields() { var a = []; GROUPS.forEach(function(g) { g.fields.forEach(function(f) { a.push(f); }); }); return a; }
-function allFields() { return groupFields().concat(UPLOADS, EXTRA); }
+function allFields() { return groupFields().concat(UPLOADS, EXTRA, NEED_FIELDS); }
 function collect(form) { var out = {}; allFields().forEach(function(f) { out[f.k] = getVal(form, f); }); return out; }
 
 var STEPS = [
@@ -875,7 +896,7 @@ function init(root) {
     el.scrollIntoView({ behavior: "smooth", block: "center" });
     var inp = el.querySelector("input, select, textarea"); if (inp) setTimeout(function() { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 350);
   }
-  var forceSend = false, forceSubmit = false;
+  var forceSend = false, forceSubmit = false, PREFILLED = false;
   root.addEventListener("click", function(e) {
     var b = e.target.closest ? e.target.closest("[data-act], [data-copy], [data-jump]") : null;
     if (!b || !root.contains(b)) return;
@@ -898,7 +919,7 @@ function init(root) {
     if (act === "submit") {
       e.preventDefault();
       var missS = missing();
-      if (missS.length && !forceSubmit) {
+      if (missS.length && !forceSubmit && !PREFILLED) {
         forceSubmit = true;
         say(missS.length+" required answer"+(missS.length > 1 ? "s are" : " is")+" still blank in step 1 (marked in orange). "+
           '<a href="#" data-jump="1">Show me</a>, or tap Send again to send what you have.', true);
@@ -909,7 +930,8 @@ function init(root) {
       b.disabled = true; say("Sending...");
       var steps = {}; CHECKS.forEach(function(c) { steps[c] = !!st.checks[c]; });
       var answers = {}; Object.keys(st.answers).forEach(function(k) { answers[k] = st.answers[k]; });
-      answers.source = "setup page";
+      answers.source = PREFILLED ? "setup page - prefilled" : "setup page";
+      if (clientRef) answers.client_ref = clientRef;
       var payload = { client_slug: CLIENT.slug, first_name: CLIENT.first || null, business: CLIENT.hasBiz ? CLIENT.business : null,
         plan: CLIENT.plan || null, answers: answers, steps_done: steps, user_agent: String(navigator.userAgent || "").slice(0, 200) };
       var fail = function() {
@@ -948,6 +970,60 @@ function init(root) {
     }
   });
   counts(); paint();
+
+  /* ===== Prefilled mode: ?client=<ref> loads clients/<ref>.json next to this page.
+     The JSON holds only public business facts:
+     {intro, answers:{key:value}, done:["biz","phone"], known:{"1":"text"}, needs:[{t,d,step,check,field:{k,l,t,p,o}}]} ===== */
+  if (clientRef && window.fetch) {
+    fetch("clients/"+clientRef+".json", { cache: "no-store" }).then(function(r) { return r.ok ? r.json() : null; }).then(function(cfg) {
+      if (!cfg) return;
+      PREFILLED = true;
+      var fresh = !st.prefilled;
+      var pre = cfg.answers || {};
+      /* fill only blanks, never overwrite what he typed */
+      allFields().forEach(function(f) {
+        var cur = st.answers[f.k];
+        if ((cur == null || cur === "") && pre[f.k] != null && pre[f.k] !== "") setVal(form, f, String(pre[f.k]));
+      });
+      /* steps we already did: ticked + collapsed, with a button to review */
+      (cfg.done || []).forEach(function(c) {
+        if (fresh) st.checks[c] = true;
+        var stp = STEPS.filter(function(x) { return x.c === c; })[0]; if (!stp) return;
+        var sec = $("#nbo-s"+stp.n, root); if (!sec) return;
+        sec.classList.add("prefilled", "collapsed");
+        var known = cfg.known && cfg.known[String(stp.n)];
+        if (known) { var k = document.createElement("p"); k.className = "known"; k.textContent = known; $(".step-h > div", sec).appendChild(k); }
+        var btn = document.createElement("button"); btn.type = "button"; btn.className = "reveal";
+        btn.textContent = "Done. Tap to review or edit";
+        btn.addEventListener("click", function() { var c2 = sec.classList.toggle("collapsed"); btn.textContent = c2 ? "Done. Tap to review or edit" : "Hide"; });
+        sec.insertBefore(btn, sec.children[1] || null);
+      });
+      /* what we still need, at the top */
+      var needs = cfg.needs || [];
+      if (needs.length) {
+        var box = $("#nbo-needs", root);
+        var html = "<h2>What we still need from you</h2><p>"+esc(cfg.intro || "We already set up what you told us. These are the only things left.")+"</p>";
+        needs.forEach(function(n, i) {
+          if (n.field) NEED_FIELDS.push(n.field);
+          html += '<div class="need" data-need="'+i+'"><b>'+esc(n.t)+"</b>"+(n.d ? '<span class="d">'+esc(n.d)+"</span>" : "")+
+            (n.step ? '<a class="jump" href="#nbo-s'+parseInt(n.step, 10)+'">Go to step '+parseInt(n.step, 10)+" &rsaquo;</a>" : "")+
+            (n.field ? fieldHTML(n.field) : "")+"</div>";
+        });
+        box.innerHTML = html; box.hidden = false;
+        NEED_FIELDS.forEach(function(f) { var v = st.answers[f.k]; setVal(form, f, v != null && v !== "" ? v : (pre[f.k] || "")); });
+        var tickNeeds = function() {
+          var ans = collect(form);
+          needs.forEach(function(n, i) {
+            var ok = (n.field && ans[n.field.k]) || (n.check && st.checks[n.check]);
+            var el = $('[data-need="'+i+'"]', box); if (el) el.classList.toggle("ok", !!ok);
+          });
+        };
+        form.addEventListener("change", tickNeeds); form.addEventListener("input", tickNeeds); tickNeeds();
+      }
+      st.prefilled = true; st.answers = collect(form); save(st);
+      counts(); paint();
+    }).catch(function() {});
+  }
 }
 function boot() { init(document.getElementById("nbo-root")); }
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
