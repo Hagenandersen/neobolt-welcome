@@ -1,0 +1,957 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Set up your account | Neobolt</title><meta name="robots" content="noindex,nofollow"><style>html,body{margin:0;background:#0f1d12}</style></head><body>
+<!--
+NEOBOLT SELF-SERVE SETUP (/setup). Same look and same Supabase submit as /welcome.
+Link per client: https://neoboltsystems.com/setup?name=Nathan&biz=Temple%20Painting&plan=20
+Optional: &loc=<GHL location id> turns the CRM paths into one-tap links. &site=<domain> prefills the domain.
+Built from setup.template.html by build.py (Sales & Marketing/neobolt-site-v2/setup-page). Edit there, not here.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500;700&family=Archivo+Black&family=Fraunces:wght@600;800&display=swap" rel="stylesheet">
+<style>
+
+/* GHL wraps pasted code in section/row/column boxes; let this block run full width */
+.c-section:has(.nbo),.c-section:has(.nbo)>.inner,.c-row:has(.nbo),.c-row:has(.nbo)>.inner,.c-column:has(.nbo),.c-column:has(.nbo)>.inner,.c-custom-code:has(.nbo),.custom-code-container:has(.nbo){display:contents!important}
+html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!important}
+.nbo.nbo{--g0:#0f1d12;--g1:#1b3020;--lime:#c8f24c;--cream:#efede6;--ink:#0d140e;--mut:#a9b8a6;--line:rgba(239,237,230,.12);--card:rgba(239,237,230,.055);--field:#0c170e;--warn:#ffb86b;--mono:"JetBrains Mono",ui-monospace,monospace;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--cream);-webkit-font-smoothing:antialiased;background:radial-gradient(120% 60% at 15% 0%,#24412a 0%,var(--g1) 40%,var(--g0) 100%);min-height:100vh;padding:20px 16px 56px;box-sizing:border-box;width:100%;font-size:16px;line-height:1.5;text-align:left;overflow-x:hidden}
+.nbo.nbo *,.nbo.nbo *::before,.nbo.nbo *::after{box-sizing:border-box}
+.nbo [hidden]{display:none!important}
+.nbo .wrap{max-width:760px;margin:0 auto}
+.nbo svg{flex:none}
+.nbo a{color:var(--lime);text-underline-offset:3px}
+.nbo .brand{display:flex;align-items:center;gap:10px;font:500 13px/1 var(--mono);letter-spacing:.14em;color:#d9ddd3;text-transform:uppercase}
+.nbo .brand svg{width:18px;height:18px;color:var(--lime)}
+.nbo .chip{display:inline-flex;align-items:center;gap:8px;margin:22px 0 14px;padding:7px 12px 7px 10px;border:1.5px solid var(--lime);border-radius:999px;font:700 12px/1 var(--mono);letter-spacing:.1em;color:var(--lime);text-transform:uppercase}
+.nbo .chip svg{width:15px;height:15px}
+.nbo.nbo h1{margin:0 0 16px;font-weight:900;color:#fff;letter-spacing:-.035em;line-height:.98;font-size:clamp(40px,11vw,70px);overflow-wrap:anywhere}
+.nbo.nbo h1 .pre{display:block;font:700 clamp(15px,4.2vw,20px)/1.25 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:var(--mut);margin-bottom:10px}
+.nbo.nbo h1 .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400;color:var(--lime);letter-spacing:-.01em;font-size:1.08em}
+.nbo .lede{margin:0;max-width:560px;font-size:18px;line-height:1.5;color:#d6dbd2}
+.nbo .lede b{color:#fff}
+/* progress tracker */
+.nbo .track{position:sticky;top:0;z-index:5;margin:26px -16px 0;padding:12px 16px;background:rgba(15,29,18,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nbo .track-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
+.nbo .track-top b{font-size:15px;color:#fff}
+.nbo .track-top span{font:700 13px/1 var(--mono);color:var(--lime);white-space:nowrap}
+.nbo .bar{height:8px;border-radius:999px;background:rgba(239,237,230,.1);overflow:hidden}
+.nbo .bar i{display:block;height:100%;width:0;background:var(--lime);border-radius:999px;transition:width .35s ease}
+.nbo .pills{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nbo .pills::-webkit-scrollbar{display:none}
+.nbo .pill{display:inline-flex;align-items:center;gap:6px;flex:none;padding:7px 10px;border-radius:999px;border:1px solid var(--line);color:#d6dbd2;text-decoration:none;font:700 12px/1 Inter,system-ui,sans-serif;white-space:nowrap}
+.nbo .pill .d{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid #5d6f5a;font:700 10px/1 var(--mono);color:var(--mut)}
+.nbo .pill .d svg{width:11px;height:11px;display:none}
+.nbo .pill.done{border-color:rgba(200,242,76,.5);color:#fff}
+.nbo .pill.done .d{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.nbo .pill.done .d em{display:none}
+.nbo .pill.done .d svg{display:block}
+.nbo .alldone{display:none;margin:10px 0 0;font-size:14px;color:var(--lime);font-weight:700}
+.nbo .track.complete .alldone{display:block}
+/* steps */
+.nbo .step{margin-top:34px;scroll-margin-top:120px}
+.nbo .step-h{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;margin-bottom:16px}
+.nbo .num{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--lime);color:var(--ink);font:700 15px/1 var(--mono);box-shadow:3px 4px 0 #0a120b}
+.nbo .step.done .num{background:#fff}
+.nbo.nbo h2{margin:2px 0 4px;font-size:clamp(24px,6.4vw,32px);line-height:1.08;font-weight:900;letter-spacing:-.025em;color:#fff}
+.nbo .step-h p{margin:0;color:var(--mut);font-size:15px}
+.nbo .time{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font:700 12px/1 var(--mono);color:var(--lime);letter-spacing:.04em}
+.nbo .time svg{width:14px;height:14px}
+.nbo .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 16px}
+.nbo .note{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(200,242,76,.08);border:1px solid rgba(200,242,76,.28);font-size:14.5px;color:#e6eadf;margin:0 0 14px}
+.nbo .note svg{width:18px;height:18px;color:var(--lime);margin-top:2px}
+.nbo .note.warn{background:rgba(255,184,107,.08);border-color:rgba(255,184,107,.35)}
+.nbo .note.warn svg{color:var(--warn)}
+.nbo .note b{color:#fff}
+/* intake groups */
+.nbo details.grp{border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.nbo details.grp+details.grp{margin-top:10px}
+.nbo details.grp.p15{border-color:rgba(200,242,76,.45)}
+.nbo details.grp>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:15px 14px;-webkit-tap-highlight-color:transparent}
+.nbo details.grp>summary::-webkit-details-marker{display:none}
+.nbo .gi{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:rgba(200,242,76,.1);color:var(--lime)}
+.nbo .gi svg{width:19px;height:19px}
+.nbo .gt b{display:block;color:#fff;font-size:16px;line-height:1.2}
+.nbo .gt small{display:block;color:var(--mut);font-size:13px;line-height:1.35;margin-top:2px}
+.nbo .gc{font:700 12px/1 var(--mono);color:var(--mut);white-space:nowrap}
+.nbo .gc.full{color:var(--lime)}
+.nbo .gc.warn{color:var(--warn)}
+.nbo .chev{width:18px;height:18px;color:var(--mut);transition:transform .2s ease}
+.nbo details[open]>summary .chev{transform:rotate(180deg)}
+.nbo .gbody{padding:4px 14px 18px;border-top:1px solid var(--line)}
+.nbo .f{margin-top:16px}
+.nbo .f>label,.nbo .f legend{display:block;padding:0;margin:0 0 6px;font-weight:700;font-size:15px;color:#fff;line-height:1.35}
+.nbo .req{color:var(--lime);margin-left:3px}
+.nbo .help{display:block;margin:-2px 0 8px;font-size:13.5px;color:var(--mut);line-height:1.4}
+.nbo fieldset{border:0;margin:0;padding:0;min-width:0}
+.nbo.nbo input[type=text],.nbo.nbo input[type=email],.nbo.nbo input[type=tel],.nbo.nbo input[type=url],.nbo.nbo input[type=number],.nbo.nbo select,.nbo.nbo textarea{display:block;width:100%;margin:0;padding:13px 14px;border-radius:11px;border:1.5px solid #34503a;background:var(--field);color:#fff;font:500 16px/1.4 Inter,system-ui,sans-serif;outline:none;-webkit-appearance:none;appearance:none;box-shadow:none;height:auto}
+.nbo.nbo textarea{min-height:92px;resize:vertical}
+.nbo.nbo select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c8f24c' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:40px}
+.nbo.nbo input::placeholder,.nbo.nbo textarea::placeholder{color:#6f826c}
+.nbo.nbo input:focus,.nbo.nbo select:focus,.nbo.nbo textarea:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,242,76,.18)}
+.nbo .f.miss input,.nbo .f.miss select,.nbo .f.miss textarea,.nbo .f.miss .opts{border-color:var(--warn)!important}
+.nbo .opts{display:grid;gap:8px;border-radius:12px;border:1.5px solid transparent}
+.nbo .opt{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:11px 12px;border-radius:11px;border:1.5px solid #34503a;background:var(--field);cursor:pointer;font-size:15px;line-height:1.35;color:#e6eadf}
+.nbo .opt input,.nbo .done-row input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.nbo .box{display:grid;place-items:center;width:20px;height:20px;border:2px solid #6f826c;border-radius:6px;color:var(--ink)}
+.nbo .opt.radio .box{border-radius:50%}
+.nbo .box svg{width:13px;height:13px;opacity:0}
+.nbo .opt:has(input:checked){border-color:var(--lime);background:rgba(200,242,76,.08);color:#fff}
+.nbo input:checked+.box{background:var(--lime);border-color:var(--lime)}
+.nbo input:checked+.box svg{opacity:1}
+.nbo input:focus-visible+.box{box-shadow:0 0 0 3px rgba(200,242,76,.35)}
+.nbo .saved{margin:12px 2px 0;font-size:13px;color:var(--mut);min-height:20px}
+/* buttons */
+.nbo .btns{display:grid;gap:10px;margin-top:18px}
+.nbo.nbo .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 18px;border-radius:999px;border:0;background:var(--lime);color:var(--ink);font:800 16.5px/1.1 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer;box-shadow:4px 5px 0 #0a120b;transition:transform .15s ease;-webkit-tap-highlight-color:transparent}
+.nbo.nbo .btn:hover,.nbo.nbo .btn:focus-visible{transform:translateY(-2px)}
+.nbo.nbo .btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(239,237,230,.35);box-shadow:none}
+.nbo .btn svg{width:19px;height:19px}
+.nbo.nbo .mini{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1.5px solid rgba(200,242,76,.5);background:transparent;color:var(--lime);font:700 12.5px/1 Inter,system-ui,sans-serif;cursor:pointer;vertical-align:middle;white-space:nowrap}
+.nbo .mini svg{width:13px;height:13px}
+.nbo .status{margin:12px 2px 0;font-size:14.5px;color:var(--lime)}
+.nbo .status.warn{color:var(--warn)}
+.nbo .status a{color:inherit}
+/* GHL form slot */
+.nbo .ghl-slot{display:none;border-radius:14px;overflow:hidden;background:#fff;margin-bottom:14px}
+.nbo .ghl-slot iframe{display:block;width:100%;min-height:900px;border:0}
+.nbo.has-ghl .ghl-slot,.nbo.has-ghl .alt-sum{display:block}
+.nbo .alt-sum{display:none}
+.nbo details.alt>summary{list-style:none;cursor:pointer;padding:10px 2px;color:var(--mut);font-size:14.5px;text-decoration:underline;text-underline-offset:3px}
+.nbo details.alt>summary::-webkit-details-marker{display:none}
+/* access + checklist items */
+.nbo .acc{display:grid;gap:12px}
+.nbo .item{border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+.nbo .item.done{border-color:rgba(200,242,76,.45)}
+.nbo .item-h{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:16px 16px 4px}
+.nbo .item-h .gi{width:40px;height:40px}
+.nbo .item-h b{display:block;color:#fff;font-size:17px;line-height:1.25;letter-spacing:-.01em}
+.nbo .item-h small{display:block;margin-top:3px;color:var(--mut);font-size:13.5px;line-height:1.4}
+.nbo .tag{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:999px;background:rgba(239,237,230,.1);color:#d6dbd2;font:700 10.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
+.nbo .item-b{padding:4px 16px 6px}
+.nbo ol.path{margin:8px 0 0;padding:0;list-style:none;counter-reset:p}
+.nbo ol.path>li{position:relative;padding:0 0 10px 34px;counter-increment:p;font-size:15px;line-height:1.45;color:#e6eadf}
+.nbo ol.path>li::before{content:counter(p);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(239,237,230,.1);color:#fff;font:700 11px/22px var(--mono);text-align:center}
+.nbo kbd{font-family:inherit;font-size:inherit;display:inline;padding:1px 6px;border-radius:6px;background:rgba(239,237,230,.1);color:#fff;font-weight:700;white-space:normal;overflow-wrap:anywhere}
+.nbo .mono{font-family:var(--mono);font-weight:700;color:var(--lime);word-break:break-all}
+.nbo .sub{margin:10px 0 4px;font:700 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.nbo .quote{margin:8px 0 10px;padding:12px 14px;border-left:3px solid var(--lime);background:rgba(239,237,230,.05);border-radius:0 10px 10px 0;font-size:15px;color:#fff}
+.nbo .done-row{display:flex;align-items:center;gap:12px;margin:8px 0 0;padding:14px 16px;border-top:1px solid var(--line);cursor:pointer;font-weight:800;font-size:15.5px;color:#fff;-webkit-tap-highlight-color:transparent}
+.nbo .done-row .box{width:26px;height:26px;border-radius:8px}
+.nbo .done-row .box svg{width:16px;height:16px}
+.nbo .item.done .done-row{color:var(--lime)}
+.nbo .stores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 6px}
+.nbo.nbo .stores .btn{padding:13px 10px;font-size:15px;box-shadow:none}
+/* timeline */
+.nbo .tl{list-style:none;margin:0;padding:0}
+.nbo .tl li{position:relative;padding:0 0 22px 30px}
+.nbo .tl li::before{content:"";position:absolute;left:6px;top:8px;bottom:-6px;width:2px;background:rgba(200,242,76,.25)}
+.nbo .tl li:last-child::before{display:none}
+.nbo .tl li::after{content:"";position:absolute;left:0;top:4px;width:14px;height:14px;border-radius:50%;background:var(--g0);border:3px solid var(--lime)}
+.nbo .tl .when{display:block;font:700 12px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.nbo .tl b{display:block;margin:4px 0 3px;color:#fff;font-size:17px}
+.nbo .tl p{margin:0;color:#d6dbd2;font-size:15px}
+.nbo ul.plain{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.nbo ul.plain li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:15px;color:#e6eadf}
+.nbo ul.plain svg{width:18px;height:18px;color:var(--lime);margin-top:2px}
+.nbo .see{margin:40px 0 0;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:clamp(30px,8vw,42px);line-height:1.05;color:var(--lime)}
+.nbo .sig{margin:6px 0 0;font-weight:700;color:#fff}
+.nbo .foot{margin:34px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:13px;line-height:1.55;color:#8f9e8c}
+@media (min-width:720px){.nbo.nbo{padding:44px 24px 80px}.nbo .track{margin:30px 0 0;border:1px solid var(--line);border-radius:16px;top:10px}.nbo .btns{grid-template-columns:1fr 1fr}.nbo .card{padding:22px}.nbo .gbody{display:flex;flex-wrap:wrap;column-gap:14px}.nbo .gbody>.f{width:100%}.nbo .gbody>.f.half{width:calc(50% - 7px)}.nbo .opts.cols{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.nbo *{transition:none!important}}
+
+/* ===== /setup additions ===== */
+.nbo .pill{padding:7px 9px}
+.nbo .stop{margin:14px 0 6px;padding:16px;border-radius:14px;border:2px solid #ff6b5b;background:rgba(255,107,91,.12)}
+.nbo .stop b.big{display:block;font:900 20px/1.15 Inter,system-ui,sans-serif;color:#fff;letter-spacing:-.01em;margin-bottom:6px}
+.nbo .stop b.big span{color:#ff8a7d}
+.nbo .stop p{margin:0;color:#ffe2de;font-size:15px}
+.nbo .stop svg{width:22px;height:22px;color:#ff8a7d;vertical-align:-5px;margin-right:6px}
+.nbo .go{display:inline-flex;align-items:center;gap:8px;margin:6px 0 4px;padding:10px 14px;border-radius:999px;background:var(--lime);color:var(--ink)!important;font:800 14.5px/1 Inter,system-ui,sans-serif;text-decoration:none}
+.nbo .go svg{width:16px;height:16px}
+.nbo .go[hidden]{display:none}
+.nbo .crumb{font-weight:700;color:#fff}
+.nbo .why{margin:0 0 10px;font-size:14.5px;color:#d6dbd2}
+/* style picker */
+.nbo .styles{display:grid;gap:14px;margin-top:6px}
+@media (min-width:720px){.nbo .styles{grid-template-columns:repeat(3,1fr)}}
+.nbo .sty{position:relative;display:block;cursor:pointer;border-radius:18px;border:2px solid #34503a;background:var(--field);padding:10px;-webkit-tap-highlight-color:transparent}
+.nbo .sty input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.nbo .sty:has(input:checked){border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,242,76,.25)}
+.nbo .sty input:focus-visible~.sty-name{outline:2px solid var(--lime)}
+.nbo .sty-name{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 4px 2px;font-weight:800;color:#fff;font-size:16px}
+.nbo .sty-name .box{width:24px;height:24px;border-radius:50%}
+.nbo .sty-desc{margin:0 4px 4px;color:var(--mut);font-size:13.5px;line-height:1.4}
+.nbo .sty:has(input:checked) .box{background:var(--lime);border-color:var(--lime)}
+.nbo .sty:has(input:checked) .box svg{opacity:1}
+/* mock post frame */
+.nbo .post{container-type:inline-size;border-radius:12px;overflow:hidden;background:#fff;color:#111;font-family:Inter,system-ui,sans-serif}
+.nbo .post-h{display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:12px;font-weight:700;color:#111}
+.nbo .post-h i{display:block;width:24px;height:24px;border-radius:50%;flex:none}
+.nbo .post-h small{display:block;font-weight:500;color:#777;font-size:10.5px}
+.nbo .art{position:relative;aspect-ratio:1/1;overflow:hidden}
+.nbo .post-c{padding:8px 10px 10px;font-size:11.5px;line-height:1.4;color:#222}
+.nbo .post-c b{color:#000}
+.nbo .post-c .likes{display:block;font-weight:800;margin-bottom:3px;color:#111}
+/* maximalist */
+.nbo .mx .art{background:linear-gradient(135deg,#ff3d7f 0%,#ff8a00 45%,#ffd400 100%)}
+.nbo .mx .art::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.14) 0 10px,transparent 10px 22px)}
+.nbo .mx .burst{position:absolute;right:-18%;top:-18%;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#2bd6ff 0 38%,#5b2bff 39% 60%,transparent 61%)}
+.nbo .mx .big{position:absolute;left:7%;top:9%;right:7%;font:400 12.5cqw/.9 "Archivo Black",Impact,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em;text-shadow:3px 3px 0 #5b2bff}
+.nbo .mx .big span{display:block;color:#111;text-shadow:3px 3px 0 #fff}
+.nbo .mx .roller{position:absolute;left:8%;bottom:10%;width:46%;height:16%;border-radius:10px;background:#5b2bff;box-shadow:4px 4px 0 #111}
+.nbo .mx .roller::after{content:"";position:absolute;left:40%;top:100%;width:8%;height:90%;background:#111;border-radius:0 0 6px 6px}
+.nbo .mx .stick{position:absolute;right:7%;bottom:9%;padding:8px 10px;border-radius:10px;background:#111;color:#ffd400;font:800 3.6cqw/1.15 Inter,sans-serif;transform:rotate(-6deg);text-align:center}
+.nbo .mx .stick b{display:block;font-size:5cqw;color:#fff}
+.nbo .mx .drip{position:absolute;left:0;right:0;top:0;height:7%;background:#2bd6ff}
+.nbo .mx .drip::after{content:"";position:absolute;left:12%;top:100%;width:5%;height:150%;border-radius:0 0 999px 999px;background:#2bd6ff;box-shadow:120px 0 0 #2bd6ff,60px 6px 0 -2px #2bd6ff}
+/* minimalist */
+.nbo .mn .art{background:#f4f2ee}
+.nbo .mn .wall{position:absolute;left:9%;right:9%;top:9%;bottom:24%;background:linear-gradient(90deg,#e9e4da 0 50%,#b9c3b2 50% 100%);border-radius:2px}
+.nbo .mn .wall::before{content:"";position:absolute;left:60%;top:16%;width:26%;height:42%;background:#fdfcf9;border:3px solid #e9e4da;box-shadow:inset 0 0 0 1px #d6d0c4}
+.nbo .mn .wall::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10%;background:#fdfcf9}
+.nbo .mn .tape{position:absolute;left:49%;top:7%;width:2%;height:70%;background:#dcd5c6}
+.nbo .mn .cap{position:absolute;left:9%;right:9%;bottom:8%;display:flex;justify-content:space-between;align-items:flex-end;font:500 3.5cqw/1.2 Inter,sans-serif;color:#555;letter-spacing:.02em}
+.nbo .mn .cap b{font-weight:600;color:#111;font-size:4cqw;letter-spacing:0}
+/* classic / hometown */
+.nbo .cl .art{background:#f5ecd9}
+.nbo .cl .half{position:absolute;top:8%;bottom:30%;width:41%;border-radius:6px;overflow:hidden}
+.nbo .cl .before{left:7%;background:repeating-linear-gradient(180deg,#a8a294 0 9px,#97907f 9px 11px)}
+.nbo .cl .before::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(90,80,60,.35) 0 18%,transparent 19%),radial-gradient(circle at 70% 70%,rgba(90,80,60,.3) 0 14%,transparent 15%)}
+.nbo .cl .after{right:7%;background:repeating-linear-gradient(180deg,#2f4a6b 0 9px,#26405e 9px 11px)}
+.nbo .cl .after::after{content:"";position:absolute;left:30%;top:30%;width:40%;height:34%;background:#fffaf0;border:3px solid #fff;box-shadow:0 0 0 2px #26405e}
+.nbo .cl .lab{position:absolute;bottom:6px;left:6px;padding:3px 6px;border-radius:4px;background:#fff;font:800 9px/1 Inter,sans-serif;letter-spacing:.08em;color:#2b2b2b;z-index:1}
+.nbo .cl .badge{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:26%;aspect-ratio:1;border-radius:50%;background:#b8432f;border:3px solid #f5ecd9;box-shadow:0 0 0 2px #b8432f;display:grid;place-items:center;text-align:center;color:#fff;font:800 2.9cqw/1.05 Fraunces,Georgia,serif;letter-spacing:.04em;text-transform:uppercase;z-index:2;padding:4px}
+.nbo .cl .line{position:absolute;left:7%;right:7%;bottom:8%;text-align:center;font:800 6.2cqw/1.1 Fraunces,Georgia,serif;color:#2f2a22}
+.nbo .cl .line small{display:block;font:600 3.3cqw/1.3 Inter,sans-serif;color:#7a6a50;letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+/* done screen */
+.nbo .final{border:1.5px solid rgba(200,242,76,.5);border-radius:18px;padding:20px 16px;background:rgba(200,242,76,.06)}
+.nbo .final h3{margin:0 0 6px;font-size:22px;color:#fff;letter-spacing:-.02em}
+.nbo .final p{margin:0 0 10px;color:#d6dbd2}
+.nbo .textmsg{margin:10px 0;padding:12px 14px;border-radius:14px 14px 14px 4px;background:#1f8a4c;color:#fff;font-size:15px;max-width:440px}
+</style>
+</head><body>
+<div class="nbo" id="nbo-root">
+<form id="nbo-form" novalidate autocomplete="on" onsubmit="return false">
+<input type="hidden" name="plan" id="nbo-plan" value="">
+<input type="hidden" name="client_slug" id="nbo-slug" value="">
+<div class="wrap">
+<div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2L4 13.5h6.5L9.5 22 20 9.5h-6.6z"/></svg>Neobolt Systems</div>
+<div class="chip"><i data-ic="okc"></i>Set up on your own time</div>
+<h1><span class="pre" id="nbo-pre" hidden></span><span id="nbo-hi">Let's get you <span class="em">set up</span>.</span></h1>
+<p class="lede">No call needed. Go down this page and tick each step as you finish it. It takes about <b>45 minutes</b>, and a computer makes the account steps easier. Your progress saves on this device, so you can stop and come back. When you're done, <b>text Hagen and we finish the build</b>.</p>
+
+<div class="track" id="nbo-track" aria-label="Your setup progress">
+<div class="track-top"><b>Your setup</b><span id="nbo-count">0 of 11 done</span></div>
+<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="nbo-bar"><i></i></div>
+<nav class="pills" id="nbo-pills"></nav>
+<p class="alldone">All done. Text Hagen and we take it from here.</p>
+</div>
+
+<!-- 1 -->
+<section class="step" id="nbo-s1" data-s="1">
+<div class="step-h"><span class="num">01</span><div>
+<h2>Tell us about the business</h2>
+<p>Short answers are fine. Skip what you don't know. Tap a section to open it.</p>
+<span class="time"><i data-ic="clock"></i>About 15 min</span>
+</div></div>
+<div id="nbo-groups"></div>
+<p class="saved" id="nbo-saved" aria-live="polite"></p>
+<div class="btns">
+<button class="btn" type="button" data-act="submit"><i data-ic="ok"></i>Send my answers to Hagen</button>
+<button class="btn ghost" type="button" data-act="email"><i data-ic="mail"></i>Email them instead</button>
+</div>
+<p class="help" style="margin-top:10px">You can send again later if you add more. <a href="#" data-act="copy">Copy my answers</a></p>
+<p class="status" data-status role="status" aria-live="polite"></p>
+<div class="item" data-item="biz" style="margin-top:14px">
+<label class="done-row"><input type="checkbox" data-check="biz"><span class="box"></span>I've sent my answers</label>
+</div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="nbo-s2" data-s="2">
+<div class="step-h"><span class="num">02</span><div>
+<h2>Log in to your CRM and get the app</h2>
+<p>This is where every call, text, form and message lands. Reply from the truck.</p>
+<span class="time"><i data-ic="clock"></i>About 5 min</span>
+</div></div>
+<div class="item" data-item="crm">
+<div class="item-b" style="padding-top:16px">
+<ol class="path">
+<li>Find the email with your login. It comes from <kbd>LeadConnector</kbd> or <kbd>HighLevel</kbd>. Check spam too. Tap the link and set your password.</li>
+<li>No email? Go to the login page, enter your email, tap <kbd>Forgot password</kbd>.<br><a class="go" href="https://app.gohighlevel.com/" target="_blank" rel="noopener"><i data-ic="lock"></i>Open the login page</a></li>
+<li>Install the <kbd>LeadConnector</kbd> app on your phone.
+<div class="stores">
+<a class="btn ghost" href="https://apps.apple.com/us/app/lead-connector/id1564302502" target="_blank" rel="noopener">iPhone</a>
+<a class="btn ghost" href="https://play.google.com/store/apps/details?id=com.LeadConnector" target="_blank" rel="noopener">Android</a>
+</div></li>
+<li>Log in with the same email. If it asks for a location, pick <kbd data-nbo="business">your business</kbd>.</li>
+<li>When your phone asks, <b>allow notifications and the microphone</b>. Without them you won't hear new leads.</li>
+</ol>
+<p class="help">Steps 3 to 8 are easiest on a computer, logged in at the same login page.</p>
+</div>
+<label class="done-row"><input type="checkbox" data-check="crm"><span class="box"></span>I'm logged in on my computer and my phone</label>
+</div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="nbo-s3" data-s="3">
+<div class="step-h"><span class="num">03</span><div>
+<h2>Connect your social media</h2>
+<p>So we can post for you and every message lands in one inbox. You stay the owner.</p>
+<span class="time"><i data-ic="clock"></i>About 5 min</span>
+</div></div>
+<div class="item" data-item="social">
+<div class="item-b" style="padding-top:16px">
+<p class="why">In your CRM, on the left menu: <span class="crumb">Marketing</span> &rsaquo; <span class="crumb">Social Planner</span>.</p>
+<a class="go" data-deep="marketing/social-planner" href="#" target="_blank" rel="noopener" hidden><i data-ic="share"></i>Open Social Planner</a>
+<ol class="path">
+<li>Click <kbd>+ Connect</kbd> under <kbd>Facebook</kbd>. Log in, pick your <b>business Page</b>, and allow everything it asks.</li>
+<li>Click <kbd>+ Connect</kbd> under <kbd>Instagram</kbd>. It must be a business or creator account linked to your Facebook Page. Instagram app: <kbd>Settings</kbd> &rsaquo; <kbd>Account type and tools</kbd> to switch, it's free.</li>
+<li>Click <kbd>+ Connect</kbd> under <kbd>GBP</kbd> (your Google Business Profile). Log in with the Google account that owns your profile and pick your business.</li>
+<li>Have <b>LinkedIn, TikTok or YouTube</b> for the business? Connect them the same way. No? Skip them.</li>
+</ol>
+</div>
+<label class="done-row"><input type="checkbox" data-check="social"><span class="box"></span>Facebook, Instagram and Google are connected</label>
+</div>
+</section>
+
+<!-- 4 -->
+<section class="step" id="nbo-s4" data-s="4">
+<div class="step-h"><span class="num">04</span><div>
+<h2>Get your business phone number</h2>
+<p>A local number for your website, Google and ads, so every call and text is tracked. Missed calls can still ring your cell.</p>
+<span class="time"><i data-ic="clock"></i>About 10 min</span>
+</div></div>
+<div class="item" data-item="phone">
+<div class="item-b" style="padding-top:16px">
+<p class="why">In your CRM: <span class="crumb">Settings</span> (bottom left) &rsaquo; <span class="crumb">Phone Numbers</span>.</p>
+<a class="go" data-deep="settings/phone_number" href="#" target="_blank" rel="noopener" hidden><i data-ic="phone"></i>Open Phone Numbers</a>
+<ol class="path">
+<li>Click <kbd>Add Number</kbd> (or <kbd>Buy Number</kbd>).</li>
+<li>Search by your <b>area code</b> and pick a <b>local</b> number. Not toll-free.</li>
+<li><b>It will check that it's really you.</b> It asks for a quick face scan with your phone camera and a photo of your driver's license or ID. That's normal. It's the phone company's identity check, and Neobolt never sees your ID.</li>
+<li>Finish the purchase. If it asks for a payment card and you're not sure, stop and text Hagen first.</li>
+</ol>
+<div class="stop" role="note">
+<b class="big"><i data-ic="alert"></i><span>STOP</span> at the texting registration.</b>
+<p>After the number, it may ask you to register for texting (it says <b>A2P</b>, <b>10DLC</b> or <b>Trust Center</b>). <b>Do not fill it in or submit it.</b> Close that screen. Hagen files it for you. A mistake there gets your texts blocked for weeks.</p>
+</div>
+</div>
+<label class="done-row"><input type="checkbox" data-check="phone"><span class="box"></span>I have my number, and I stopped at the texting step</label>
+</div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="nbo-s5" data-s="5">
+<div class="step-h"><span class="num">05</span><div>
+<h2>Connect Google</h2>
+<p>Your email and calendar, so booked jobs show on your calendar. And your Google profile, so reviews and messages come in.</p>
+<span class="time"><i data-ic="clock"></i>About 5 min</span>
+</div></div>
+<div class="item" data-item="google">
+<div class="item-b" style="padding-top:16px">
+<p class="why">In your CRM: <span class="crumb">Settings</span> &rsaquo; <span class="crumb">Integrations</span>.</p>
+<a class="go" data-deep="settings/integrations" href="#" target="_blank" rel="noopener" hidden><i data-ic="server"></i>Open Integrations</a>
+<ol class="path">
+<li>Find <kbd>Google</kbd> and click <kbd>Connect</kbd>. Log in with your business Gmail. Allow <b>Gmail</b> and <b>Calendar</b>.</li>
+<li>On the same page, find <kbd>Google Business Profile</kbd> and click <kbd>Connect</kbd>. Use the Google account that owns your profile, and pick your business.</li>
+<li>Already connected Google in Social Planner (step 3)? Still do it here too. They're two separate switches.</li>
+</ol>
+</div>
+<label class="done-row"><input type="checkbox" data-check="google"><span class="box"></span>Google is connected</label>
+</div>
+</section>
+
+<!-- 6 -->
+<section class="step" id="nbo-s6" data-s="6">
+<div class="step-h"><span class="num">06</span><div>
+<h2>Connect Facebook and Instagram</h2>
+<p>So Facebook and Instagram messages and lead forms come straight into your CRM.</p>
+<span class="time"><i data-ic="clock"></i>About 3 min</span>
+</div></div>
+<div class="item" data-item="meta">
+<div class="item-b" style="padding-top:16px">
+<p class="why">In your CRM: <span class="crumb">Settings</span> &rsaquo; <span class="crumb">Integrations</span>.</p>
+<a class="go" data-deep="settings/integrations" href="#" target="_blank" rel="noopener" hidden><i data-ic="server"></i>Open Integrations</a>
+<ol class="path">
+<li>Find <kbd>Facebook &amp; Instagram</kbd> and click <kbd>Connect</kbd>.</li>
+<li>Log in to Facebook. When it asks, pick your business <b>Page</b> and your <b>Instagram</b> account, and leave every permission switched on.</li>
+<li>Back in the CRM, choose your Page from the list and save.</li>
+</ol>
+<div class="note"><i data-ic="info"></i><span><b>You don't need to give us Meta Business Manager access.</b> This connection is all we need. Nothing else to set up on Facebook.</span></div>
+</div>
+<label class="done-row"><input type="checkbox" data-check="meta"><span class="box"></span>Facebook and Instagram are connected</label>
+</div>
+</section>
+
+<!-- 7 -->
+<section class="step" id="nbo-s7" data-s="7">
+<div class="step-h"><span class="num">07</span><div>
+<h2>Add Hagen as a Manager on Google</h2>
+<p>So we can fix your Google profile, post every week and answer reviews. You stay the owner, and you can remove us any time.</p>
+<span class="time"><i data-ic="clock"></i>About 2 min</span>
+</div></div>
+<div class="item" data-item="gbp">
+<div class="item-b" style="padding-top:16px">
+<a class="go" href="https://business.google.com/locations" target="_blank" rel="noopener"><i data-ic="pin"></i>Open Google Business Profile</a>
+<ol class="path">
+<li>Sign in with the Google account that owns your profile. Pick <kbd data-nbo="business">your business</kbd>.</li>
+<li>Click the <kbd>&#8942;</kbd> (three dots) menu, then <kbd>Business Profile settings</kbd>.</li>
+<li>Click <kbd>People and access</kbd> (older screens say <kbd>Managers</kbd>), then <kbd>Add</kbd>.</li>
+<li>Type <span class="mono" data-nbo="email">hagen@neoboltsystems.com</span> <button class="mini" type="button" data-copy="email"><i data-ic="copy"></i>Copy</button></li>
+<li>Set access to <kbd>Manager</kbd> (not Owner), then <kbd>Invite</kbd>.</li>
+</ol>
+<p class="help">On your phone instead: Google Maps app, tap your profile photo, <kbd>Your Business Profiles</kbd>, your business, three dots, <kbd>Business Profile settings</kbd>, <kbd>People and access</kbd>.</p>
+</div>
+<label class="done-row"><input type="checkbox" data-check="gbp"><span class="box"></span>I invited hagen@neoboltsystems.com as Manager</label>
+</div>
+</section>
+
+<!-- 8 -->
+<section class="step" id="nbo-s8" data-s="8">
+<div class="step-h"><span class="num">08</span><div>
+<h2>Connect anything else you use</h2>
+<p>Optional. Only the tools you already use for the business.</p>
+<span class="time"><i data-ic="clock"></i>About 5 min</span>
+</div></div>
+<div class="item" data-item="other">
+<div class="item-b" style="padding-top:16px">
+<p class="why">In your CRM: <span class="crumb">Settings</span> &rsaquo; <span class="crumb">Integrations</span>. Find the tool, click <kbd>Connect</kbd>, log in.</p>
+<a class="go" data-deep="settings/integrations" href="#" target="_blank" rel="noopener" hidden><i data-ic="server"></i>Open Integrations</a>
+<ul class="plain">
+<li><i data-ic="ok"></i><span><b>QuickBooks</b>: invoices and payments stay in sync.</span></li>
+<li><i data-ic="ok"></i><span><b>Stripe</b>: send estimates and take card payments from the app. (Under <span class="crumb">Payments</span> &rsaquo; <span class="crumb">Integrations</span> on some accounts.)</span></li>
+<li><i data-ic="ok"></i><span><b>Anything else</b> you see there and use (for example Zoom or Yelp). Not sure? Leave it and tell us.</span></li>
+</ul>
+</div>
+<label class="done-row"><input type="checkbox" data-check="other"><span class="box"></span>Done, or I don't use other tools</label>
+</div>
+</section>
+
+<!-- 9 -->
+<section class="step" id="nbo-s9" data-s="9">
+<div class="step-h"><span class="num">09</span><div>
+<h2>Pick your post style</h2>
+<p>How your Facebook, Instagram and Google posts should look. Tap the one that feels most like you. You can change it later.</p>
+<span class="time"><i data-ic="clock"></i>About 1 min</span>
+</div></div>
+<div class="item" data-item="style">
+<div class="item-b" style="padding-top:16px">
+<div class="styles" role="radiogroup" aria-label="Post style">
+
+<label class="sty mx">
+<input type="radio" name="post_style" value="Maximalist">
+<div class="post" aria-hidden="true">
+<div class="post-h"><i style="background:linear-gradient(135deg,#ff3d7f,#ffd400)"></i><div><span data-nbo="business">Your Business</span><small>Your town</small></div></div>
+<div class="art"><div class="drip"></div><div class="burst"></div>
+<div class="big">Fresh coat.<span>Big glow.</span></div>
+<div class="roller"></div>
+<div class="stick"><b>BOOK</b>your color<br>consult</div></div>
+<div class="post-c"><span class="likes">248 likes</span><b data-nbo="business">Your Business</b> Whole house, zero mess. Your neighbors WILL ask who did it.</div>
+</div>
+<div class="sty-name">Maximalist<span class="box"></span></div>
+<p class="sty-desc">Bold colors, big type, lots going on. Stops the scroll.</p>
+</label>
+
+<label class="sty mn">
+<input type="radio" name="post_style" value="Minimalist">
+<div class="post" aria-hidden="true">
+<div class="post-h"><i style="background:#d8d2c4"></i><div><span data-nbo="business">Your Business</span><small>Original audio</small></div></div>
+<div class="art"><div class="wall"></div><div class="tape"></div>
+<div class="cap"><span><b>Living room</b><br>Two coats, sharp lines.</span><span>01 / 06</span></div></div>
+<div class="post-c"><span class="likes">96 likes</span><b data-nbo="business">Your Business</b> Quiet colors, clean edges. Swipe for the before.</div>
+</div>
+<div class="sty-name">Minimalist<span class="box"></span></div>
+<p class="sty-desc">White space, one clean photo, small type. Calm and premium.</p>
+</label>
+
+<label class="sty cl">
+<input type="radio" name="post_style" value="Classic / Hometown">
+<div class="post" aria-hidden="true">
+<div class="post-h"><i style="background:#b8432f"></i><div><span data-nbo="business">Your Business</span><small>Your town</small></div></div>
+<div class="art"><div class="half before"><span class="lab">BEFORE</span></div><div class="half after"><span class="lab">AFTER</span></div>
+<div class="badge">Your<br>logo<br>here</div>
+<div class="line">Done right, the first time.<small>Local &amp; family owned</small></div></div>
+<div class="post-c"><span class="likes">173 likes</span><b data-nbo="business">Your Business</b> Same house, one week apart. Thanks for trusting us with your home.</div>
+</div>
+<div class="sty-name">Classic / Hometown<span class="box"></span></div>
+<p class="sty-desc">Warm and trustworthy. Your logo badge, before and after.</p>
+</label>
+
+</div>
+<p class="help" style="margin-top:12px">These are made-up examples to show the look. Your posts use your real job photos.</p>
+</div>
+<label class="done-row"><input type="checkbox" data-check="style"><span class="box"></span>Picked my style</label>
+</div>
+</section>
+
+<!-- 10 -->
+<section class="step" id="nbo-s10" data-s="10">
+<div class="step-h"><span class="num">10</span><div>
+<h2>Send your logo, photos and lists</h2>
+<p>Paste a link for each one. Easiest: put them in a shared Google Drive, Dropbox or iCloud folder. Or just text them to Hagen and write "texted".</p>
+<span class="time"><i data-ic="clock"></i>About 10 min</span>
+</div></div>
+<div class="item" data-item="uploads">
+<div class="item-b" style="padding-top:6px" id="nbo-uploads"></div>
+<div class="item-b">
+<div class="note"><i data-ic="lock"></i><span><b>Never type a password on this page.</b> For your domain, either add <span class="mono">hagen@neoboltsystems.com</span> as a user at your registrar (GoDaddy calls it <kbd>Delegate Access</kbd>), or tell us and we'll set it up together on a quick call.</span></div>
+</div>
+<label class="done-row"><input type="checkbox" data-check="uploads"><span class="box"></span>Sent, or I've texted them to Hagen</label>
+</div>
+</section>
+
+<!-- 11 -->
+<section class="step" id="nbo-s11" data-s="11">
+<div class="step-h"><span class="num">11</span><div>
+<h2>You're done. Text Hagen.</h2>
+<p>Send everything, then one quick text so we know to start.</p>
+</div></div>
+<div class="final">
+<h3>1. Send it all</h3>
+<p>This sends your answers, your post style, your links and which steps you ticked.</p>
+<button class="btn" type="button" data-act="submit"><i data-ic="ok"></i>Send everything to Hagen</button>
+<p class="status" data-status role="status" aria-live="polite"></p>
+<h3 style="margin-top:18px">2. Text Hagen</h3>
+<p>Something like:</p>
+<div class="textmsg" id="nbo-donemsg">Hi Hagen, I finished the setup page.</div>
+<button class="mini" type="button" data-copy="doneMsg"><i data-ic="copy"></i>Copy text</button>
+</div>
+<div class="item" data-item="texted" style="margin-top:14px">
+<label class="done-row"><input type="checkbox" data-check="texted"><span class="box"></span>I texted Hagen</label>
+</div>
+<div class="card" style="margin-top:14px">
+<p class="sub" style="margin-top:0">What happens next</p>
+<ol class="tl">
+<li><span class="when">Next 1 to 3 days</span><b>We build</b><p>Your website, quote form, lead follow-up and review requests, set up in your CRM. Your Google profile cleaned up.</p></li>
+<li><span class="when">Same week</span><b>Texting gets filed</b><p>Hagen files your texting registration with the phone carriers. Approval usually takes a few business days, sometimes longer. Until then you get an app alert for every missed call.</p></li>
+<li><span class="when">Before anything goes live</span><b>You check it</b><p>We send you the site and your first posts to look over. Nothing goes out in your name without your OK.</p></li>
+<li><span class="when">Then</span><b>We switch it on</b><p>Site live on your domain, missed-call text-back, review requests after every job, posts going out every week.</p></li>
+</ol>
+</div>
+<div class="card" style="margin-top:14px">
+<p class="sub" style="margin-top:0">What we never do</p>
+<ul class="plain">
+<li><i data-ic="lock"></i><span>Message your customers, or post as you, without your OK first.</span></li>
+<li><i data-ic="lock"></i><span>Take ownership of anything. Your Google profile, website, social accounts and customer list stay yours.</span></li>
+<li><i data-ic="lock"></i><span>Share or sell your logins or customer data.</span></li>
+</ul>
+</div>
+</section>
+
+<p class="see">Let's get you more jobs.</p>
+<p class="sig">Hagen, Neobolt Systems</p>
+<div class="foot">Stuck on any step? Text Hagen, or email <a href="mailto:hagen@neoboltsystems.com" data-nbo-href="email" data-nbo="email">hagen@neoboltsystems.com</a>. Skip a step you can't do and keep going. We'll sort it out together. Your progress is saved on this device only.<br>&copy; Neobolt Systems LLC</div>
+</div>
+</form>
+</div>
+<script>
+(function() {
+/* ================= CONFIG ================= */
+var CONFIG = {
+  EMAIL: "hagen@neoboltsystems.com",
+  SUPABASE_URL: "https://gzlmxyqgbulnwsoxqppx.supabase.co/rest/v1/onboarding_responses", /* insert-only for anon */
+  SUPABASE_KEY: "sb_publishable_sPc5lGDw-r-j46Teqp0kbw_acCw19_R", /* PUBLISHABLE key only. Never put any other key here. */
+  CRM_BASE: "https://app.gohighlevel.com/v2/location/",
+  NAME_MAX: 40, BIZ_MAX: 70
+};
+/* Per client, from the link: ?name=Nathan&biz=Temple%20Painting&plan=20 (&loc=<GHL location id>&site=<domain>) */
+function param(k, max) {
+  var v = "";
+  try { v = new URLSearchParams(window.location.search).get(k) || ""; } catch (e) { v = ""; }
+  v = String(v).replace(/[\u0000-\u001f\u007f<>{}\\`"']/g, "").replace(/\s+/g, " ").trim();
+  return v.slice(0, max).trim();
+}
+var first = param("name", CONFIG.NAME_MAX), biz = param("biz", CONFIG.BIZ_MAX);
+var planRaw = param("plan", 8).replace(/\D/g, "");
+var loc = param("loc", 40).replace(/[^A-Za-z0-9]/g, "");
+var site = param("site", 80).replace(/^https?:\/\//i, "").replace(/[^A-Za-z0-9.\-]/g, "");
+var PLAN15 = planRaw === "15";
+var slug = biz.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40).replace(/-+$/, "") || "client";
+var CLIENT = { slug: slug, first: first, hasBiz: !!biz, business: biz || "your business", plan: planRaw, email: CONFIG.EMAIL };
+
+var ICON = {
+building: '<path d="M4 21V5.5A1.5 1.5 0 0 1 5.5 4h7A1.5 1.5 0 0 1 14 5.5V21M14 10h4.5A1.5 1.5 0 0 1 20 11.5V21M2.5 21h19M7.5 8h3M7.5 12h3M7.5 16h3"/>',
+phone: '<path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.7 2.5C9.6 19 5 14.4 4.5 8.2A2.5 2.5 0 0 1 5 3.5z"/>',
+pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/>',
+tag: '<path d="M3 12.2V4.5A1.5 1.5 0 0 1 4.5 3h7.7l8.3 8.3a1.5 1.5 0 0 1 0 2.1l-7.1 7.1a1.5 1.5 0 0 1-2.1 0z"/><circle cx="8" cy="8" r="1.6"/>',
+star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/>',
+globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/>',
+users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.8a3.5 3.5 0 0 1 0 6.4M18 20h3.5a6 6 0 0 0-3.4-5.4"/>',
+image: '<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
+chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+track: '<rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 8.5h8M8 12.5h8M8 16.5h4"/>',
+info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/>',
+share: '<circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M8.4 10.8l7.2-3.6M8.4 13.2l7.2 3.6"/>',
+server: '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
+clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+mail: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+copy: '<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>',
+ok: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+okc: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.5 9.5"/>',
+lock: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
+alert: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/>'
+};
+var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true">'+ICON.ok+"</svg>";
+var CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+function svg(name) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">'+ICON[name]+"</svg>"; }
+
+/* ===== Step 1 questions: copied from /welcome by build.py (same keys, same Supabase answers) ===== */
+var GROUPS = [
+{id:"biz",icon:"building",title:"Your business",sub:"For the carrier texting registration. Must match your IRS or state records.",fields:[
+{k:"legal_name",l:"Legal business name",t:"text",r:1,h:"Exactly as on your EIN letter or state filing, including LLC if you have one."},
+{k:"dba",l:"Name customers see (if different)",t:"text"},
+{k:"entity",l:"Business type",t:"select",r:1,o:["LLC","Corporation","Sole proprietor (no EIN)","Partnership","Not sure"]},
+{k:"ein",l:"EIN (9 digits)",t:"text",h:"Leave blank if you're a sole proprietor. Used once, only for the carrier registration."},
+{k:"address",l:"Business address on your IRS records",t:"textarea",r:1,h:"Street, city, state, ZIP. Carriers reject the registration if it doesn't match."},
+{k:"address_public",l:"Do customers come to this address?",t:"radio",o:["No, keep it hidden on Google (we go to them)","Yes, show it"]},
+{k:"owner_name",l:"Your full name",t:"text",r:1,half:1},
+{k:"owner_title",l:"Your title",t:"text",p:"Owner",half:1},
+{k:"owner_email",l:"Best email",t:"email",r:1,half:1,h:"Your app invite goes here."},
+{k:"owner_mobile",l:"Your mobile",t:"tel",r:1,half:1,h:"Gets the carrier verification text."}
+]},
+{id:"phone",icon:"phone",title:"Phones",sub:"So no call gets lost while we switch things on.",fields:[
+{k:"public_phone",l:"Which number should customers see everywhere?",t:"radio",r:1,o:["My cell","My main business line (the one on Google)","A new local number from Neobolt","Not sure, let's decide on the call"]},
+{k:"numbers",l:"Every number you use for the business, and what each one is for",t:"textarea",r:1,p:"e.g. 555-xxx-xxxx: my cell, Facebook\n555-xxx-xxxx: Google and website"},
+{k:"provider",l:"Who provides those numbers?",t:"check",cols:1,o:["Verizon","AT&T","T-Mobile","Google Voice","Grasshopper","Quo (OpenPhone)","RingCentral","Other or not sure"]},
+{k:"phone_app",l:"Do you take business calls or texts in an app today?",t:"radio",o:["No, just my cell","Yes, and I want to keep using it","Yes, but happy to switch to LeadConnector"]},
+{k:"number_plan",l:"How should calls reach your new system?",t:"radio",r:1,h:"Forwarding is quick and nothing changes for your customers. Moving the number takes 2 to 4 weeks.",o:["Forward calls I miss (my number stays exactly as is)","Move my number into the new system","Not sure, explain it on the call"]},
+{k:"who_answers",l:"Who answers the phone, and should calls ring your cell first?",t:"text"}
+]},
+{id:"area",icon:"pin",title:"Hours and area",sub:"Goes on Google, your site and every page we build.",fields:[
+{k:"hours",l:"Business hours",t:"textarea",r:1,p:"e.g. Mon to Fri 7am to 5pm, Sat 8am to 2pm"},
+{k:"same_day",l:"Do you take weekend or same-day jobs?",t:"radio",o:["Yes","Sometimes","No"]},
+{k:"towns",l:"Towns you serve, most important first",t:"textarea",r:1,p:"e.g. your home town first, then the next 4"},
+{k:"towns_no",l:"Anywhere you don't want work from, or your max drive",t:"text"}
+]},
+{id:"services",icon:"tag",title:"Services and prices",sub:"Prices are never shown publicly without your OK.",fields:[
+{k:"services",l:"Services you offer, main ones first",t:"textarea",r:1,p:"One per line"},
+{k:"prices",l:"Typical price range for each service",t:"textarea",r:1,p:"e.g. Service A: low to high\nService B: low to high",h:"Rough is fine."},
+{k:"minimum",l:"Minimum job or trip charge",t:"text"},
+{k:"quote_how",l:"How you usually price a job",t:"check",o:["On-site visit","From photos or a text","Over the phone","Instant price online"]},
+{k:"best_jobs",l:"Which jobs do you want more of?",t:"textarea",r:1,h:"Best money for your time. We push these first."},
+{k:"avoid_jobs",l:"Jobs you don't want",t:"text"}
+]},
+{id:"offers",icon:"star",title:"Offers and reviews",sub:"So campaigns and follow-ups have something real to say.",fields:[
+{k:"offer_now",l:"Any offer or special running now?",t:"textarea",p:"e.g. a free add-on with any full job"},
+{k:"offers_ok",l:"Which offers would you run?",t:"check",cols:1,o:["Seasonal special","Bundle (two services together)","Yearly reminder for past customers","Referral reward","First-time customer discount","Free add-on","Commercial or HOA contract rate","None for now"]},
+{k:"referral_reward",l:"What would you give for a referral?",t:"text",p:"e.g. money off their next job",h:"Rewards are fine for referrals. Never for reviews: Google bans that."},
+{k:"review_link",l:"Your Google review link, if you know it",t:"url",h:"Search your business on Google, tap Reviews, then Get more reviews, and copy the link. Not sure? Skip it, we'll find it."},
+{k:"review_replies",l:"How should we handle review replies?",t:"radio",o:["Reply in my voice, show me the bad ones first","Draft every reply, I approve first"]},
+{k:"unhappy",l:"When a customer is unhappy, who calls them?",t:"text"},
+{k:"past_customers",l:"Do you have a list of past customers?",t:"radio",h:"Past customers are the fastest jobs. We send them a reminder with your OK.",o:["Yes, in a spreadsheet","Yes, in my CRM or invoicing app","Only in my phone contacts","No"]}
+]},
+{id:"web",icon:"globe",title:"Website and tools",sub:"So we fix what's broken and plug into what you already use.",fields:[
+{k:"website",l:"Your website address",t:"url"},
+{k:"site_builder",l:"Who built your website?",t:"text"},
+{k:"site_login",l:"Who has the website login?",t:"radio",r:1,o:["I do","The person or company who built it","Not sure"]},
+{k:"builder_contact",l:"Their name and email, if they have it",t:"text"},
+{k:"domain_at",l:"Where is your domain registered?",t:"select",o:["GoDaddy","Namecheap","Squarespace / Google Domains","Cloudflare","Wix","My web person handles it","Don't know","Other"]},
+{k:"quote_today",l:"How does a customer get a quote from you today, step by step?",t:"textarea",r:1,p:"e.g. They call or text me, I go look, I text a price, they reply yes"},
+{k:"tools",l:"Tools you use now",t:"check",cols:1,o:["Jobber","Housecall Pro","QuoteIQ","ResponsiBid","Markate","QuickBooks","Square","Stripe","Google Sheets / Excel","Paper or notes app","None","Other"]},
+{k:"payments",l:"Want to send estimates and take card payments from the new app?",t:"radio",h:"If yes, bring your Stripe login to the kickoff call (or we set one up in your name).",o:["Yes","No, I'll keep my current way","Maybe later"]},
+{k:"google_owner",l:"Which Google account (email) owns your Google profile?",t:"email"}
+]},
+{id:"leads",icon:"users",title:"Leads and team",sub:"So every new lead reaches the right person, fast.",fields:[
+{k:"lead_alerts",l:"How do you want new leads delivered?",t:"check",r:1,o:["App notification (LeadConnector)","Text to my cell","Email","Ring my phone"]},
+{k:"lead_alerts_to",l:"Cell and email for lead alerts",t:"text",h:"If it's not the ones above."},
+{k:"response_time",l:"How fast can you usually call a new lead back?",t:"select",o:["Within 5 minutes","Within an hour","Same day","Next day"]},
+{k:"team",l:"Anyone else who needs a login?",t:"textarea",p:"Name, role, email, mobile"}
+]},
+{id:"brand",icon:"image",title:"Brand and content",sub:"Real photos beat stock every time.",fields:[
+{k:"colors",l:"Brand colors",t:"text",p:"e.g. navy and orange, or \"match my logo\""},
+{k:"social",l:"Your social pages",t:"textarea",p:"Facebook, Instagram, TikTok, YouTube, Nextdoor, Yelp"},
+{k:"voice",l:"How you talk to customers",t:"textarea",h:"Words you use, words you hate. A voice memo link is perfect."},
+{k:"different",l:"What makes you different?",t:"textarea",p:"e.g. owner on every job, insured, years in business"},
+{k:"competitors",l:"Your main competitors",t:"textarea",p:"Names or websites"}
+]},
+{id:"goals",icon:"chart",title:"Numbers and goals",sub:"Your starting point. This is how we measure every extra job.",fields:[
+{k:"avg_job",l:"Average job value (in dollars)",t:"number",r:1,half:1,n15:1},
+{k:"jobs_month",l:"Jobs per month right now",t:"number",r:1,half:1,n15:1},
+{k:"close_rate",l:"Out of 10 quotes, how many book?",t:"select",r:1,half:1,o:["1","2","3","4","5","6","7","8","9","10","Not sure"]},
+{k:"capacity",l:"Most jobs per month you could handle",t:"number",r:1,half:1},
+{k:"sources_now",l:"Where do your jobs come from today?",t:"textarea",r:1,n15:1,p:"e.g. mostly word of mouth, some repeat customers, a few from Google"},
+{k:"seasons",l:"Busiest and slowest months",t:"text"},
+{k:"goal_90",l:"In 90 days, what would make this a win?",t:"textarea",r:1},
+{k:"anything_else",l:"Anything else we should know?",t:"textarea"}
+]}
+];
+var TRACK = {id:"track",icon:"track",title:"How we track new jobs",sub:"So we only count the new jobs we bring you.",fields:[
+{k:"jobs_channels",l:"How do you get jobs today?",t:"check",r:1,cols:1,o:["Word of mouth","Repeat customers","Google","Facebook or Instagram","Nextdoor","Yelp","Angi, Thumbtack or similar","Truck, yard signs or flyers","Other"]},
+{k:"jobs_month",l:"Roughly how many jobs a month, before we start?",t:"number",r:1,half:1,h:"Your starting line. A rough number is fine."},
+{k:"avg_job",l:"Average job value (in dollars)",t:"number",r:1,half:1,h:"Rough is fine."},
+{k:"job_log",l:"Where do you log your jobs?",t:"check",r:1,o:["QuoteIQ","Jobber","Housecall Pro","Paper","Other"]},
+{k:"mark_source",l:"Will you mark where each job came from when you log it?",t:"radio",r:1,h:"One word per job, like \"Google\" or \"referral\". It keeps the count fair both ways.",o:["Yes, on every job","Yes, if it's quick","Not sure, show me on the kickoff"]},
+{k:"invoicing",l:"What do you send invoices with?",t:"select",o:["QuickBooks","Jobber","Housecall Pro","QuoteIQ","Square","Stripe","Paper or by hand","Other"]},
+{k:"review_when",l:"Best day and person for the monthly new-jobs review",t:"text",r:1,p:"e.g. first Monday of the month, me"}
+]};
+
+if (PLAN15) {
+  GROUPS.forEach(function(g) { g.fields = g.fields.filter(function(f) { return !f.n15; }); });
+  GROUPS.push(TRACK);
+}
+/* ===== Step 10 links ===== */
+var UPLOADS = [
+{k:"logo_link",l:"Your logo",t:"text",p:"Link, or \"texted\"",h:"The best file you have. A photo of your truck door or business card works too."},
+{k:"photos_link",l:"20 or more job photos",t:"text",p:"Shared folder link, or \"texted\"",h:"Before and after, finished rooms and houses, you and your crew on the job. Phone pictures are perfect."},
+{k:"customers_link",l:"Your past-customer list",t:"text",p:"Link to a spreadsheet or export, or \"texted\"",h:"Name, phone, email, and roughly when you did the job. Export it from your invoicing app or a spreadsheet."},
+{k:"domain",l:"Your website address (domain)",t:"text",p:"e.g. yourbusiness.com"},
+{k:"registrar",l:"Where did you buy your domain?",t:"select",o:["GoDaddy","Namecheap","Squarespace / Google Domains","Cloudflare","Wix","Hostinger","Bluehost","My web person handles it","Don't know","Other"]},
+{k:"domain_access",l:"How can we get access to point it at your new site?",t:"radio",o:["I added hagen@neoboltsystems.com as a user or delegate","My web person will do it (I'll send their contact below)","Let's do it together on a quick call","Don't know"]},
+{k:"web_person",l:"Your web person's name and email (if you have one)",t:"text"}
+];
+var EXTRA = [{k:"post_style",t:"radio"}];
+
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function(c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+var KEY = "nbsetup:"+CLIENT.slug+":v1";
+function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+function save(st) { try { localStorage.setItem(KEY, JSON.stringify(st)); return true; } catch (e) { return false; } }
+
+function fieldHTML(f) {
+  var id = "nbo-f-"+f.k, req = f.r ? '<span class="req" aria-hidden="true">*</span>' : "";
+  var help = f.h ? '<span class="help" id="'+id+'-h">'+esc(f.h)+"</span>" : "";
+  var desc = f.h ? ' aria-describedby="'+id+'-h"' : "";
+  var cls = "f"+(f.half ? " half" : "");
+  if (f.t === "radio" || f.t === "check") {
+    var type = f.t === "radio" ? "radio" : "checkbox";
+    var items = (f.o || []).map(function(o, i) {
+      return '<label class="opt '+type+'"><input type="'+type+'" name="'+f.k+'" value="'+esc(o)+'" id="'+id+"-"+i+'"><span class="box">'+CHECK+"</span><span>"+esc(o)+"</span></label>";
+    }).join("");
+    return '<fieldset class="'+cls+'" data-k="'+f.k+'"'+desc+"><legend>"+esc(f.l)+req+"</legend>"+help+'<div class="opts'+(f.cols ? " cols" : "")+'">'+items+"</div></fieldset>";
+  }
+  var ph = f.p ? ' placeholder="'+esc(f.p)+'"' : "", input;
+  if (f.t === "textarea") input = '<textarea id="'+id+'" name="'+f.k+'"'+ph+desc+"></textarea>";
+  else if (f.t === "select") input = '<select id="'+id+'" name="'+f.k+'"'+desc+'><option value="">Choose one</option>'+f.o.map(function(o) { return '<option value="'+esc(o)+'">'+esc(o)+"</option>"; }).join("")+"</select>";
+  else {
+    var extra = f.t === "number" ? ' inputmode="decimal" min="0"' : f.t === "tel" ? ' inputmode="tel" autocomplete="tel"' : f.t === "email" ? ' inputmode="email" autocomplete="email"' : f.t === "url" ? ' inputmode="url"' : "";
+    input = '<input type="'+f.t+'" id="'+id+'" name="'+f.k+'"'+ph+desc+extra+">";
+  }
+  return '<div class="'+cls+'" data-k="'+f.k+'"><label for="'+id+'">'+esc(f.l)+req+"</label>"+help+input+"</div>";
+}
+function render(root) {
+  $("#nbo-groups", root).innerHTML = GROUPS.map(function(g, gi) {
+    return '<details class="grp'+(g.id === "track" ? " p15" : "")+'" data-g="'+g.id+'"'+(gi === 0 ? " open" : "")+'><summary><span class="gi">'+svg(g.icon)+'</span><span class="gt"><b>'+esc(g.title)+
+      "</b><small>"+esc(g.sub)+'</small></span><span class="gc" data-gc="'+g.id+'"></span>'+CHEV+'</summary><div class="gbody">'+g.fields.map(fieldHTML).join("")+"</div></details>";
+  }).join("");
+  $("#nbo-uploads", root).innerHTML = UPLOADS.map(fieldHTML).join("");
+}
+function getVal(form, f) {
+  if (f.t === "check") return $$('input[name="'+f.k+'"]:checked', form).map(function(i) { return i.value; }).join(", ");
+  if (f.t === "radio") { var c = $('input[name="'+f.k+'"]:checked', form); return c ? c.value : ""; }
+  var el = form.elements[f.k]; return el ? String(el.value || "").trim() : "";
+}
+function setVal(form, f, v) {
+  if (v == null || v === "") return;
+  if (f.t === "check") { var parts = String(v).split(", "); $$('input[name="'+f.k+'"]', form).forEach(function(i) { i.checked = parts.indexOf(i.value) > -1; }); return; }
+  if (f.t === "radio") { $$('input[name="'+f.k+'"]', form).forEach(function(i) { i.checked = i.value === v; }); return; }
+  var el = form.elements[f.k]; if (el) el.value = v;
+}
+function groupFields() { var a = []; GROUPS.forEach(function(g) { g.fields.forEach(function(f) { a.push(f); }); }); return a; }
+function allFields() { return groupFields().concat(UPLOADS, EXTRA); }
+function collect(form) { var out = {}; allFields().forEach(function(f) { out[f.k] = getVal(form, f); }); return out; }
+
+var STEPS = [
+  {n:1,c:"biz",t:"About you"},{n:2,c:"crm",t:"Log in"},{n:3,c:"social",t:"Social"},{n:4,c:"phone",t:"Phone"},
+  {n:5,c:"google",t:"Google"},{n:6,c:"meta",t:"Facebook"},{n:7,c:"gbp",t:"Manager"},{n:8,c:"other",t:"Other tools"},
+  {n:9,c:"style",t:"Post style"},{n:10,c:"uploads",t:"Photos"},{n:11,c:"texted",t:"Done"}
+];
+var CHECKS = STEPS.map(function(s) { return s.c; });
+
+function answersText(ans, checks) {
+  var lines = ["Setup answers: "+(CLIENT.hasBiz ? CLIENT.business : "(business name below)"), "Client ref: "+CLIENT.slug, "Plan ref: "+(CLIENT.plan || "not set"), ""];
+  lines.push("== STEPS ==");
+  STEPS.forEach(function(s) { lines.push(s.n+". "+s.t+": "+(checks[s.c] ? "done" : "not yet")); });
+  lines.push("");
+  GROUPS.forEach(function(g) {
+    lines.push("== "+g.title.toUpperCase()+" ==");
+    g.fields.forEach(function(f) { lines.push(f.l+": "+(ans[f.k] ? ans[f.k] : "-")); });
+    lines.push("");
+  });
+  lines.push("== POST STYLE ==", ans.post_style || "-", "");
+  lines.push("== LOGO, PHOTOS, LISTS, DOMAIN ==");
+  UPLOADS.forEach(function(f) { lines.push(f.l+": "+(ans[f.k] ? ans[f.k] : "-")); });
+  return lines.join("\n");
+}
+function copyText(text, done) {
+  function fallback() {
+    try {
+      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); var ok = document.execCommand("copy"); document.body.removeChild(ta); done(ok);
+    } catch (e) { done(false); }
+  }
+  try {
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function() { done(true); }, fallback);
+    else fallback();
+  } catch (e) { fallback(); }
+}
+
+function init(root) {
+  if (!root || root.getAttribute("data-ready") === "1") return;
+  root.setAttribute("data-ready", "1");
+  $$("i[data-ic]", root).forEach(function(el) { var t = document.createElement("span"); t.innerHTML = svg(el.getAttribute("data-ic")); el.parentNode.replaceChild(t.firstChild, el); });
+  $("#nbo-pills", root).innerHTML = STEPS.map(function(s) {
+    return '<a class="pill" href="#nbo-s'+s.n+'" data-step="'+s.n+'"><span class="d"><em>'+s.n+"</em>"+CHECK+"</span>"+esc(s.t)+"</a>";
+  }).join("");
+  $$(".box:empty", root).forEach(function(el) { el.innerHTML = CHECK; });
+  $$("[data-nbo]", root).forEach(function(el) { var v = CLIENT[el.getAttribute("data-nbo")]; if (v) el.textContent = v; });
+  $$("[data-nbo-href]", root).forEach(function(el) { el.href = "mailto:"+CLIENT.email; });
+  if (CLIENT.hasBiz) { var pre = $("#nbo-pre", root); pre.textContent = CLIENT.business; pre.hidden = false; }
+  if (CLIENT.first) {
+    var hi = $("#nbo-hi", root), em = document.createElement("span");
+    em.className = "em"; em.textContent = CLIENT.first;
+    hi.textContent = "Let's get you set up, "; hi.appendChild(em); hi.appendChild(document.createTextNode("."));
+  }
+  if (loc) $$("a[data-deep]", root).forEach(function(a) { a.href = CONFIG.CRM_BASE+loc+"/"+a.getAttribute("data-deep"); a.hidden = false; });
+  $("#nbo-plan", root).value = CLIENT.plan;
+  $("#nbo-slug", root).value = CLIENT.slug;
+  var doneMsg = "Hi Hagen, it's "+(CLIENT.first || "me")+(CLIENT.hasBiz ? " from "+CLIENT.business : "")+". I finished the setup page.";
+  $("#nbo-donemsg", root).textContent = doneMsg;
+
+  render(root);
+  var form = $("#nbo-form", root), st = load();
+  st.answers = st.answers || {}; st.checks = st.checks || {};
+  var PREFILL = { dba: CLIENT.hasBiz ? CLIENT.business : "", domain: site, website: site ? "https://"+site : "" };
+  allFields().forEach(function(f) {
+    var saved = st.answers[f.k];
+    setVal(form, f, saved != null && saved !== "" ? saved : PREFILL[f.k]);
+  });
+
+  function counts() {
+    var ans = collect(form);
+    GROUPS.forEach(function(g) {
+      var n = 0; g.fields.forEach(function(f) { if (ans[f.k]) n++; });
+      var el = $('[data-gc="'+g.id+'"]', root); if (el) { el.textContent = n+"/"+g.fields.length; el.classList.toggle("full", n === g.fields.length); }
+    });
+  }
+  function paint() {
+    var done = 0;
+    STEPS.forEach(function(s) {
+      var on = !!st.checks[s.c]; if (on) done++;
+      var cb = $('input[data-check="'+s.c+'"]', root); if (cb) cb.checked = on;
+      var it = $('[data-item="'+s.c+'"]', root); if (it) it.classList.toggle("done", on);
+      var p = $('.pill[data-step="'+s.n+'"]', root); if (p) p.classList.toggle("done", on);
+      var sec = $("#nbo-s"+s.n, root); if (sec) sec.classList.toggle("done", on);
+    });
+    $("#nbo-count", root).textContent = done+" of "+STEPS.length+" done";
+    var pct = Math.round(done / STEPS.length * 100), bar = $("#nbo-bar", root);
+    bar.setAttribute("aria-valuenow", pct); bar.firstElementChild.style.width = pct+"%";
+    $("#nbo-track", root).classList.toggle("complete", done === STEPS.length);
+  }
+  var t, savedEl = $("#nbo-saved", root);
+  function persist() {
+    clearTimeout(t);
+    t = setTimeout(function() {
+      st.answers = collect(form);
+      savedEl.textContent = save(st) ? "Saved on this device." : "Couldn't save on this device. Send your answers before you close the page.";
+    }, 400);
+    counts();
+  }
+  form.addEventListener("input", persist);
+  form.addEventListener("change", function(e) {
+    var c = e.target && e.target.getAttribute && e.target.getAttribute("data-check");
+    if (c) { st.checks[c] = !!e.target.checked; save(st); paint(); return; }
+    if (e.target && e.target.name === "post_style" && e.target.checked) { st.checks.style = true; paint(); }
+    persist();
+  });
+
+  var statuses = $$("[data-status]", root), lastStatus = statuses[0];
+  function say(msg, warn) { lastStatus.innerHTML = msg; lastStatus.classList.toggle("warn", !!warn); }
+  function missing() {
+    var ans = collect(form), miss = [];
+    $$(".f.miss", root).forEach(function(el) { el.classList.remove("miss"); });
+    groupFields().forEach(function(f) {
+      if (f.r && !ans[f.k]) { miss.push(f); var el = $('[data-k="'+f.k+'"]', root); if (el) el.classList.add("miss"); }
+    });
+    GROUPS.forEach(function(g) {
+      var gc = $('[data-gc="'+g.id+'"]', root);
+      if (gc) gc.classList.toggle("warn", g.fields.some(function(f) { return f.r && !ans[f.k]; }));
+    });
+    return miss;
+  }
+  function jumpTo(f) {
+    var el = $('[data-k="'+f.k+'"]', root); if (!el) return;
+    var d = el.closest("details.grp"); if (d) d.open = true;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    var inp = el.querySelector("input, select, textarea"); if (inp) setTimeout(function() { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 350);
+  }
+  var forceSend = false, forceSubmit = false;
+  root.addEventListener("click", function(e) {
+    var b = e.target.closest ? e.target.closest("[data-act], [data-copy], [data-jump]") : null;
+    if (!b || !root.contains(b)) return;
+    var sec = b.closest("section"); var s = sec ? $("[data-status]", sec) : null; if (s) lastStatus = s;
+    if (b.hasAttribute("data-copy")) {
+      var what = b.getAttribute("data-copy"), val = what === "doneMsg" ? doneMsg : CLIENT[what];
+      var label = b.innerHTML;
+      copyText(val, function(ok) { b.lastChild.textContent = ok ? "Copied" : "Press and hold to copy"; setTimeout(function() { b.innerHTML = label; }, 1800); });
+      return;
+    }
+    if (b.hasAttribute("data-jump")) { e.preventDefault(); var miss0 = missing(); if (miss0[0]) jumpTo(miss0[0]); return; }
+    var act = b.getAttribute("data-act");
+    st.answers = collect(form); save(st);
+    var text = answersText(st.answers, st.checks);
+    if (act === "copy") {
+      e.preventDefault();
+      copyText(text, function(ok) { say(ok ? "Copied. Paste it into a text or email to Hagen." : "Your browser blocked copying. Use the email button instead.", !ok); });
+      return;
+    }
+    if (act === "submit") {
+      e.preventDefault();
+      var missS = missing();
+      if (missS.length && !forceSubmit) {
+        forceSubmit = true;
+        say(missS.length+" required answer"+(missS.length > 1 ? "s are" : " is")+" still blank in step 1 (marked in orange). "+
+          '<a href="#" data-jump="1">Show me</a>, or tap Send again to send what you have.', true);
+        return;
+      }
+      forceSubmit = false;
+      if (b.disabled) return;
+      b.disabled = true; say("Sending...");
+      var steps = {}; CHECKS.forEach(function(c) { steps[c] = !!st.checks[c]; });
+      var answers = {}; Object.keys(st.answers).forEach(function(k) { answers[k] = st.answers[k]; });
+      answers.source = "setup page";
+      var payload = { client_slug: CLIENT.slug, first_name: CLIENT.first || null, business: CLIENT.hasBiz ? CLIENT.business : null,
+        plan: CLIENT.plan || null, answers: answers, steps_done: steps, user_agent: String(navigator.userAgent || "").slice(0, 200) };
+      var fail = function() {
+        b.disabled = false;
+        say("That didn't go through. Your answers are still saved here. <a href=\"#\" data-act=\"email\">Email them to Hagen instead</a>, or try again in a minute.", true);
+      };
+      try {
+        var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function() { if (ctl) ctl.abort(); }, 15000);
+        fetch(CONFIG.SUPABASE_URL, { method: "POST", signal: ctl ? ctl.signal : undefined,
+          headers: { apikey: CONFIG.SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+          body: JSON.stringify(payload) }).then(function(r) {
+            clearTimeout(to);
+            if (!r.ok) return fail();
+            b.disabled = false;
+            st.checks.biz = true; save(st); paint();
+            say("Got it, Hagen has it. Keep going down the page, and send again at the end.");
+          }, function() { clearTimeout(to); fail(); });
+      } catch (err) { fail(); }
+      return;
+    }
+    if (act === "email") {
+      e.preventDefault();
+      var miss = missing();
+      if (miss.length && !forceSend) {
+        forceSend = true;
+        say(miss.length+" required answer"+(miss.length > 1 ? "s are" : " is")+" still blank (marked in orange). "+
+          '<a href="#" data-jump="1">Show me</a>, or tap the email button again to send what you have.', true);
+        return;
+      }
+      forceSend = false;
+      var subject = "Setup answers: "+(CLIENT.hasBiz ? CLIENT.business : CLIENT.first || "new client");
+      var body = text;
+      if (encodeURIComponent(body).length > 7000) { copyText(text, function() {}); body = "My answers are copied to my clipboard. Pasting them below:\n\n"; }
+      say("Opening your email app. Hit send, then tick the box below.");
+      window.location.href = "mailto:"+CLIENT.email+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+    }
+  });
+  counts(); paint();
+}
+function boot() { init(document.getElementById("nbo-root")); }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+
+</script>
+</body></html>
