@@ -524,8 +524,28 @@ function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function
 function $(sel, ctx) { return (ctx || document).querySelector(sel); }
 function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 var KEY = "nbo:"+CLIENT.slug+":v1";
-function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
-function save(st) { try { localStorage.setItem(KEY, JSON.stringify(st)); return true; } catch (e) { return false; } }
+var RELAYED = null; /* copy from the wrapper page, used if this frame's storage is blocked */
+function load() {
+  var v = null; try { v = localStorage.getItem(KEY); } catch (e) {}
+  try { return JSON.parse(v || RELAYED || "null") || {}; } catch (e) { return {}; }
+}
+/* Safari (and others) keep a cross-site iframe's localStorage only for the session, so answers vanished
+   when Nathan came back (18 Nov). The neoboltsystems.com wrapper page relays storage in its own,
+   first-party localStorage. Only that exact origin is ever trusted or sent data. */
+var PARENT_OK = ["https://neoboltsystems.com", "https://www.neoboltsystems.com"];
+var PARENT = (function() {
+  if (window.parent === window) return null;
+  var o = "";
+  try { if (location.ancestorOrigins && location.ancestorOrigins.length) o = location.ancestorOrigins[0]; } catch (e) {}
+  if (!o) { try { o = new URL(document.referrer).origin; } catch (e) { o = ""; } }
+  return PARENT_OK.indexOf(o) >= 0 ? o : null;
+})();
+function save(st) {
+  var j = JSON.stringify(st), ok = false;
+  try { localStorage.setItem(KEY, j); ok = true; } catch (e) {}
+  if (PARENT) { try { window.parent.postMessage({ nbo: "set", key: KEY, val: j }, PARENT); ok = true; } catch (e) {} }
+  return ok;
+}
 function fieldHTML(f) {
 var id = "nbo-f-"+f.k, req = f.r ? '<span class="req" aria-hidden="true">*</span>' : "";
 var help = f.h ? '<span class="help" id="'+id+'-h">'+esc(f.h)+"</span>" : "";
@@ -768,7 +788,25 @@ window.location.href = "mailto:"+CLIENT.email+"?subject="+encodeURIComponent(sub
 });
 counts(); paint();
 }
-function boot() { init(document.getElementById("nbo-root")); }
+function boot() {
+  var started = false, go = function() { if (started) return; started = true; init(document.getElementById("nbo-root")); };
+  if (!PARENT) return go();
+  /* ask the wrapper page for this client's saved answers first (it answers in a few ms; give up after 800 ms) */
+  window.addEventListener("message", function(e) {
+    if (e.origin !== PARENT || !e.data || e.data.nbo !== "got" || e.data.key !== KEY) return;
+    if (typeof e.data.val === "string" && e.data.val) {
+      RELAYED = e.data.val;
+      try {
+        var mine = JSON.parse(localStorage.getItem(KEY) || "null"), theirs = JSON.parse(e.data.val);
+        var n = function(x) { return x && x.answers ? Object.keys(x.answers).filter(function(k) { return x.answers[k]; }).length : 0; };
+        if (n(theirs) >= n(mine)) localStorage.setItem(KEY, e.data.val);
+      } catch (err) {}
+    }
+    go();
+  });
+  try { window.parent.postMessage({ nbo: "get", key: KEY }, PARENT); } catch (e) { return go(); }
+  setTimeout(go, 800);
+}
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
 </script>
