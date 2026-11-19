@@ -131,6 +131,8 @@
     load(null, true);
   }
   function start() { var h = document.getElementById("nbp"); if (h) mount(h); }
+  /* GHL can re-render pasted code after load (it runs pasted scripts twice): re-mount into a fresh empty #nbp for 15s */
+  var tries = 0, iv = setInterval(function () { tries++; var h = document.getElementById("nbp"); if (h && h.getAttribute("data-nbp") !== "1" && !document.documentElement.classList.contains("nbp-fb")) mount(h); if (tries > 30) clearInterval(iv); }, 500);
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
   window.NBP_MOUNT = start;
 })();
