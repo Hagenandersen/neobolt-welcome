@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Book your free call | Neobolt</title>
+<meta name="robots" content="noindex,nofollow">
+<!-- DRAFT (19 Nov 2026): phone-first booking page for the Quick Call calendar. Not linked from anywhere live.
+     Slots + booking go through the Supabase function book-draft (GHL key stays server-side).
+     Source: repo hagenandersen/neobolt-welcome, book-draft/index.html. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a140c;--card:#13241a;--line:rgba(198,244,50,.18);--lime:#c6f432;--ink:#f2f5ee;--mut:#a9b8a6;--err:#ffb4a2}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,-apple-system,sans-serif;-webkit-text-size-adjust:100%}
+.w{max-width:560px;margin:0 auto;padding:22px 16px 60px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.08em;font-size:13px;color:var(--ink)}
+.brand svg{width:18px;height:18px;color:var(--lime)}
+h1{font-size:34px;line-height:1.08;margin:18px 0 8px;font-weight:800;letter-spacing:-.02em}
+h1 em{font-family:"Instrument Serif",serif;font-weight:400;font-style:italic;color:var(--lime)}
+.lede{color:var(--mut);margin:0 0 18px}
+.chip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13px;color:var(--lime);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin:0 -2px 14px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.day{flex:0 0 auto;min-width:86px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:14px;padding:10px 12px;font:600 15px/1.2 Inter,sans-serif;text-align:left;cursor:pointer}
+.day small{display:block;color:var(--mut);font-weight:500;font-size:12.5px;margin-top:3px}
+.day[aria-pressed=true]{background:var(--lime);color:#0a140c;border-color:var(--lime)}.day[aria-pressed=true] small{color:#2b3a1a}
+.day:disabled{opacity:.35}
+.times{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:420px){.times{grid-template-columns:repeat(3,1fr)}}
+.t{min-height:54px;border:1.5px solid rgba(198,244,50,.45);background:rgba(198,244,50,.06);color:var(--ink);border-radius:14px;font:700 17px Inter,sans-serif;cursor:pointer}
+.t:active,.t:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.tz{color:var(--mut);font-size:13px;margin:12px 2px 0}
+.none{color:var(--mut);padding:14px 4px}
+.sel{display:flex;justify-content:space-between;align-items:center;gap:10px;background:rgba(198,244,50,.1);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px}
+.sel b{font-size:17px}.link{background:none;border:0;color:var(--lime);font:600 15px Inter,sans-serif;text-decoration:underline;cursor:pointer;padding:6px}
+label{display:block;font-weight:600;font-size:14.5px;margin:12px 0 6px}
+input{width:100%;min-height:52px;border-radius:12px;border:1.5px solid #2f4a33;background:#0d1a10;color:var(--ink);font:500 17px Inter,sans-serif;padding:12px 14px}
+input:focus{outline:none;border-color:var(--lime)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:flex;width:100%;justify-content:center;align-items:center;gap:8px;min-height:56px;margin-top:18px;border:0;border-radius:14px;background:var(--lime);color:#0a140c;font:800 17px Inter,sans-serif;cursor:pointer}
+.btn:disabled{opacity:.6}
+.msg{min-height:22px;margin:12px 2px 0;font-size:15px}.msg.err{color:var(--err)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.ok h2{font-size:26px;margin:4px 0 6px}.ok p{color:var(--mut);margin:6px 0}.ok .big{color:var(--ink);font-size:19px;font-weight:700}
+.fine{color:var(--mut);font-size:12.5px;margin-top:14px}
+.skel{height:54px;border-radius:14px;background:linear-gradient(90deg,#16291c,#1d3524,#16291c);background-size:200% 100%;animation:sh 1.2s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.skel{animation:none}}
+</style></head>
+<body><div class="w">
+<div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2L4 13.5h6.5L9.5 22 20 9.5h-6.6z"/></svg>NEOBOLT SYSTEMS</div>
+<h1>Book your free call. <em>15 minutes.</em></h1>
+<p class="lede">Pick a time below. You get the Google Meet link by text and email.</p>
+
+<section id="step1" class="card" aria-label="Pick a time">
+  <p class="msg err" id="msg1" role="status" aria-live="polite" hidden></p>
+  <div class="days" id="days" role="group" aria-label="Day"></div>
+  <div class="times" id="times" aria-live="polite"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+  <p class="tz" id="tz"></p>
+</section>
+
+<section id="step2" class="card" hidden aria-label="Your details">
+  <div class="sel"><div><small style="color:var(--mut)">Your call</small><br><b id="selText"></b></div><button class="link" type="button" id="change">Change</button></div>
+  <form id="f" novalidate autocomplete="on">
+    <div class="row2">
+      <div><label for="first">First name</label><input id="first" name="first" autocomplete="given-name" required></div>
+      <div><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name"></div>
+    </div>
+    <label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567" required>
+    <label for="email">Email</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" required>
+    <label for="business">Business name</label><input id="business" name="business" autocomplete="organization">
+    <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+    <button class="btn" type="submit" id="go">Book my call</button>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+    <p class="fine">By booking you agree to get texts and emails about this call. Reply STOP to opt out. Msg &amp; data rates may apply.</p>
+  </form>
+</section>
+
+<section id="step3" class="card ok" hidden aria-live="polite">
+  <div class="chip">Booked</div>
+  <h2>You're booked.</h2>
+  <p class="big" id="okText"></p>
+  <p>Google Meet link: <a style="color:var(--lime)" href="https://meet.google.com/ftw-joyk-bau">meet.google.com/ftw-joyk-bau</a>. It's also on its way by text and email.</p>
+  <p>Need a different time? Call or text <a style="color:var(--lime)" href="tel:+18333594833">(833) 359-4833</a>.</p>
+</section>
+</div>
+<script>
+(function(){
+var API = "https://gzlmxyqgbulnwsoxqppx.supabase.co/functions/v1/book-draft";
+var TZ = (function(){ try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix"; } catch(e){ return "America/Phoenix"; } })();
+var $ = function(id){ return document.getElementById(id); };
+var shown = Date.now(), picked = null, byDay = {}, order = [];
+function dayKey(d){ return new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).format(d); }
+function fmtTime(d){ return new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}).format(d); }
+function fmtDay(d){ return new Intl.DateTimeFormat("en-US",{timeZone:TZ,weekday:"short",month:"short",day:"numeric"}).format(d); }
+function fmtLong(d){ return new Intl.DateTimeFormat("en-US",{timeZone:TZ,weekday:"long",month:"long",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(d); }
+function tzName(){ try { return new Intl.DateTimeFormat("en-US",{timeZone:TZ,timeZoneName:"long"}).formatToParts(new Date()).filter(function(p){return p.type==="timeZoneName";})[0].value; } catch(e){ return TZ; } }
+
+function label(k){
+  var today = dayKey(new Date()), tom = dayKey(new Date(Date.now()+86400000));
+  return k === today ? "Today" : k === tom ? "Tomorrow" : fmtDay(byDay[k][0]).split(",")[0];
+}
+function renderDays(active){
+  $("days").innerHTML = "";
+  order.forEach(function(k){
+    var b = document.createElement("button"); b.type = "button"; b.className = "day"; b.setAttribute("aria-pressed", k === active ? "true" : "false");
+    var d = byDay[k][0]; b.innerHTML = label(k) + "<small>" + fmtDay(d).replace(/^\w+, /, "") + " · " + byDay[k].length + " open</small>";
+    b.onclick = function(){ renderDays(k); renderTimes(k); };
+    $("days").appendChild(b);
+  });
+}
+function renderTimes(k){
+  var box = $("times"); box.innerHTML = "";
+  if (!k || !byDay[k]) { box.innerHTML = '<p class="none">No open times in the next few days. Call or text (833) 359-4833 and we\'ll fit you in.</p>'; return; }
+  byDay[k].forEach(function(d){
+    var b = document.createElement("button"); b.type = "button"; b.className = "t"; b.textContent = fmtTime(d);
+    b.onclick = function(){ pick(d); };
+    box.appendChild(b);
+  });
+}
+function load(keepDay){
+  fetch(API + "?days=5").then(function(r){ return r.json(); }).then(function(j){
+    if (!j.ok) throw 0;
+    byDay = {}; order = [];
+    j.slots.forEach(function(s){ var d = new Date(s), k = dayKey(d); if (!byDay[k]) { byDay[k] = []; order.push(k); } byDay[k].push(d); });
+    var first = keepDay && byDay[keepDay] ? keepDay : order[0];
+    renderDays(first); renderTimes(first);
+    $("tz").textContent = "Times are in your time zone: " + tzName() + ".";
+  }).catch(function(){ $("times").innerHTML = '<p class="none">Couldn\'t load times. Please refresh, or call or text (833) 359-4833.</p>'; });
+}
+function pick(d){
+  picked = d; $("msg1").hidden = true; $("selText").textContent = fmtLong(d);
+  $("step1").hidden = true; $("step2").hidden = false; $("msg").textContent = ""; $("msg").className = "msg";
+  setTimeout(function(){ try { $("first").focus({preventScroll:false}); } catch(e){} }, 50);
+  window.scrollTo(0, 0);
+}
+$("change").onclick = function(){ $("step2").hidden = true; $("step1").hidden = false; };
+$("f").addEventListener("submit", function(e){
+  e.preventDefault();
+  var f = e.target, go = $("go"), msg = $("msg");
+  function err(t){ msg.textContent = t; msg.className = "msg err"; go.disabled = false; go.textContent = "Book my call"; }
+  if (!f.first.value.trim()) return err("Please add your first name.");
+  if (f.phone.value.replace(/\D/g,"").length < 10) return err("Please add a 10-digit mobile number.");
+  if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(f.email.value.trim())) return err("Please check your email.");
+  go.disabled = true; go.textContent = "Booking...";
+  var iso = picked.toISOString();
+  fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+    first: f.first.value, last: f.last.value, phone: f.phone.value, email: f.email.value, business: f.business.value,
+    slot: iso, hp: f.website.value, ts: shown, tz: TZ }) })
+  .then(function(r){ return r.json().then(function(j){ return { s: r.status, j: j }; }); })
+  .then(function(x){
+    if (x.j.ok) { $("step2").hidden = true; $("step3").hidden = false; $("okText").textContent = fmtLong(picked); window.scrollTo(0,0); return; }
+    if (x.j.taken) { go.disabled = false; go.textContent = "Book my call"; $("step2").hidden = true; $("step1").hidden = false; $("msg1").textContent = x.j.error; $("msg1").hidden = false; load(dayKey(picked)); return; }
+    err(x.j.error || "Something went wrong. Please call or text (833) 359-4833.");
+  }).catch(function(){ err("Couldn't reach the booking system. Please try again, or call or text (833) 359-4833."); });
+});
+load();
+})();
+</script>
+</body></html>
