@@ -1,0 +1,577 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Set up your ads | Neobolt</title><meta name="robots" content="noindex,nofollow"><style>html,body{margin:0;background:#0f1d12}</style></head><body>
+<!--
+NEOBOLT META ADS ONBOARDING (/setup?kit=ads). Same look, storage relay and Supabase submit as /setup.
+Link per client: https://neoboltsystems.com/setup?kit=ads&name=Breckin&biz=Business%20Name
+Served from hagenandersen.github.io/neobolt-welcome/ads/ (setup/ redirects here when kit=ads).
+Built from ads.template.html + ads.js by ads_build.py (Sales & Marketing/neobolt-site-v2/setup-page). Edit there, not here.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500;700&family=Archivo+Black&family=Fraunces:wght@600;800&display=swap" rel="stylesheet">
+<style>
+
+/* GHL wraps pasted code in section/row/column boxes; let this block run full width */
+.c-section:has(.nbo),.c-section:has(.nbo)>.inner,.c-row:has(.nbo),.c-row:has(.nbo)>.inner,.c-column:has(.nbo),.c-column:has(.nbo)>.inner,.c-custom-code:has(.nbo),.custom-code-container:has(.nbo){display:contents!important}
+html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!important}
+.nbo.nbo{--g0:#0f1d12;--g1:#1b3020;--lime:#c8f24c;--cream:#efede6;--ink:#0d140e;--mut:#a9b8a6;--line:rgba(239,237,230,.12);--card:rgba(239,237,230,.055);--field:#0c170e;--warn:#ffb86b;--mono:"JetBrains Mono",ui-monospace,monospace;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--cream);-webkit-font-smoothing:antialiased;background:radial-gradient(120% 60% at 15% 0%,#24412a 0%,var(--g1) 40%,var(--g0) 100%);min-height:100vh;padding:20px 16px 56px;box-sizing:border-box;width:100%;font-size:16px;line-height:1.5;text-align:left;overflow-x:hidden}
+.nbo.nbo *,.nbo.nbo *::before,.nbo.nbo *::after{box-sizing:border-box}
+.nbo [hidden]{display:none!important}
+.nbo .wrap{max-width:760px;margin:0 auto}
+.nbo svg{flex:none}
+.nbo a{color:var(--lime);text-underline-offset:3px}
+.nbo .brand{display:flex;align-items:center;gap:10px;font:500 13px/1 var(--mono);letter-spacing:.14em;color:#d9ddd3;text-transform:uppercase}
+.nbo .brand svg{width:18px;height:18px;color:var(--lime)}
+.nbo .chip{display:inline-flex;align-items:center;gap:8px;margin:22px 0 14px;padding:7px 12px 7px 10px;border:1.5px solid var(--lime);border-radius:999px;font:700 12px/1 var(--mono);letter-spacing:.1em;color:var(--lime);text-transform:uppercase}
+.nbo .chip svg{width:15px;height:15px}
+.nbo.nbo h1{margin:0 0 16px;font-weight:900;color:#fff;letter-spacing:-.035em;line-height:.98;font-size:clamp(40px,11vw,70px);overflow-wrap:anywhere}
+.nbo.nbo h1 .pre{display:block;font:700 clamp(15px,4.2vw,20px)/1.25 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:var(--mut);margin-bottom:10px}
+.nbo.nbo h1 .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400;color:var(--lime);letter-spacing:-.01em;font-size:1.08em}
+.nbo .lede{margin:0;max-width:560px;font-size:18px;line-height:1.5;color:#d6dbd2}
+.nbo .lede b{color:#fff}
+/* progress tracker */
+.nbo .track{position:sticky;top:0;z-index:5;margin:26px -16px 0;padding:12px 16px;background:rgba(15,29,18,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nbo .track-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
+.nbo .track-top b{font-size:15px;color:#fff}
+.nbo .track-top span{font:700 13px/1 var(--mono);color:var(--lime);white-space:nowrap}
+.nbo .bar{height:8px;border-radius:999px;background:rgba(239,237,230,.1);overflow:hidden}
+.nbo .bar i{display:block;height:100%;width:0;background:var(--lime);border-radius:999px;transition:width .35s ease}
+.nbo .pills{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nbo .pills::-webkit-scrollbar{display:none}
+.nbo .pill{display:inline-flex;align-items:center;gap:6px;flex:none;padding:7px 10px;border-radius:999px;border:1px solid var(--line);color:#d6dbd2;text-decoration:none;font:700 12px/1 Inter,system-ui,sans-serif;white-space:nowrap}
+.nbo .pill .d{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid #5d6f5a;font:700 10px/1 var(--mono);color:var(--mut)}
+.nbo .pill .d svg{width:11px;height:11px;display:none}
+.nbo .pill.done{border-color:rgba(200,242,76,.5);color:#fff}
+.nbo .pill.done .d{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.nbo .pill.done .d em{display:none}
+.nbo .pill.done .d svg{display:block}
+.nbo .alldone{display:none;margin:10px 0 0;font-size:14px;color:var(--lime);font-weight:700}
+.nbo .track.complete .alldone{display:block}
+/* steps */
+.nbo .step{margin-top:34px;scroll-margin-top:120px}
+.nbo .step-h{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;margin-bottom:16px}
+.nbo .num{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--lime);color:var(--ink);font:700 15px/1 var(--mono);box-shadow:3px 4px 0 #0a120b}
+.nbo .step.done .num{background:#fff}
+.nbo.nbo h2{margin:2px 0 4px;font-size:clamp(24px,6.4vw,32px);line-height:1.08;font-weight:900;letter-spacing:-.025em;color:#fff}
+.nbo .step-h p{margin:0;color:var(--mut);font-size:15px}
+.nbo .time{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font:700 12px/1 var(--mono);color:var(--lime);letter-spacing:.04em}
+.nbo .time svg{width:14px;height:14px}
+.nbo .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 16px}
+.nbo .note{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(200,242,76,.08);border:1px solid rgba(200,242,76,.28);font-size:14.5px;color:#e6eadf;margin:0 0 14px}
+.nbo .note svg{width:18px;height:18px;color:var(--lime);margin-top:2px}
+.nbo .note.warn{background:rgba(255,184,107,.08);border-color:rgba(255,184,107,.35)}
+.nbo .note.warn svg{color:var(--warn)}
+.nbo .note b{color:#fff}
+/* intake groups */
+.nbo details.grp{border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.nbo details.grp+details.grp{margin-top:10px}
+.nbo details.grp.p15{border-color:rgba(200,242,76,.45)}
+.nbo details.grp>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:15px 14px;-webkit-tap-highlight-color:transparent}
+.nbo details.grp>summary::-webkit-details-marker{display:none}
+.nbo .gi{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:rgba(200,242,76,.1);color:var(--lime)}
+.nbo .gi svg{width:19px;height:19px}
+.nbo .gt b{display:block;color:#fff;font-size:16px;line-height:1.2}
+.nbo .gt small{display:block;color:var(--mut);font-size:13px;line-height:1.35;margin-top:2px}
+.nbo .gc{font:700 12px/1 var(--mono);color:var(--mut);white-space:nowrap}
+.nbo .gc.full{color:var(--lime)}
+.nbo .gc.warn{color:var(--warn)}
+.nbo .chev{width:18px;height:18px;color:var(--mut);transition:transform .2s ease}
+.nbo details[open]>summary .chev{transform:rotate(180deg)}
+.nbo .gbody{padding:4px 14px 18px;border-top:1px solid var(--line)}
+.nbo .f{margin-top:16px}
+.nbo .f>label,.nbo .f legend{display:block;padding:0;margin:0 0 6px;font-weight:700;font-size:15px;color:#fff;line-height:1.35}
+.nbo .req{color:var(--lime);margin-left:3px}
+.nbo .help{display:block;margin:-2px 0 8px;font-size:13.5px;color:var(--mut);line-height:1.4}
+.nbo fieldset{border:0;margin:0;padding:0;min-width:0}
+.nbo.nbo input[type=text],.nbo.nbo input[type=email],.nbo.nbo input[type=tel],.nbo.nbo input[type=url],.nbo.nbo input[type=number],.nbo.nbo select,.nbo.nbo textarea{display:block;width:100%;margin:0;padding:13px 14px;border-radius:11px;border:1.5px solid #34503a;background:var(--field);color:#fff;font:500 16px/1.4 Inter,system-ui,sans-serif;outline:none;-webkit-appearance:none;appearance:none;box-shadow:none;height:auto}
+.nbo.nbo textarea{min-height:92px;resize:vertical}
+.nbo.nbo select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c8f24c' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:40px}
+.nbo.nbo input::placeholder,.nbo.nbo textarea::placeholder{color:#6f826c}
+.nbo.nbo input:focus,.nbo.nbo select:focus,.nbo.nbo textarea:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,242,76,.18)}
+.nbo .f.miss input,.nbo .f.miss select,.nbo .f.miss textarea,.nbo .f.miss .opts{border-color:var(--warn)!important}
+.nbo .opts{display:grid;gap:8px;border-radius:12px;border:1.5px solid transparent}
+.nbo .opt{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:11px 12px;border-radius:11px;border:1.5px solid #34503a;background:var(--field);cursor:pointer;font-size:15px;line-height:1.35;color:#e6eadf}
+.nbo .opt input,.nbo .done-row input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.nbo .box{display:grid;place-items:center;width:20px;height:20px;border:2px solid #6f826c;border-radius:6px;color:var(--ink)}
+.nbo .opt.radio .box{border-radius:50%}
+.nbo .box svg{width:13px;height:13px;opacity:0}
+.nbo .opt:has(input:checked){border-color:var(--lime);background:rgba(200,242,76,.08);color:#fff}
+.nbo input:checked+.box{background:var(--lime);border-color:var(--lime)}
+.nbo input:checked+.box svg{opacity:1}
+.nbo input:focus-visible+.box{box-shadow:0 0 0 3px rgba(200,242,76,.35)}
+.nbo .saved{margin:12px 2px 0;font-size:13px;color:var(--mut);min-height:20px}
+/* buttons */
+.nbo .btns{display:grid;gap:10px;margin-top:18px}
+.nbo.nbo .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 18px;border-radius:999px;border:0;background:var(--lime);color:var(--ink);font:800 16.5px/1.1 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer;box-shadow:4px 5px 0 #0a120b;transition:transform .15s ease;-webkit-tap-highlight-color:transparent}
+.nbo.nbo .btn:hover,.nbo.nbo .btn:focus-visible{transform:translateY(-2px)}
+.nbo.nbo .btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(239,237,230,.35);box-shadow:none}
+.nbo .btn svg{width:19px;height:19px}
+.nbo.nbo .mini{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1.5px solid rgba(200,242,76,.5);background:transparent;color:var(--lime);font:700 12.5px/1 Inter,system-ui,sans-serif;cursor:pointer;vertical-align:middle;white-space:nowrap}
+.nbo .mini svg{width:13px;height:13px}
+.nbo .status{margin:12px 2px 0;font-size:14.5px;color:var(--lime)}
+.nbo .status.warn{color:var(--warn)}
+.nbo .status a{color:inherit}
+/* GHL form slot */
+.nbo .ghl-slot{display:none;border-radius:14px;overflow:hidden;background:#fff;margin-bottom:14px}
+.nbo .ghl-slot iframe{display:block;width:100%;min-height:900px;border:0}
+.nbo.has-ghl .ghl-slot,.nbo.has-ghl .alt-sum{display:block}
+.nbo .alt-sum{display:none}
+.nbo details.alt>summary{list-style:none;cursor:pointer;padding:10px 2px;color:var(--mut);font-size:14.5px;text-decoration:underline;text-underline-offset:3px}
+.nbo details.alt>summary::-webkit-details-marker{display:none}
+/* access + checklist items */
+.nbo .acc{display:grid;gap:12px}
+.nbo .item{border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+.nbo .item.done{border-color:rgba(200,242,76,.45)}
+.nbo .item-h{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:16px 16px 4px}
+.nbo .item-h .gi{width:40px;height:40px}
+.nbo .item-h b{display:block;color:#fff;font-size:17px;line-height:1.25;letter-spacing:-.01em}
+.nbo .item-h small{display:block;margin-top:3px;color:var(--mut);font-size:13.5px;line-height:1.4}
+.nbo .tag{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:999px;background:rgba(239,237,230,.1);color:#d6dbd2;font:700 10.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
+.nbo .item-b{padding:4px 16px 6px}
+.nbo ol.path{margin:8px 0 0;padding:0;list-style:none;counter-reset:p}
+.nbo ol.path>li{position:relative;padding:0 0 10px 34px;counter-increment:p;font-size:15px;line-height:1.45;color:#e6eadf}
+.nbo ol.path>li::before{content:counter(p);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(239,237,230,.1);color:#fff;font:700 11px/22px var(--mono);text-align:center}
+.nbo kbd{font-family:inherit;font-size:inherit;display:inline;padding:1px 6px;border-radius:6px;background:rgba(239,237,230,.1);color:#fff;font-weight:700;white-space:normal;overflow-wrap:anywhere}
+.nbo .mono{font-family:var(--mono);font-weight:700;color:var(--lime);word-break:break-all}
+.nbo .sub{margin:10px 0 4px;font:700 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.nbo .quote{margin:8px 0 10px;padding:12px 14px;border-left:3px solid var(--lime);background:rgba(239,237,230,.05);border-radius:0 10px 10px 0;font-size:15px;color:#fff}
+.nbo .done-row{display:flex;align-items:center;gap:12px;margin:8px 0 0;padding:14px 16px;border-top:1px solid var(--line);cursor:pointer;font-weight:800;font-size:15.5px;color:#fff;-webkit-tap-highlight-color:transparent}
+.nbo .done-row .box{width:26px;height:26px;border-radius:8px}
+.nbo .done-row .box svg{width:16px;height:16px}
+.nbo .item.done .done-row{color:var(--lime)}
+.nbo .stores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 6px}
+.nbo.nbo .stores .btn{padding:13px 10px;font-size:15px;box-shadow:none}
+/* timeline */
+.nbo .tl{list-style:none;margin:0;padding:0}
+.nbo .tl li{position:relative;padding:0 0 22px 30px}
+.nbo .tl li::before{content:"";position:absolute;left:6px;top:8px;bottom:-6px;width:2px;background:rgba(200,242,76,.25)}
+.nbo .tl li:last-child::before{display:none}
+.nbo .tl li::after{content:"";position:absolute;left:0;top:4px;width:14px;height:14px;border-radius:50%;background:var(--g0);border:3px solid var(--lime)}
+.nbo .tl .when{display:block;font:700 12px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.nbo .tl b{display:block;margin:4px 0 3px;color:#fff;font-size:17px}
+.nbo .tl p{margin:0;color:#d6dbd2;font-size:15px}
+.nbo ul.plain{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.nbo ul.plain li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:15px;color:#e6eadf}
+.nbo ul.plain svg{width:18px;height:18px;color:var(--lime);margin-top:2px}
+.nbo .see{margin:40px 0 0;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:clamp(30px,8vw,42px);line-height:1.05;color:var(--lime)}
+.nbo .sig{margin:6px 0 0;font-weight:700;color:#fff}
+.nbo .foot{margin:34px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:13px;line-height:1.55;color:#8f9e8c}
+@media (min-width:720px){.nbo.nbo{padding:44px 24px 80px}.nbo .track{margin:30px 0 0;border:1px solid var(--line);border-radius:16px;top:10px}.nbo .btns{grid-template-columns:1fr 1fr}.nbo .card{padding:22px}.nbo .gbody{display:flex;flex-wrap:wrap;column-gap:14px}.nbo .gbody>.f{width:100%}.nbo .gbody>.f.half{width:calc(50% - 7px)}.nbo .opts.cols{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.nbo *{transition:none!important}}
+
+.nbo .bizid{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:700;letter-spacing:.04em}
+.nbo .fields{margin-top:6px}
+</style>
+</head><body>
+<div class="nbo" id="nbo-root">
+<form id="nbo-form" novalidate autocomplete="on" onsubmit="return false">
+<div class="wrap">
+<div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2L4 13.5h6.5L9.5 22 20 9.5h-6.6z"/></svg>Neobolt Systems</div>
+<div class="chip"><i data-ic="okc"></i>Ads setup, on your own time</div>
+<h1><span class="pre" id="nbo-pre" hidden></span><span id="nbo-hi">Let's get your <span class="em">ads</span> ready.</span></h1>
+<p class="lede">Five steps, about <b>20 minutes</b>. A computer makes step 2 easier. Your progress saves on this device, so you can stop and come back. When you're done, <b>text Hagen and we build your ads</b>.</p>
+
+<div class="track" id="nbo-track" aria-label="Your setup progress">
+<div class="track-top"><b>Your ads setup</b><span id="nbo-count">0 of 5 done</span></div>
+<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="nbo-bar"><i></i></div>
+<nav class="pills" id="nbo-pills"></nav>
+<p class="alldone">All done. Text Hagen and we take it from here.</p>
+</div>
+
+<!-- 1 -->
+<section class="step" id="nbo-s1" data-s="1">
+<div class="step-h"><span class="num">01</span><div>
+<h2>About you and the business</h2>
+<p>Short answers are fine. Skip what you don't know.</p>
+<span class="time"><i data-ic="clock"></i>About 3 min</span>
+</div></div>
+<div class="card fields" id="nbo-f-about"></div>
+<div class="item" data-item="about" style="margin-top:14px">
+<label class="done-row"><input type="checkbox" data-check="about"><span class="box"></span>Done</label>
+</div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="nbo-s2" data-s="2">
+<div class="step-h"><span class="num">02</span><div>
+<h2>Give us partner access on Facebook</h2>
+<p>So we can build and run the ads inside <b>your</b> ad account. You keep ownership of everything.</p>
+<span class="time"><i data-ic="clock"></i>About 5 min</span>
+</div></div>
+<div class="item" data-item="access">
+<div class="item-b" style="padding-top:16px">
+<p class="why">Our business ID. You'll paste it in the 4th line below:</p>
+<p class="bizid" id="nbo-bizid">1003510354042185</p>
+<button class="mini" type="button" data-copy="bizId"><i data-ic="copy"></i>Copy ID</button>
+<ol class="path" style="margin-top:14px">
+<li>On a computer, open Business Settings and log in with the Facebook account that owns your business page.<br><a class="go" href="https://business.facebook.com/settings" target="_blank" rel="noopener"><i data-ic="lock"></i>Open Business Settings</a></li>
+<li>Go to <span class="crumb">Users</span> &rsaquo; <span class="crumb">Partners</span> and click <kbd>Add</kbd>.</li>
+<li>Pick <kbd>Give a partner access to your business assets</kbd>.</li>
+<li>Paste our business ID <kbd>1003510354042185</kbd> and continue.</li>
+<li>Share these, and switch on <b>full control</b> for each:
+<ul class="plain" style="margin-top:8px">
+<li><i data-ic="chart"></i><span>Your <b>ad account</b></span></li>
+<li><i data-ic="share"></i><span>Your Facebook <b>Page</b> (and Instagram, if it's listed)</span></li>
+<li><i data-ic="server"></i><span>Your <b>pixel</b> (it may be called a "dataset"). No pixel? Skip it, we'll make one.</span></li>
+</ul></li>
+<li>Click <kbd>Save</kbd>. That's it.</li>
+</ol>
+<div class="note"><i data-ic="info"></i><span>The ads run under your business name and are paid by the card on <b>your</b> ad account, separate from our fee. Check a card is added under <span class="crumb">Billing &amp; payments</span>.</span></div>
+<div class="fields" id="nbo-f-access"></div>
+</div>
+<label class="done-row"><input type="checkbox" data-check="access"><span class="box"></span>I shared my ad account, Page and pixel</label>
+</div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="nbo-s3" data-s="3">
+<div class="step-h"><span class="num">03</span><div>
+<h2>Send your logo, photos and videos</h2>
+<p>Real photos of your work beat stock photos every time. Phone pictures are perfect.</p>
+<span class="time"><i data-ic="clock"></i>About 5 min</span>
+</div></div>
+<div class="item" data-item="media">
+<div class="item-b" style="padding-top:6px"><div class="fields" id="nbo-f-media"></div></div>
+<label class="done-row"><input type="checkbox" data-check="media"><span class="box"></span>Sent, or I'll text them to Hagen</label>
+</div>
+</section>
+
+<!-- 4 -->
+<section class="step" id="nbo-s4" data-s="4">
+<div class="step-h"><span class="num">04</span><div>
+<h2>Your offer, budget and who answers leads</h2>
+<p>Leads cool off in minutes. Who calls them back matters as much as the ad.</p>
+<span class="time"><i data-ic="clock"></i>About 5 min</span>
+</div></div>
+<div class="card fields" id="nbo-f-offer"></div>
+<div class="item" data-item="offer" style="margin-top:14px">
+<label class="done-row"><input type="checkbox" data-check="offer"><span class="box"></span>Done</label>
+</div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="nbo-s5" data-s="5">
+<div class="step-h"><span class="num">05</span><div>
+<h2>Send it to Hagen</h2>
+<p>This sends your answers and which steps you ticked.</p>
+</div></div>
+<div class="final">
+<p class="saved" id="nbo-saved" aria-live="polite"></p>
+<div class="btns">
+<button class="btn" type="button" data-act="submit"><i data-ic="ok"></i>Send everything to Hagen</button>
+<button class="btn ghost" type="button" data-act="email"><i data-ic="mail"></i>Email it instead</button>
+</div>
+<p class="status" data-status role="status" aria-live="polite"></p>
+<h3 style="margin-top:18px">Then text Hagen</h3>
+<div class="textmsg" id="nbo-donemsg">Hi Hagen, I finished the ads setup page.</div>
+<button class="mini" type="button" data-copy="doneMsg"><i data-ic="copy"></i>Copy text</button>
+</div>
+<div class="item" data-item="sent" style="margin-top:14px">
+<label class="done-row"><input type="checkbox" data-check="sent"><span class="box"></span>Sent, and I texted Hagen</label>
+</div>
+<div class="card" style="margin-top:14px">
+<p class="sub" style="margin-top:0">What happens next</p>
+<ol class="tl">
+<li><span class="when">Next few days</span><b>We build your ads</b><p>Ads, the lead form and the tracking, set up in your ad account.</p></li>
+<li><span class="when">Before anything runs</span><b>You check it</b><p>We send you the ads to look over. Nothing goes live without your OK.</p></li>
+<li><span class="when">Then</span><b>We switch them on</b><p>Every new lead goes straight to the person you named in step 4.</p></li>
+</ol>
+</div>
+<div class="card" style="margin-top:14px">
+<p class="sub" style="margin-top:0">What we never do</p>
+<ul class="plain">
+<li><i data-ic="lock"></i><span>Spend on your ad account beyond the budget you set.</span></li>
+<li><i data-ic="lock"></i><span>Take ownership of anything. Your ad account, Page and pixel stay yours. You can remove our access any time.</span></li>
+<li><i data-ic="lock"></i><span>Share or sell your logins or customer data.</span></li>
+</ul>
+</div>
+</section>
+
+<p class="see">Let's get you more jobs.</p>
+<p class="sig">Hagen, Neobolt Systems</p>
+<div class="foot">Stuck on any step? Text Hagen, or email <a href="mailto:hagen@neoboltsystems.com">hagen@neoboltsystems.com</a>. Skip a step you can't do and keep going. Your progress is saved on this device only.<br>&copy; Neobolt Systems LLC</div>
+</div>
+</form>
+</div>
+<script>
+(function() {
+/* Meta ads onboarding (19 Nov). Same submit as /setup: insert-only row in onboarding_responses (plan "ads"),
+   the DB trigger adds the NEW ONBOARDING task in NeoCommand. Same storage relay as /setup (Safari). */
+var CONFIG = {
+  EMAIL: "hagen@neoboltsystems.com",
+  SUPABASE_URL: "https://gzlmxyqgbulnwsoxqppx.supabase.co/rest/v1/onboarding_responses", /* insert-only for anon */
+  SUPABASE_KEY: "sb_publishable_sPc5lGDw-r-j46Teqp0kbw_acCw19_R", /* PUBLISHABLE key only. Never put any other key here. */
+  BIZ_ID: "1003510354042185"
+};
+function param(k, max) {
+  var v = "";
+  try { v = new URLSearchParams(window.location.search).get(k) || ""; } catch (e) { v = ""; }
+  v = String(v).replace(/[\u0000-\u001f\u007f<>{}\\`"']/g, "").replace(/\s+/g, " ").trim();
+  return v.slice(0, max).trim();
+}
+var first = param("name", 40), biz = param("biz", 70);
+var slug = biz.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40).replace(/-+$/, "") || "client";
+var CLIENT = { slug: slug, first: first, hasBiz: !!biz, business: biz || "your business" };
+
+var ICON = {
+phone: '<path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.7 2.5C9.6 19 5 14.4 4.5 8.2A2.5 2.5 0 0 1 5 3.5z"/>',
+chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/>',
+share: '<circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M8.4 10.8l7.2-3.6M8.4 13.2l7.2 3.6"/>',
+server: '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
+clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+mail: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+copy: '<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>',
+ok: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+okc: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.5 9.5"/>',
+lock: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>'
+};
+var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true">'+ICON.ok+"</svg>";
+function svg(name) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">'+ICON[name]+"</svg>"; }
+
+var FIELDS = {
+about: [
+{k:"business_name",l:"Business name",t:"text",r:1},
+{k:"contact_name",l:"Your name",t:"text",r:1},
+{k:"cell",l:"Your cell",t:"tel",r:1},
+{k:"email",l:"Your email",t:"email",r:1},
+{k:"website",l:"Your website (if you have one)",t:"text",p:"yourbusiness.com"},
+{k:"facebook_page",l:"Your Facebook page link",t:"text",p:"facebook.com/yourpage"},
+{k:"services",l:"What jobs do you want more of?",t:"textarea",r:1,h:"The services to advertise, best first."},
+{k:"service_area",l:"Where do you work?",t:"textarea",r:1,h:"Towns, zip codes, or a city plus how many miles out. Name any areas you don't want."}
+],
+access: [
+{k:"bm_status",l:"How did it go?",t:"radio",o:["Done, I shared all three","I shared some, I got stuck (tell us below)","I don't have a Business Manager or ad account","I'm not sure"]},
+{k:"access_notes",l:"Anything we should know?",t:"textarea",p:"e.g. my web person set up the pixel"}
+],
+media: [
+{k:"logo_link",l:"Your logo",t:"text",p:"Link, or \"texted\"",h:"The best file you have. A photo of your truck door or business card works too."},
+{k:"photos_link",l:"10 or more job photos",t:"text",p:"Shared folder link, or \"texted\"",h:"Before and afters, finished jobs, you and your crew at work."},
+{k:"videos_link",l:"Any videos",t:"text",p:"Link, or \"texted\"",h:"Short phone clips are great: a walk-around of a finished job, or you talking to camera for 20 seconds."}
+],
+offer: [
+{k:"offer",l:"What's the offer in the ads?",t:"textarea",r:1,h:"Why call you now? e.g. free estimate, a discount for this month, a seasonal special. Only offers you're happy to honor."},
+{k:"avg_job",l:"Average job size",t:"text",p:"$"},
+{k:"ad_budget",l:"Monthly ad budget (paid to Meta on your card)",t:"radio",r:1,o:["Under $500","$500 to $1,000","$1,000 to $2,000","$2,000 to $5,000","More than $5,000","Not sure yet"]},
+{k:"lead_contact",l:"Who calls new leads back? Name and cell",t:"text",r:1,p:"e.g. Me, 555-123-4567"},
+{k:"lead_alerts",l:"How should new leads reach them?",t:"check",o:["Text","Email","Phone call","CRM app"]},
+{k:"lead_email",l:"Email for lead alerts (if different)",t:"email"},
+{k:"call_hours",l:"When can you call leads back?",t:"text",p:"e.g. Mon to Sat, 7am to 7pm"}
+]
+};
+var STEPS = [{n:1,c:"about",t:"About you"},{n:2,c:"access",t:"Access"},{n:3,c:"media",t:"Photos"},{n:4,c:"offer",t:"Offer"},{n:5,c:"sent",t:"Send"}];
+
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function(c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+var KEY = "nbsetup:ads-"+CLIENT.slug+":v1"; /* nbsetup: prefix = the /setup wrapper relays it */
+var RELAYED = null;
+function load() {
+  var v = null; try { v = localStorage.getItem(KEY); } catch (e) {}
+  try { return JSON.parse(v || RELAYED || "null") || {}; } catch (e) { return {}; }
+}
+var PARENT_OK = ["https://neoboltsystems.com", "https://www.neoboltsystems.com"];
+var PARENT = (function() {
+  if (window.parent === window) return null;
+  var o = "";
+  try { if (location.ancestorOrigins && location.ancestorOrigins.length) o = location.ancestorOrigins[0]; } catch (e) {}
+  if (!o) { try { o = new URL(document.referrer).origin; } catch (e) { o = ""; } }
+  return PARENT_OK.indexOf(o) >= 0 ? o : null;
+})();
+function save(st) {
+  var j = JSON.stringify(st), ok = false;
+  try { localStorage.setItem(KEY, j); ok = true; } catch (e) {}
+  if (PARENT) { try { window.parent.postMessage({ nbo: "set", key: KEY, val: j }, PARENT); ok = true; } catch (e) {} }
+  return ok;
+}
+
+function fieldHTML(f) {
+  var id = "nbo-f-"+f.k, req = f.r ? '<span class="req" aria-hidden="true">*</span>' : "";
+  var help = f.h ? '<span class="help" id="'+id+'-h">'+esc(f.h)+"</span>" : "";
+  var desc = f.h ? ' aria-describedby="'+id+'-h"' : "";
+  if (f.t === "radio" || f.t === "check") {
+    var type = f.t === "radio" ? "radio" : "checkbox";
+    var items = f.o.map(function(o, i) {
+      return '<label class="opt '+type+'"><input type="'+type+'" name="'+f.k+'" value="'+esc(o)+'" id="'+id+"-"+i+'"><span class="box">'+CHECK+"</span><span>"+esc(o)+"</span></label>";
+    }).join("");
+    return '<fieldset class="f" data-k="'+f.k+'"'+desc+"><legend>"+esc(f.l)+req+"</legend>"+help+'<div class="opts">'+items+"</div></fieldset>";
+  }
+  var ph = f.p ? ' placeholder="'+esc(f.p)+'"' : "", input;
+  if (f.t === "textarea") input = '<textarea id="'+id+'" name="'+f.k+'"'+ph+desc+"></textarea>";
+  else {
+    var extra = f.t === "tel" ? ' inputmode="tel" autocomplete="tel"' : f.t === "email" ? ' inputmode="email" autocomplete="email"' : "";
+    input = '<input type="'+f.t+'" id="'+id+'" name="'+f.k+'"'+ph+desc+extra+">";
+  }
+  return '<div class="f" data-k="'+f.k+'"><label for="'+id+'">'+esc(f.l)+req+"</label>"+help+input+"</div>";
+}
+function allFields() { var a = []; Object.keys(FIELDS).forEach(function(g) { a = a.concat(FIELDS[g]); }); return a; }
+function getVal(form, f) {
+  if (f.t === "check") return $$('input[name="'+f.k+'"]:checked', form).map(function(i) { return i.value; }).join(", ");
+  if (f.t === "radio") { var c = $('input[name="'+f.k+'"]:checked', form); return c ? c.value : ""; }
+  var el = form.elements[f.k]; return el ? String(el.value || "").trim() : "";
+}
+function setVal(form, f, v) {
+  if (v == null || v === "") return;
+  if (f.t === "check") { var parts = String(v).split(", "); $$('input[name="'+f.k+'"]', form).forEach(function(i) { i.checked = parts.indexOf(i.value) > -1; }); return; }
+  if (f.t === "radio") { $$('input[name="'+f.k+'"]', form).forEach(function(i) { i.checked = i.value === v; }); return; }
+  var el = form.elements[f.k]; if (el) el.value = v;
+}
+function collect(form) { var out = {}; allFields().forEach(function(f) { out[f.k] = getVal(form, f); }); return out; }
+function answersText(ans, checks) {
+  var lines = ["Ads setup: "+(ans.business_name || CLIENT.business), ""];
+  STEPS.forEach(function(s) { lines.push(s.n+". "+s.t+": "+(checks[s.c] ? "done" : "not yet")); });
+  lines.push("");
+  allFields().forEach(function(f) { lines.push(f.l+": "+(ans[f.k] || "-")); });
+  return lines.join("\n");
+}
+function copyText(text, done) {
+  function fallback() {
+    try {
+      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); var ok = document.execCommand("copy"); document.body.removeChild(ta); done(ok);
+    } catch (e) { done(false); }
+  }
+  try {
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function() { done(true); }, fallback);
+    else fallback();
+  } catch (e) { fallback(); }
+}
+
+function init(root) {
+  if (!root || root.getAttribute("data-ready") === "1") return;
+  root.setAttribute("data-ready", "1");
+  $$("i[data-ic]", root).forEach(function(el) { var t = document.createElement("span"); t.innerHTML = svg(el.getAttribute("data-ic")); el.parentNode.replaceChild(t.firstChild, el); });
+  $("#nbo-pills", root).innerHTML = STEPS.map(function(s) {
+    return '<a class="pill" href="#nbo-s'+s.n+'" data-step="'+s.n+'"><span class="d"><em>'+s.n+"</em>"+CHECK+"</span>"+esc(s.t)+"</a>";
+  }).join("");
+  $$(".box:empty", root).forEach(function(el) { el.innerHTML = CHECK; });
+  Object.keys(FIELDS).forEach(function(g) { $("#nbo-f-"+g, root).innerHTML = FIELDS[g].map(fieldHTML).join(""); });
+  if (CLIENT.hasBiz) { var pre = $("#nbo-pre", root); pre.textContent = CLIENT.business; pre.hidden = false; }
+  if (CLIENT.first) {
+    var hi = $("#nbo-hi", root), em = document.createElement("span");
+    em.className = "em"; em.textContent = CLIENT.first;
+    hi.textContent = "Let's get your ads ready, "; hi.appendChild(em); hi.appendChild(document.createTextNode("."));
+  }
+  var doneMsg = "Hi Hagen, it's "+(CLIENT.first || "me")+(CLIENT.hasBiz ? " from "+CLIENT.business : "")+". I finished the ads setup page.";
+  $("#nbo-donemsg", root).textContent = doneMsg;
+
+  var form = $("#nbo-form", root), st = load();
+  st.answers = st.answers || {}; st.checks = st.checks || {};
+  var PREFILL = { business_name: CLIENT.hasBiz ? CLIENT.business : "", contact_name: CLIENT.first };
+  allFields().forEach(function(f) { var v = st.answers[f.k]; setVal(form, f, v != null && v !== "" ? v : PREFILL[f.k]); });
+
+  function paint() {
+    var done = 0;
+    STEPS.forEach(function(s) {
+      var on = !!st.checks[s.c]; if (on) done++;
+      var cb = $('input[data-check="'+s.c+'"]', root); if (cb) cb.checked = on;
+      var it = $('[data-item="'+s.c+'"]', root); if (it) it.classList.toggle("done", on);
+      var p = $('.pill[data-step="'+s.n+'"]', root); if (p) p.classList.toggle("done", on);
+      var sec = $("#nbo-s"+s.n, root); if (sec) sec.classList.toggle("done", on);
+    });
+    $("#nbo-count", root).textContent = done+" of "+STEPS.length+" done";
+    var pct = Math.round(done / STEPS.length * 100), bar = $("#nbo-bar", root);
+    bar.setAttribute("aria-valuenow", pct); bar.firstElementChild.style.width = pct+"%";
+    $("#nbo-track", root).classList.toggle("complete", done === STEPS.length);
+  }
+  var t, savedEl = $("#nbo-saved", root);
+  function persist() {
+    clearTimeout(t);
+    t = setTimeout(function() {
+      st.answers = collect(form);
+      savedEl.textContent = save(st) ? "Saved on this device." : "Couldn't save on this device. Send your answers before you close the page.";
+    }, 400);
+  }
+  form.addEventListener("input", persist);
+  form.addEventListener("change", function(e) {
+    var c = e.target && e.target.getAttribute && e.target.getAttribute("data-check");
+    if (c) { st.checks[c] = !!e.target.checked; save(st); paint(); return; }
+    persist();
+  });
+
+  var status = $("[data-status]", root);
+  function say(msg, warn) { status.innerHTML = msg; status.classList.toggle("warn", !!warn); }
+  function missing() {
+    var ans = collect(form), miss = [];
+    $$(".f.miss", root).forEach(function(el) { el.classList.remove("miss"); });
+    allFields().forEach(function(f) { if (f.r && !ans[f.k]) { miss.push(f); var el = $('[data-k="'+f.k+'"]', root); if (el) el.classList.add("miss"); } });
+    return miss;
+  }
+  var forceSubmit = false, forceSend = false;
+  root.addEventListener("click", function(e) {
+    var b = e.target.closest ? e.target.closest("[data-act], [data-copy], [data-jump]") : null;
+    if (!b || !root.contains(b)) return;
+    if (b.hasAttribute("data-copy")) {
+      var what = b.getAttribute("data-copy"), val = what === "doneMsg" ? doneMsg : CONFIG.BIZ_ID, label = b.innerHTML;
+      copyText(val, function(ok) { b.lastChild.textContent = ok ? "Copied" : "Press and hold to copy"; setTimeout(function() { b.innerHTML = label; }, 1800); });
+      return;
+    }
+    e.preventDefault();
+    if (b.hasAttribute("data-jump")) { var m0 = missing()[0]; if (m0) { var el0 = $('[data-k="'+m0.k+'"]', root); if (el0) el0.scrollIntoView({ behavior: "smooth", block: "center" }); } return; }
+    var act = b.getAttribute("data-act");
+    st.answers = collect(form); save(st);
+    var miss = missing();
+    if (act === "submit") {
+      if (miss.length && !forceSubmit) {
+        forceSubmit = true;
+        say(miss.length+" required answer"+(miss.length > 1 ? "s are" : " is")+" still blank (marked in orange). <a href=\"#\" data-jump=\"1\">Show me</a>, or tap Send again to send what you have.", true);
+        return;
+      }
+      forceSubmit = false;
+      if (b.disabled) return;
+      b.disabled = true; say("Sending...");
+      var steps = {}; STEPS.forEach(function(s) { steps[s.c] = !!st.checks[s.c]; });
+      var answers = {}; Object.keys(st.answers).forEach(function(k) { answers[k] = st.answers[k]; });
+      answers.source = "ads setup page"; answers.kit = "meta-ads";
+      var payload = { client_slug: "ads-"+CLIENT.slug, first_name: CLIENT.first || answers.contact_name || null,
+        business: CLIENT.hasBiz ? CLIENT.business : (answers.business_name || null), plan: "ads",
+        answers: answers, steps_done: steps, user_agent: String(navigator.userAgent || "").slice(0, 200) };
+      var fail = function() { b.disabled = false; say("That didn't go through. Your answers are still saved here. Tap <b>Email it instead</b>, or try again in a minute.", true); };
+      try {
+        var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function() { if (ctl) ctl.abort(); }, 15000);
+        fetch(CONFIG.SUPABASE_URL, { method: "POST", signal: ctl ? ctl.signal : undefined,
+          headers: { apikey: CONFIG.SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+          body: JSON.stringify(payload) }).then(function(r) {
+            clearTimeout(to);
+            if (!r.ok) return fail();
+            b.disabled = false; say("Got it, Hagen has everything. Last thing: send him the text below.");
+          }, function() { clearTimeout(to); fail(); });
+      } catch (err) { fail(); }
+      return;
+    }
+    if (act === "email") {
+      if (miss.length && !forceSend) {
+        forceSend = true;
+        say(miss.length+" required answer"+(miss.length > 1 ? "s are" : " is")+" still blank (marked in orange). <a href=\"#\" data-jump=\"1\">Show me</a>, or tap the email button again to send what you have.", true);
+        return;
+      }
+      forceSend = false;
+      var text = answersText(st.answers, st.checks);
+      say("Opening your email app. Hit send, then tick the box below.");
+      window.location.href = "mailto:"+CONFIG.EMAIL+"?subject="+encodeURIComponent("Ads setup: "+(st.answers.business_name || CLIENT.business))+"&body="+encodeURIComponent(text);
+    }
+  });
+  paint();
+}
+function boot() {
+  var started = false, go = function() { if (started) return; started = true; init(document.getElementById("nbo-root")); };
+  if (!PARENT) return go();
+  window.addEventListener("message", function(e) {
+    if (e.origin !== PARENT || !e.data || e.data.nbo !== "got" || e.data.key !== KEY) return;
+    if (typeof e.data.val === "string" && e.data.val) {
+      RELAYED = e.data.val;
+      try {
+        var mine = JSON.parse(localStorage.getItem(KEY) || "null"), theirs = JSON.parse(e.data.val);
+        var n = function(x) { return x && x.answers ? Object.keys(x.answers).filter(function(k) { return x.answers[k]; }).length : 0; };
+        if (n(theirs) >= n(mine)) localStorage.setItem(KEY, e.data.val);
+      } catch (err) {}
+    }
+    go();
+  });
+  try { window.parent.postMessage({ nbo: "get", key: KEY }, PARENT); } catch (e) { return go(); }
+  setTimeout(go, 800);
+}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+
+</script>
+</body></html>
