@@ -64,9 +64,11 @@
       '<p>Google Meet link: <a href="https://meet.google.com/ftw-joyk-bau">meet.google.com/ftw-joyk-bau</a>. It\'s also on its way by email.</p></div>' +
       '<p class="nbbk-alt" id="nbbk-alt"><a href="#" id="nbbk-classic">Trouble? Use the classic calendar</a></p>';
     var $ = function (id) { return document.getElementById(id); };
+    /* 19 Nov: GA4 events through the gtag already on the page (no new script). Never sends names, phones or emails. */
+    function trk(name, params) { try { if (typeof window.gtag === "function") window.gtag("event", name, Object.assign({ nb_page: location.pathname, nb_source: source }, params || {})); } catch (e) {} }
     var shown = Date.now(), picked = null, byDay = {}, order = [], failed = false;
     function fallback(why) {
-      if (failed) return; failed = true;
+      if (failed) return; failed = true; trk("nb_picker_fallback", { reason: String(why || "") });
       host.style.display = "none";
       try { if (typeof window.NBBK_FALLBACK === "function") window.NBBK_FALLBACK(why); } catch (e) {}
     }
@@ -100,11 +102,12 @@
         if (!order.length && first) return fallback("empty");
         var k0 = keepDay && byDay[keepDay] ? keepDay : order[0];
         renderDays(k0); renderTimes(k0);
+        if (first) trk("nb_picker_shown", { slots: j.slots.length, ms: Date.now() - (window.__nbbkT0 || shown) });
         $("nbbk-tz").textContent = "Times are in your time zone: " + tzName() + ".";
       }).catch(function () { done = true; clearTimeout(t); if (first) fallback("error"); else renderTimes(null); });
     }
     function pick(d) {
-      picked = d; $("nbbk-m1").hidden = true; $("nbbk-selt").textContent = fmtLong(d);
+      picked = d; trk("nb_time_picked", { days_ahead: Math.round((d - Date.now()) / 86400000) }); $("nbbk-m1").hidden = true; $("nbbk-selt").textContent = fmtLong(d);
       $("nbbk-s1").hidden = true; $("nbbk-s2").hidden = false; $("nbbk-m2").textContent = "";
       try { host.scrollIntoView({ block: "start" }); } catch (e) {}
     }
@@ -112,19 +115,19 @@
     $("nbbk-f").addEventListener("submit", function (e) {
       e.preventDefault();
       var go = $("nbbk-go"), msg = $("nbbk-m2");
-      function err(t) { msg.textContent = t; go.disabled = false; go.textContent = "Book my call"; }
+      function err(t) { trk("nb_book_error", { reason: String(t).slice(0, 60) }); msg.textContent = t; go.disabled = false; go.textContent = "Book my call"; }
       var v = function (id) { return $(id).value.trim(); };
       if (!v("nbbk-first") || !v("nbbk-last")) return err("Please add your first and last name.");
       if (v("nbbk-phone").replace(/\D/g, "").length < 10) return err("Please add a 10-digit phone number.");
       if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v("nbbk-email"))) return err("Please check your email.");
-      go.disabled = true; go.textContent = "Booking...";
+      go.disabled = true; go.textContent = "Booking..."; trk("nb_book_submit");
       fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         first: v("nbbk-first"), last: v("nbbk-last"), phone: v("nbbk-phone"), email: v("nbbk-email"), business: v("nbbk-biz"),
         consent: $("nbbk-consent").checked, slot: picked.toISOString(), hp: $("nbbk-web").value, ts: shown, tz: TZ, source: source }) })
         .then(function (r) { return r.json(); })
         .then(function (j) {
-          if (j.ok) { $("nbbk-s2").hidden = true; $("nbbk-s3").hidden = false; $("nbbk-alt").hidden = true; $("nbbk-okt").textContent = fmtLong(picked); try { host.scrollIntoView({ block: "start" }); } catch (e) {} return; }
-          if (j.taken) { go.disabled = false; go.textContent = "Book my call"; $("nbbk-s2").hidden = true; $("nbbk-s1").hidden = false; $("nbbk-m1").textContent = j.error; $("nbbk-m1").hidden = false; load(dayKey(picked), false); return; }
+          if (j.ok) { trk("nb_booked"); $("nbbk-s2").hidden = true; $("nbbk-s3").hidden = false; $("nbbk-alt").hidden = true; $("nbbk-okt").textContent = fmtLong(picked); try { host.scrollIntoView({ block: "start" }); } catch (e) {} return; }
+          if (j.taken) { trk("nb_slot_taken"); go.disabled = false; go.textContent = "Book my call"; $("nbbk-s2").hidden = true; $("nbbk-s1").hidden = false; $("nbbk-m1").textContent = j.error; $("nbbk-m1").hidden = false; load(dayKey(picked), false); return; }
           err(j.error || "Something went wrong. Please call or text (833) 359-4833.");
         }).catch(function () { err("Couldn't reach the booking system. Try again, or use the classic calendar below."); });
     });
