@@ -168,7 +168,7 @@ html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!importan
 <div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2L4 13.5h6.5L9.5 22 20 9.5h-6.6z"/></svg>Neobolt Systems</div>
 <div class="chip"><i data-ic="okc"></i>Ads setup, on your own time</div>
 <h1><span class="pre" id="nbo-pre" hidden></span><span id="nbo-hi">Let's get your <span class="em">ads</span> ready.</span></h1>
-<p class="lede">Five steps, about <b>20 minutes</b>. A computer makes step 2 easier. Your progress saves on this device, so you can stop and come back. When you're done, <b>text Hagen and we build your ads</b>.</p>
+<p class="lede">Five steps, about <b>20 minutes</b>. A computer makes step 2 easier. Your answers save as you type, so you can stop and come back on this or another device. When you're done, <b>text Hagen and we build your ads</b>.</p>
 
 <div class="track" id="nbo-track" aria-label="Your setup progress">
 <div class="track-top"><b>Your ads setup</b><span id="nbo-count">0 of 5 done</span></div>
@@ -292,6 +292,7 @@ html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!importan
 </div>
 </form>
 </div>
+<script src="../draft/draft.js?v=1123"></script>
 <script>
 (function() {
 /* Meta ads onboarding (19 Nov). Same submit as /setup: insert-only row in onboarding_responses (plan "ads"),
@@ -458,6 +459,8 @@ function init(root) {
   st.answers = st.answers || {}; st.checks = st.checks || {};
   var PREFILL = { business_name: CLIENT.hasBiz ? CLIENT.business : "", contact_name: CLIENT.first };
   allFields().forEach(function(f) { var v = st.answers[f.k]; setVal(form, f, v != null && v !== "" ? v : PREFILL[f.k]); });
+  var hadLocal = Object.keys(st.answers).some(function(k) { return st.answers[k]; }) || Object.keys(st.checks).some(function(k) { return st.checks[k]; });
+  var D = null;
 
   function paint() {
     var done = 0;
@@ -479,12 +482,13 @@ function init(root) {
     t = setTimeout(function() {
       st.answers = collect(form);
       savedEl.textContent = save(st) ? "Saved on this device." : "Couldn't save on this device. Send your answers before you close the page.";
+      if (D) D.touch();
     }, 400);
   }
   form.addEventListener("input", persist);
   form.addEventListener("change", function(e) {
     var c = e.target && e.target.getAttribute && e.target.getAttribute("data-check");
-    if (c) { st.checks[c] = !!e.target.checked; save(st); paint(); return; }
+    if (c) { st.checks[c] = !!e.target.checked; save(st); paint(); if (D) { D.touch(); D.flush(); } return; }
     persist();
   });
 
@@ -551,6 +555,24 @@ function init(root) {
     }
   });
   paint();
+
+  /* ===== Autosave to the server (draft/draft.js), and land on the first step not ticked yet ===== */
+  function jumpFirst() {
+    if (location.hash) return;
+    try { history.scrollRestoration = "manual"; } catch (e) {}
+    var s = STEPS.filter(function(x) { return !st.checks[x.c]; })[0]; if (!s) return;
+    var sec = $("#nbo-s"+s.n, root); if (sec) setTimeout(function() { sec.scrollIntoView({ block: "start" }); }, 150);
+  }
+  if (window.NBDraft) {
+    D = NBDraft.attach({ page: "ads", slug: "ads-"+CLIENT.slug, st: st, saveLocal: save, root: root, savedEl: savedEl, parent: PARENT, hasLocal: hadLocal,
+      apply: function(rs) {
+        st.answers = rs.answers || {}; st.checks = rs.checks || {}; st.ts = rs.ts || Date.now();
+        allFields().forEach(function(f) { setVal(form, f, st.answers[f.k]); });
+        st.answers = collect(form); save(st); paint(); jumpFirst();
+      } });
+    root.addEventListener("click", function(e) { if (e.target.closest && e.target.closest(".pill, [data-act]")) D.flush(); });
+  }
+  if (hadLocal) jumpFirst();
 }
 function boot() {
   var started = false, go = function() { if (started) return; started = true; init(document.getElementById("nbo-root")); };

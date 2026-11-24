@@ -254,7 +254,7 @@ html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!importan
 <div class="brand"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2L4 13.5h6.5L9.5 22 20 9.5h-6.6z"/></svg>Neobolt Systems</div>
 <div class="chip"><i data-ic="okc"></i>Set up on your own time</div>
 <h1><span class="pre" id="nbo-pre" hidden></span><span id="nbo-hi">Let's get you <span class="em">set up</span>.</span></h1>
-<p class="lede">No call needed. Go down this page and tick each step as you finish it. It takes about <b>45 minutes</b>, and a computer makes the account steps easier. Your progress saves on this device, so you can stop and come back. When you're done, <b>text Hagen and we finish the build</b>.</p>
+<p class="lede">No call needed. Go down this page and tick each step as you finish it. It takes about <b>45 minutes</b>, and a computer makes the account steps easier. Your answers save as you type, so you can stop and come back on this or another device. When you're done, <b>text Hagen and we finish the build</b>.</p>
 
 <div class="track" id="nbo-track" aria-label="Your setup progress">
 <div class="track-top"><b>Your setup</b><span id="nbo-count">0 of 11 done</span></div>
@@ -563,6 +563,7 @@ html,body,#__nuxt .bgCover,.hl_page-preview--content{background:#0f1d12!importan
 </div>
 </form>
 </div>
+<script src="../draft/draft.js?v=1123"></script>
 <script>
 (function() {
 /* ================= CONFIG ================= */
@@ -857,6 +858,8 @@ function init(root) {
     var saved = st.answers[f.k];
     setVal(form, f, saved != null && saved !== "" ? saved : PREFILL[f.k]);
   });
+  var hadLocal = Object.keys(st.answers).some(function(k) { return st.answers[k]; }) || Object.keys(st.checks).some(function(k) { return st.checks[k]; });
+  var D = null;
 
   function counts() {
     var ans = collect(form);
@@ -885,13 +888,14 @@ function init(root) {
     t = setTimeout(function() {
       st.answers = collect(form);
       savedEl.textContent = save(st) ? "Saved on this device." : "Couldn't save on this device. Send your answers before you close the page.";
+      if (D) D.touch();
     }, 400);
     counts();
   }
   form.addEventListener("input", persist);
   form.addEventListener("change", function(e) {
     var c = e.target && e.target.getAttribute && e.target.getAttribute("data-check");
-    if (c) { st.checks[c] = !!e.target.checked; save(st); paint(); return; }
+    if (c) { st.checks[c] = !!e.target.checked; save(st); paint(); if (D) { D.touch(); D.flush(); } return; }
     if (e.target && e.target.name === "post_style" && e.target.checked) { st.checks.style = true; paint(); }
     persist();
   });
@@ -966,7 +970,7 @@ function init(root) {
             clearTimeout(to);
             if (!r.ok) return fail();
             b.disabled = false;
-            st.checks.biz = true; save(st); paint();
+            st.checks.biz = true; save(st); paint(); if (D) D.touch();
             say(b.closest("#nbo-s11") ? "Got it, Hagen has everything. Last thing: send him the text below." : "Got it, Hagen has it. Keep going down the page, and send again at the end.");
           }, function() { clearTimeout(to); fail(); });
       } catch (err) { fail(); }
@@ -990,6 +994,28 @@ function init(root) {
     }
   });
   counts(); paint();
+
+  /* ===== Autosave to the server (draft/draft.js): every change, debounced, upsert per device.
+     A returning client lands on the first step not ticked yet. ===== */
+  function jumpFirst() {
+    if (location.hash) return;
+    try { history.scrollRestoration = "manual"; } catch (e) {}
+    var s = STEPS.filter(function(x) { return !st.checks[x.c]; })[0]; if (!s) return;
+    var sec = $("#nbo-s"+s.n, root); if (sec) setTimeout(function() { sec.scrollIntoView({ block: "start" }); }, 150);
+  }
+  if (window.NBDraft) {
+    D = NBDraft.attach({ page: "setup", slug: CLIENT.slug, st: st, saveLocal: save, root: root, savedEl: savedEl, parent: PARENT, hasLocal: hadLocal,
+      apply: function(rs) {
+        var ein = st.answers.ein;
+        st.answers = rs.answers || {}; if (ein && !st.answers.ein) st.answers.ein = ein;
+        st.checks = rs.checks || {}; st.ts = rs.ts || Date.now();
+        allFields().forEach(function(f) { setVal(form, f, st.answers[f.k]); });
+        st.answers = collect(form); save(st); counts(); paint(); jumpFirst();
+      } });
+    root.addEventListener("click", function(e) { if (e.target.closest && e.target.closest(".pill, [data-act]")) D.flush(); });
+    root.addEventListener("toggle", function() { D.flush(); }, true);
+  }
+  if (hadLocal) jumpFirst();
 
   /* ===== Prefilled mode: ?client=<ref> loads clients/<ref>.json next to this page.
      The JSON holds only public business facts:
@@ -1040,7 +1066,7 @@ function init(root) {
         };
         form.addEventListener("change", tickNeeds); form.addEventListener("input", tickNeeds); tickNeeds();
       }
-      st.prefilled = true; st.answers = collect(form); save(st);
+      st.prefilled = true; st.answers = collect(form); save(st); if (D && fresh) D.touch();
       counts(); paint();
     }).catch(function() {});
   }
